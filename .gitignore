@@ -59,6 +59,8 @@ cmake-build-debug/
 
 tests/lib
 
+.idea
+
 
 # JIRA plugin
 atlassian-ide-plugin.xml

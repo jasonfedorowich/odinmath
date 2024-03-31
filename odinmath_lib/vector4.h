@@ -79,11 +79,13 @@ namespace OdinMath {
 
         Vector4<real> operator*(real c);
 
+        bool operator==(const Vector4<real>& v) const;
+
         real dot(const Vector4<real> &rhs);
 
-        Vector3<real> cross(const Vector3<real> &rhs);
 
     };
+
 
 #if defined(INTRIN) && (defined(__aarch64__) || defined(__x86_64__))
 
@@ -266,6 +268,12 @@ namespace OdinMath {
     Vector4<real> Vector4<real>::operator+(const Vector4<real> &rhs) {
         return Vector4<real>((*this)[0] + rhs[0], (*this)[1] + rhs[1], (*this)[2] + rhs[2], (*this)[3] + rhs[3]);
     }
+
+    template<typename real>
+    bool Vector4<real>::operator==(const Vector4<real> &v) const {
+        return (v[0] == this->data[0] && v[1] == this->data[1] && v[2] == this->data[2] && v[3] == this->data[3]);
+    }
+
 }
 
 

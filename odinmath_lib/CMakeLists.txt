@@ -11,6 +11,8 @@ set(HEADER_FILES
         vectorintrin.h
         vector2.h
         vector4.h
+        Matrix.h
+        matrix4.h
 )
 
 set(SOURCE_FILES
@@ -18,7 +20,7 @@ set(SOURCE_FILES
         exception.cpp
         vector2.cpp
         vector4.cpp
-
+        matrix4.cpp
 )
 
 add_library(odinmath_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})

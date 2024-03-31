@@ -23,5 +23,7 @@
 #include "vector3.h"
 #include "vector2.h"
 #include "vector4.h"
+#include "Matrix.h"
+#include "matrix4.h"
 
 #endif //ODINMATH_ODINMATH_H

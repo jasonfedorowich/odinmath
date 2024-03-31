@@ -77,6 +77,7 @@ namespace OdinMath {
 
 #if defined(INTRIN) && (defined(__aarch64__) || defined(__x86_64__))
 
+    //todo should remove this superclass
     class Vector3Float : public Vector<3, float> {
     private:
         FloatVector128 floatVector128;
