@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.27)
 #set(CMAKE_OSX_ARCHITECTURES x86_64)
 
+#Release
+#cmake -S . -B build/ -D CMAKE_BUILD_TYPE=Release
+
+#Tests
+#ctest --rerun-failed --output-on-failure
 
 project(odinmath)
 

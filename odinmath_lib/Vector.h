@@ -22,6 +22,27 @@ namespace OdinMath {
         }
 
         virtual ~Vector() = default;
+
+        //todo
+        struct Iterator{
+            Vector<SIZE, real>* vector;
+            int element;
+            explicit Iterator(Vector<SIZE, real>* vector) : vector(vector), element(0) { }
+            Iterator(Vector<SIZE, real>* vector, int element) : vector(vector), element(element) {}
+            Iterator() {}
+            Iterator& operator++() {
+                ++element;
+                return *this;
+            }
+            real operator*(){ return (*vector)[0]; }
+            friend bool operator==(const Iterator& a, const Iterator& b) { return a.row == b.row; }
+            friend bool operator!=(const Iterator& a, const Iterator& b) { return a.row != b.row; }
+
+            virtual ~Iterator() = default;
+        };
+
+        Iterator& begin() { return Iterator(*this); }
+        Iterator& end() { return Iterator(*this, SIZE); }
     };
 
     template<int SIZE, typename real>

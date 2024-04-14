@@ -69,11 +69,14 @@ namespace OdinMath {
 
         Vector3<real> operator*(real val);
 
+        bool operator==(const Vector3<real>& rhs) const;
+
         real dot(const Vector3<real> &rhs);
 
         Vector3<real> cross(const Vector3<real> &rhs);
 
     };
+
 
 #if defined(INTRIN) && (defined(__aarch64__) || defined(__x86_64__))
 
@@ -159,6 +162,11 @@ namespace OdinMath {
     };
 
 #endif
+
+    template<typename real>
+    bool Vector3<real>::operator==(const Vector3<real> &rhs) const {
+        return this->data[0] == rhs[0] && this->data[1] == rhs[1] && this->data[2] == rhs[2];
+    }
 
 
     template<typename real>

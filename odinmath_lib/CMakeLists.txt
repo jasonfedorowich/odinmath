@@ -13,6 +13,7 @@ set(HEADER_FILES
         vector4.h
         Matrix.h
         matrix4.h
+        matrix3.h
 )
 
 set(SOURCE_FILES
@@ -21,6 +22,8 @@ set(SOURCE_FILES
         vector2.cpp
         vector4.cpp
         matrix4.cpp
+        matrix3.cpp
+        matrix3.h
 )
 
 add_library(odinmath_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})

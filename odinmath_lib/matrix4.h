@@ -77,7 +77,14 @@ namespace OdinMath {
         Matrix4<real> transpose();
 
         static Matrix4<real> identity();
+
+        static Matrix4<real> zeros();
     };
+
+    template<typename real>
+    Matrix4<real> Matrix4<real>::zeros() {
+        return Matrix4<real>();
+    }
 
     template<typename real>
     inline Matrix4<real> operator*(real c, Matrix4<real>& m){
@@ -107,7 +114,12 @@ namespace OdinMath {
 
     template<typename real>
     inline Vector4<real> operator*(Vector4<real>&& v, Matrix4<real>& m){
-
+        return Vector4<real>(
+                v[0] * m(0, 0) + v[1] * m(1, 0) + v[2] * m(2, 0) + v[3] * m(3, 0),
+                v[0] * m(0, 1) + v[1] * m(1, 1) + v[2] * m(2, 1) + v[3] * m(3, 1),
+                v[0] * m(0, 2) + v[1] * m(1, 2) + v[2] * m(2, 2) + v[3] * m(3, 2),
+                v[0] * m(0, 3) + v[1] * m(1, 3) + v[2] * m(2, 3) + v[3] * m(3, 3)
+        );
     }
 
     template<typename real>
