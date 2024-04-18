@@ -7,20 +7,20 @@
 using namespace OdinMath;
 
 
-TEST(Vector2TestSuit, TestDefaultConstructor){
+TEST(Vector2TestSuit, TestDefaultConstructor) {
     Vector2<double> v;
     EXPECT_EQ(0.0, v.getX());
     EXPECT_EQ(0.0, v.getY());
 }
 
-TEST(Vector2TestSuit, TestValueConstructor){
+TEST(Vector2TestSuit, TestValueConstructor) {
     Vector2<float> v(1.f, 2.f);
     EXPECT_EQ(1.f, v.getX());
     EXPECT_EQ(2.f, v.getY());
 
 }
 
-TEST(Vector2TestSuit, TestCopyConstructor){
+TEST(Vector2TestSuit, TestCopyConstructor) {
     Vector2<float> v(1.f, 2.f);
     Vector2<float> copy(v);
     EXPECT_EQ(1.f, copy.getX());
@@ -31,19 +31,19 @@ TEST(Vector2TestSuit, TestCopyConstructor){
 
 }
 
-TEST(Vector2TestSuit, TestValidIndexOperator){
+TEST(Vector2TestSuit, TestValidIndexOperator) {
     Vector2<double> v(1.f, 2.f);
     v[0] = 3.0;
     EXPECT_EQ(3.0, v[0]);
 }
 
-TEST(Vector2TestSuit, TestInvalidIndexOperator){
+TEST(Vector2TestSuit, TestInvalidIndexOperator) {
     Vector2<double> v(1.f, 2.f);
     v[0] = 3.0;
     EXPECT_THROW(v[5], OdinMath::InvalidArgument);
 }
 
-TEST(Vector2TestSuit, TestAddingAndMultiply){
+TEST(Vector2TestSuit, TestAddingAndMultiply) {
     Vector2<double> v(1.f, 2.f);
     Vector2<double> v1(2.0, 4.0);
     Vector2<double> res = v + v1;
@@ -56,7 +56,7 @@ TEST(Vector2TestSuit, TestAddingAndMultiply){
 }
 
 
-TEST(Vector2TestSuit, TestRHSOperators){
+TEST(Vector2TestSuit, TestRHSOperators) {
     Vector2<float> v(1.f, 2.f);
     Vector2<float> r = 200.f * v;
     EXPECT_EQ(r[0], 200.f);
@@ -67,7 +67,7 @@ TEST(Vector2TestSuit, TestRHSOperators){
     EXPECT_EQ(r[1], 800.f);
 }
 
-TEST(Vector2TestSuit, TestDot){
+TEST(Vector2TestSuit, TestDot) {
     Vector2<double> v1 = Vector2<double>(1.f, 2.f);
     Vector2<double> v2 = Vector2<double>(5.f, 6.f);
     double d = v1.dot(v2);

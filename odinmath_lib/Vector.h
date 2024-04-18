@@ -21,28 +21,54 @@ namespace OdinMath {
             return data;
         }
 
+        Vector() = default;
+
+        explicit Vector(real* data){
+            for(int i = 0; i < SIZE; i++){
+                this->data[i] = data[i];
+            }
+        }
+
         virtual ~Vector() = default;
 
-        //todo
-        struct Iterator{
-            Vector<SIZE, real>* vector;
-            int element;
-            explicit Iterator(Vector<SIZE, real>* vector) : vector(vector), element(0) { }
-            Iterator(Vector<SIZE, real>* vector, int element) : vector(vector), element(element) {}
-            Iterator() {}
-            Iterator& operator++() {
+        struct Iterator {
+
+            Vector<SIZE, real> *vector;
+            int element{};
+
+            explicit Iterator(Vector<SIZE, real> *vector) : vector(vector), element(0) {}
+
+            Iterator(const Iterator &it) { *this = it; }
+
+            Iterator(Vector<SIZE, real> *vector, int element) : vector(vector), element(element) {}
+
+            Iterator &operator++() {
                 ++element;
                 return *this;
             }
-            real operator*(){ return (*vector)[0]; }
-            friend bool operator==(const Iterator& a, const Iterator& b) { return a.row == b.row; }
-            friend bool operator!=(const Iterator& a, const Iterator& b) { return a.row != b.row; }
+
+            real operator*() { return (*vector)[element]; }
+
+            friend bool operator==(const Iterator &a, const Iterator &b) { return (a.element == b.element)
+            && (a.vector == b.vector); }
+
+            friend bool operator!=(const Iterator &a, const Iterator &b) { return a.element != b.element
+            && (a.vector == b.vector); }
+
+            Iterator &operator=(const Iterator &it) {
+                if (this != &it) {
+                    this->vector = it.vector;
+                    this->element = it.element;
+                }
+                return *this;
+            }
 
             virtual ~Iterator() = default;
         };
 
-        Iterator& begin() { return Iterator(*this); }
-        Iterator& end() { return Iterator(*this, SIZE); }
+        Iterator begin() { return Iterator(this); }
+
+        Iterator end() { return Iterator(this, SIZE); }
     };
 
     template<int SIZE, typename real>

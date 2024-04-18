@@ -6,14 +6,14 @@
 
 using namespace OdinMath;
 
-TEST(Vector3TestSuit, TestDefaultConstructor){
+TEST(Vector3TestSuit, TestDefaultConstructor) {
     Vector3<double> v;
     EXPECT_EQ(0.0, v.getX());
     EXPECT_EQ(0.0, v.getY());
     EXPECT_EQ(0.0, v.getZ());
 }
 
-TEST(Vector3TestSuit, TestValueConstructor){
+TEST(Vector3TestSuit, TestValueConstructor) {
     Vector3<float> v(1.f, 2.f, 3.f);
     EXPECT_EQ(1.f, v.getX());
     EXPECT_EQ(2.f, v.getY());
@@ -21,7 +21,7 @@ TEST(Vector3TestSuit, TestValueConstructor){
 
 }
 
-TEST(Vector3TestSuit, TestCopyConstructor){
+TEST(Vector3TestSuit, TestCopyConstructor) {
     Vector3<float> v(1.f, 2.f, 3.f);
     Vector3<float> copy(v);
     EXPECT_EQ(1.f, copy.getX());
@@ -33,19 +33,19 @@ TEST(Vector3TestSuit, TestCopyConstructor){
 
 }
 
-TEST(Vector3TestSuit, TestValidIndexOperator){
+TEST(Vector3TestSuit, TestValidIndexOperator) {
     Vector3<double> v(1.f, 2.f, 3.f);
     v[0] = 3.0;
     EXPECT_EQ(3.0, v[0]);
 }
 
-TEST(Vector3TestSuit, TestInvalidIndexOperator){
+TEST(Vector3TestSuit, TestInvalidIndexOperator) {
     Vector3<double> v(1.f, 2.f, 3.f);
     v[0] = 3.0;
     EXPECT_THROW(v[5], OdinMath::InvalidArgument);
 }
 
-TEST(Vector3TestSuit, TestAddingAndMultiply){
+TEST(Vector3TestSuit, TestAddingAndMultiply) {
     Vector3<double> v(1.f, 2.f, 3.f);
     Vector3<double> v1(2.0, 4.0, 5.0);
     Vector3<double> res = v + v1;
@@ -59,7 +59,7 @@ TEST(Vector3TestSuit, TestAddingAndMultiply){
 }
 
 
-TEST(Vector3TestSuit, TestRHSOperators){
+TEST(Vector3TestSuit, TestRHSOperators) {
     Vector3<float> v(1.f, 2.f, 3.f);
     Vector3<float> r = 200.f * v;
     EXPECT_EQ(r[0], 200.f);
@@ -72,14 +72,14 @@ TEST(Vector3TestSuit, TestRHSOperators){
     EXPECT_EQ(r[2], 1200.f);
 }
 
-TEST(Vector3TestSuit, TestDotCross){
+TEST(Vector3TestSuit, TestDotCross) {
     Vector3<double> v1 = Vector3<double>(1.f, 2.f, 3.f);
     Vector3<double> v2 = Vector3<double>(5.f, 6.f, 7.f);
     double d = v1.dot(v2);
     EXPECT_EQ(38.0, d);
 
     Vector3<double> v3 = Vector3<double>(500, 600, 3);
-    Vector3<double> v4  = Vector3<double>(100, -700, 7);
+    Vector3<double> v4 = Vector3<double>(100, -700, 7);
     Vector3<double> v5 = v3.cross(v4);
 
     EXPECT_EQ(6300.0, v5.getX());

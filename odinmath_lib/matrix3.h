@@ -7,7 +7,7 @@
 
 #include "odinmath.h"
 
-namespace OdinMath{
+namespace OdinMath {
     template<typename real>
     class Matrix3 : public Matrix<3, 3, real> {
     public:
@@ -79,9 +79,9 @@ namespace OdinMath{
 
     template<typename real>
     Matrix3<real> Matrix3<real>::identity() {
-        return Matrix3<real>((real)1.0, (real)0.0, (real)0.0,
-                             (real)0.0, (real)1.0, (real)0.0,
-                             (real)0.0, (real)0.0, (real)1.0);
+        return Matrix3<real>((real) 1.0, (real) 0.0, (real) 0.0,
+                             (real) 0.0, (real) 1.0, (real) 0.0,
+                             (real) 0.0, (real) 0.0, (real) 1.0);
     }
 
     template<typename real>
@@ -92,21 +92,21 @@ namespace OdinMath{
     }
 
     template<typename real>
-    inline Matrix3<real> operator*(real c, Matrix3<real>& m){
+    inline Matrix3<real> operator*(real c, Matrix3<real> &m) {
         return Matrix3<real>(c * m(0, 0), c * m(0, 1), c * m(0, 2),
                              c * m(1, 0), c * m(1, 1), c * m(1, 2),
                              c * m(2, 0), c * m(2, 1), c * m(2, 2));
     }
 
     template<typename real>
-    inline Matrix3<real> operator*(real c, Matrix3<real>&& m){
+    inline Matrix3<real> operator*(real c, Matrix3<real> &&m) {
         return Matrix3<real>(c * m(0, 0), c * m(0, 1), c * m(0, 2),
                              c * m(1, 0), c * m(1, 1), c * m(1, 2),
                              c * m(2, 0), c * m(2, 1), c * m(2, 2));
     }
 
     template<typename real>
-    inline Vector3<real> operator*(Vector3<real>& v, Matrix3<real>& m){
+    inline Vector3<real> operator*(Vector3<real> &v, Matrix3<real> &m) {
         return Vector3<real>(
                 v[0] * m(0, 0) + v[1] * m(1, 0) + v[2] * m(2, 0),
                 v[0] * m(0, 1) + v[1] * m(1, 1) + v[2] * m(2, 1),
@@ -115,14 +115,13 @@ namespace OdinMath{
     }
 
     template<typename real>
-    inline Vector4<real> operator*(Vector3<real>&& v, Matrix3<real>& m){
+    inline Vector4<real> operator*(Vector3<real> &&v, Matrix3<real> &m) {
         return Vector3<real>(
                 v[0] * m(0, 0) + v[1] * m(1, 0) + v[2] * m(2, 0),
                 v[0] * m(0, 1) + v[1] * m(1, 1) + v[2] * m(2, 1),
                 v[0] * m(0, 2) + v[1] * m(1, 2) + v[2] * m(2, 2)
         );
     }
-
 
 
     template<typename real>
@@ -297,7 +296,7 @@ namespace OdinMath{
 
     template<typename real>
     Matrix3<real> &Matrix3<real>::operator=(const Matrix3<real> &rhs) {
-        if(this != &rhs){
+        if (this != &rhs) {
             this->mat[0][0] = rhs(0, 0);
             this->mat[0][1] = rhs(0, 1);
             this->mat[0][2] = rhs(0, 2);
@@ -313,7 +312,6 @@ namespace OdinMath{
         return *this;
     }
 }
-
 
 
 #endif //ODINMATH_MATRIX3_H

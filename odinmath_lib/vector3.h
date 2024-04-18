@@ -69,7 +69,7 @@ namespace OdinMath {
 
         Vector3<real> operator*(real val);
 
-        bool operator==(const Vector3<real>& rhs) const;
+        bool operator==(const Vector3<real> &rhs) const;
 
         real dot(const Vector3<real> &rhs);
 
@@ -92,12 +92,12 @@ namespace OdinMath {
             this->floatVector128 = load3(this->data);
         }
 
-        Vector3Float(FloatVector128& v){
+        Vector3Float(FloatVector128 &v) {
             store3(this->data, v);
             this->floatVector128 = v;
         };
 
-        Vector3Float(FloatVector128&& v){
+        Vector3Float(FloatVector128 &&v) {
             store3(this->data, v);
             this->floatVector128 = v;
         };
@@ -257,7 +257,6 @@ namespace OdinMath {
     Vector3<real> Vector3<real>::operator+(const Vector3<real> &rhs) {
         return Vector3<real>((*this)[0] + rhs[0], (*this)[1] + rhs[1], (*this)[2] + rhs[2]);
     }
-
 
 
 }

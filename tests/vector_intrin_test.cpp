@@ -15,7 +15,7 @@ using namespace OdinMath;
 
 #if defined(INTRIN) && (defined(__aarch64__) || defined(__x86_64__))
 
-TEST(VectorIntrinTestSuite, LoadAndStore){
+TEST(VectorIntrinTestSuite, LoadAndStore) {
     float f[4] = {1.f, 2.f, 3.f, 4.f};
     float r[4];
     auto v = load4(f);
@@ -26,7 +26,7 @@ TEST(VectorIntrinTestSuite, LoadAndStore){
     EXPECT_EQ(4.f, r[3]);
 }
 
-TEST(VectorIntrinTestSuite, Add){
+TEST(VectorIntrinTestSuite, Add) {
     float f[4] = {1.f, 2.f, 3.f, 4.f};
     float r[4] = {3.f, 5.f, 6.f, 7.f};
     auto v1 = load4(f);
@@ -41,7 +41,7 @@ TEST(VectorIntrinTestSuite, Add){
 }
 
 
-TEST(VectorIntrinTestSuite, Sub){
+TEST(VectorIntrinTestSuite, Sub) {
     float f[4] = {1.f, 2.f, 3.f, 4.f};
     float r[4] = {3.f, 5.f, 6.f, 8.f};
     auto v1 = load4(f);
@@ -55,7 +55,7 @@ TEST(VectorIntrinTestSuite, Sub){
     EXPECT_EQ(-4.f, store[3]);
 }
 
-TEST(VectorIntrinTestSuite, Mul){
+TEST(VectorIntrinTestSuite, Mul) {
     float f[4] = {1.f, 2.f, 3.f, 4.f};
     float r[4] = {3.f, 5.f, 6.f, 7.f};
     auto v1 = load4(f);
@@ -69,7 +69,7 @@ TEST(VectorIntrinTestSuite, Mul){
     EXPECT_EQ(28.f, store[3]);
 }
 
-TEST(VectorIntrinTestSuite, Div){
+TEST(VectorIntrinTestSuite, Div) {
     float f[4] = {9.f, 10.f, 4.f, 5.f};
     float r[4] = {3.f, 5.f, 2.f, 1.f};
     auto v1 = load4(f);
@@ -84,7 +84,7 @@ TEST(VectorIntrinTestSuite, Div){
 }
 
 
-TEST(VectorIntrinTestSuite, Load3AndStore3){
+TEST(VectorIntrinTestSuite, Load3AndStore3) {
     float f[3] = {9.f, 10.f, 4.f};
     float r[3];
     auto v1 = load3(f);
@@ -94,7 +94,7 @@ TEST(VectorIntrinTestSuite, Load3AndStore3){
     EXPECT_EQ(4.f, r[2]);
 }
 
-TEST(VectorIntrinTestSuite, Load2AndStore2){
+TEST(VectorIntrinTestSuite, Load2AndStore2) {
     float f[2] = {9.f, 10.f};
     float r[2];
     auto v1 = load2(f);
@@ -103,7 +103,7 @@ TEST(VectorIntrinTestSuite, Load2AndStore2){
     EXPECT_EQ(10.f, r[1]);
 }
 
-TEST(VectorIntrinTestSuite, Div3){
+TEST(VectorIntrinTestSuite, Div3) {
     float f[3] = {9.f, 10.f, 26.f};
     float r[3] = {3.f, 2.f, 2.f};
     auto v1 = load3(f);
@@ -116,7 +116,7 @@ TEST(VectorIntrinTestSuite, Div3){
     EXPECT_EQ(13.f, rr[2]);
 }
 
-TEST(VectorIntrinTestSuite, Div2){
+TEST(VectorIntrinTestSuite, Div2) {
     float f[2] = {9.f, 10.f};
     float r[2] = {3.f, 2.f};
     auto v1 = load2(f);
@@ -129,7 +129,7 @@ TEST(VectorIntrinTestSuite, Div2){
 }
 
 
-TEST(VectorIntrinTestSuite, Dot4){
+TEST(VectorIntrinTestSuite, Dot4) {
     float f[4] = {1, 2, 3, 4};
     float r[4] = {5, 6, 7, 8};
     auto v1 = load4(f);
@@ -142,7 +142,7 @@ TEST(VectorIntrinTestSuite, Dot4){
 }
 
 
-TEST(VectorIntrinTestSuite, Dot3){
+TEST(VectorIntrinTestSuite, Dot3) {
     float f[3] = {1, 2, 3};
     float r[3] = {5, 6, 7};
     auto v1 = load3(f);
@@ -154,7 +154,7 @@ TEST(VectorIntrinTestSuite, Dot3){
     EXPECT_EQ(38.f, rr[1]);
 }
 
-TEST(VectorIntrinTestSuite, Cross3){
+TEST(VectorIntrinTestSuite, Cross3) {
     float f[3] = {500, 600, 3};
     float r[3] = {100, -700, 7};
     auto v1 = load3(f);
@@ -167,7 +167,7 @@ TEST(VectorIntrinTestSuite, Cross3){
     EXPECT_EQ(-410000.f, rr[2]);
 }
 
-TEST(VectorIntrinTestSuite, ScalarMult){
+TEST(VectorIntrinTestSuite, ScalarMult) {
     float f[4] = {500, 600, 3, 100};
     auto v1 = load4(f);
     auto res = scalarMul(10.f, v1);
@@ -180,7 +180,7 @@ TEST(VectorIntrinTestSuite, ScalarMult){
 
 }
 
-TEST(Vector2FloatTestSuite, Constructor){
+TEST(Vector2FloatTestSuite, Constructor) {
     Vector2Float v;
     EXPECT_THROW(v[1], UnimplementedException);
     float x = 1 + 2;
@@ -188,7 +188,7 @@ TEST(Vector2FloatTestSuite, Constructor){
     EXPECT_EQ(3.f, v.getX());
 }
 
-TEST(Vector2FloatTestSuite, Arithmetic){
+TEST(Vector2FloatTestSuite, Arithmetic) {
     Vector2Float v1 = Vector2Float(1.f, 2.f);
     Vector2Float v2 = Vector2Float(1.f, 2.f);
 
@@ -214,7 +214,7 @@ TEST(Vector2FloatTestSuite, Arithmetic){
 
 }
 
-TEST(Vector2FloatTestSuite, TestDot){
+TEST(Vector2FloatTestSuite, TestDot) {
     Vector2Float v1 = Vector2Float(1.f, 2.f);
     Vector2Float v2 = Vector2Float(5.f, 6.f);
     float d = v1.dot(v2);
@@ -224,7 +224,7 @@ TEST(Vector2FloatTestSuite, TestDot){
 }
 
 
-TEST(Vector3FloatTestSuite, Constructor){
+TEST(Vector3FloatTestSuite, Constructor) {
     Vector3Float v = Vector3Float();
     EXPECT_THROW(v[1], UnimplementedException);
     float x = 1 + 2;
@@ -236,7 +236,7 @@ TEST(Vector3FloatTestSuite, Constructor){
     EXPECT_EQ(3.f, v.getZ());
 }
 
-TEST(Vector3FloatTestSuite, Arithmetic){
+TEST(Vector3FloatTestSuite, Arithmetic) {
     Vector3Float v1 = Vector3Float(1.f, 2.f, 3.f);
     Vector3Float v2 = Vector3Float(1.f, 2.f, 3.f);
 
@@ -267,14 +267,14 @@ TEST(Vector3FloatTestSuite, Arithmetic){
 
 }
 
-TEST(Vector3FloatTestSuite, TestDotAndCross){
+TEST(Vector3FloatTestSuite, TestDotAndCross) {
     Vector3Float v1 = Vector3Float(1.f, 2.f, 3.f);
     Vector3Float v2 = Vector3Float(5.f, 6.f, 7.f);
     float d = v1.dot(v2);
     EXPECT_EQ(38.f, d);
 
     Vector3Float v3 = Vector3Float(500, 600, 3);
-    Vector3Float v4  = Vector3Float(100, -700, 7);
+    Vector3Float v4 = Vector3Float(100, -700, 7);
     Vector3Float v5 = v3.cross(v4);
 
     EXPECT_EQ(6300.f, v5.getX());
@@ -283,7 +283,7 @@ TEST(Vector3FloatTestSuite, TestDotAndCross){
 }
 
 
-TEST(Vector4FloatTestSuite, Constructor){
+TEST(Vector4FloatTestSuite, Constructor) {
     Vector4Float v = Vector4Float();
     EXPECT_THROW(v[1], UnimplementedException);
     float x = 1 + 2;
@@ -295,7 +295,7 @@ TEST(Vector4FloatTestSuite, Constructor){
     EXPECT_EQ(3.f, v.getZ());
 }
 
-TEST(Vector4FloatTestSuite, Arithmetic){
+TEST(Vector4FloatTestSuite, Arithmetic) {
     Vector4Float v1 = Vector4Float(1.f, 2.f, 3.f, 5.f);
     Vector4Float v2 = Vector4Float(1.f, 2.f, 3.f, 5.f);
 
@@ -333,14 +333,14 @@ TEST(Vector4FloatTestSuite, Arithmetic){
 
 }
 
-TEST(Vector4FloatTestSuite, TestDotAndCross){
+TEST(Vector4FloatTestSuite, TestDotAndCross) {
     Vector4Float v1 = Vector4Float(1.f, 2.f, 3.f, 5.f);
     Vector4Float v2 = Vector4Float(5.f, 6.f, 7.f, 5.f);
     float d = v1.dot(v2);
     EXPECT_EQ(63.f, d);
 
     Vector4Float v3 = Vector4Float(500, 600, 3, 10.f);
-    Vector4Float v4  = Vector4Float(100, -700, 7, 10.f);
+    Vector4Float v4 = Vector4Float(100, -700, 7, 10.f);
     Vector4Float v5 = v3.cross(v4);
 
     EXPECT_EQ(6300.f, v5.getX());

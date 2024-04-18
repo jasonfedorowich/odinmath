@@ -5,7 +5,7 @@
 
 #include "odinmath.h"
 
-namespace OdinMath{
+namespace OdinMath {
 
 #if defined(INTRIN) && defined(__aarch64__)
     using FloatVector128 = float32x4_t;
@@ -41,13 +41,15 @@ namespace OdinMath{
 #if defined(INTRIN) && defined(__aarch64__)
 
 
-    inline float32x4_t load4(const float* in){
+    inline float32x4_t load4(const float *in) {
         return vld1q_f32(in);
     }
-    inline void store4(float* out, float32x4_t in){
+
+    inline void store4(float *out, float32x4_t in) {
         vst1q_f32(out, in);
     }
-    inline float32x4_t load3(const float* in){
+
+    inline float32x4_t load3(const float *in) {
         float32x2_t zeros = vdup_n_f32(0.f);
         float32x2_t first = vld1_f32(in);
         float32x2_t second = vld1_f32(&(in[2]));
@@ -55,7 +57,7 @@ namespace OdinMath{
         return vcombine_f32(first, second);
     }
 
-    inline void store3(float* out, float32x4_t in){
+    inline void store3(float *out, float32x4_t in) {
         float32x2_t high = vget_high_f32(in);
         float32x2_t lo = vget_low_f32(in);
         float32x2_t tmp = vcopy_lane_f32(lo, 0, lo, 1);
@@ -64,51 +66,57 @@ namespace OdinMath{
         vst1_f32(&(out[1]), second);
 
     }
-    inline float32x4_t load2(const float* in){
+
+    inline float32x4_t load2(const float *in) {
         float32x2_t zeros = vdup_n_f32(0.f);
         float32x2_t first = vld1_f32(in);
         return vcombine_f32(first, zeros);
     }
 
-    inline void store2(float* out, float32x4_t in){
+    inline void store2(float *out, float32x4_t in) {
         float32x2_t lo = vget_low_f32(in);
         vst1_f32(out, lo);
     }
 
-    inline float32x4_t add(const float32x4_t lhs, const float32x4_t rhs){
+    inline float32x4_t add(const float32x4_t lhs, const float32x4_t rhs) {
         return vaddq_f32(lhs, rhs);
     }
-    inline float32x4_t mul(const float32x4_t lhs, const float32x4_t rhs){
+
+    inline float32x4_t mul(const float32x4_t lhs, const float32x4_t rhs) {
         return vmulq_f32(lhs, rhs);
     }
-    inline float32x4_t div(const float32x4_t top, const float32x4_t bot){
+
+    inline float32x4_t div(const float32x4_t top, const float32x4_t bot) {
         return vdivq_f32(top, bot);
     }
 
-    inline float32x4_t div3(const float32x4_t top, const float32x4_t bot){
+    inline float32x4_t div3(const float32x4_t top, const float32x4_t bot) {
         float32x4_t ones = vdupq_n_f32(1.f);
         float32x4_t tmp = vcopyq_laneq_f32(bot, 3, ones, 0);
         return vdivq_f32(top, tmp);
     }
 
-    inline float32x4_t div2(const float32x4_t top, const float32x4_t bot){
+    inline float32x4_t div2(const float32x4_t top, const float32x4_t bot) {
         float32x4_t ones = vdupq_n_f32(1.f);
         float32x4_t tmp = vcopyq_laneq_f32(bot, 3, ones, 0);
         tmp = vcopyq_laneq_f32(tmp, 2, ones, 0);
         return vdivq_f32(top, tmp);
     }
 
-    inline float32x4_t sub(const float32x4_t lhs, const float32x4_t rhs){
+    inline float32x4_t sub(const float32x4_t lhs, const float32x4_t rhs) {
         return vsubq_f32(lhs, rhs);
     }
-    inline float32x4_t scalar(float scalar){
+
+    inline float32x4_t scalar(float scalar) {
         return vdupq_n_f32(scalar);
     }
-    inline float32x4_t scalarMul(float sc, const float32x4_t rhs){
+
+    inline float32x4_t scalarMul(float sc, const float32x4_t rhs) {
         float32x4_t s = scalar(sc);
         return mul(s, rhs);
     }
-    inline float32x4_t dot(const float32x4_t lhs, const float32x4_t rhs){
+
+    inline float32x4_t dot(const float32x4_t lhs, const float32x4_t rhs) {
         float32x4_t m = mul(lhs, rhs);
         float32x4_t rev = vrev64q_f32(m);
         float32x4_t ad = add(m, rev);
@@ -118,12 +126,12 @@ namespace OdinMath{
         return vcombine_f32(sum, sum);
     }
 
-    inline float32x4_t length(const float32x4_t lhs, const float32x4_t rhs){
+    inline float32x4_t length(const float32x4_t lhs, const float32x4_t rhs) {
         float32x4_t d = dot(lhs, rhs);
         return vsqrtq_f32(d);
     }
 
-    inline float32x4_t cross3(const float32x4_t lhs, const float32x4_t rhs){
+    inline float32x4_t cross3(const float32x4_t lhs, const float32x4_t rhs) {
         float32x4_t tmp1 = vrev64q_f32(lhs);
         tmp1 = vcopyq_laneq_f32(tmp1, 2, lhs, 0);
         float32x4_t tmp2 = vrev64q_f32(rhs);

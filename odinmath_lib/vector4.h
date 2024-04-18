@@ -79,7 +79,7 @@ namespace OdinMath {
 
         Vector4<real> operator*(real c);
 
-        bool operator==(const Vector4<real>& v) const;
+        bool operator==(const Vector4<real> &v) const;
 
         real dot(const Vector4<real> &rhs);
 
@@ -101,19 +101,21 @@ namespace OdinMath {
             this->floatVector128 = load4(this->data);
         }
 
-        Vector4Float(FloatVector128& v){
+        Vector4Float(FloatVector128 &v) {
             store4(this->data, v);
             this->floatVector128 = v;
         };
 
-        Vector4Float(FloatVector128&& v){
+        Vector4Float(FloatVector128 &&v) {
             store4(this->data, v);
             this->floatVector128 = v;
         };
 
-        explicit Vector4Float(Vector4<float> &vector3) : Vector4Float(vector3[0], vector3[1], vector3[2], vector3[3]) {};
+        explicit Vector4Float(Vector4<float> &vector3) : Vector4Float(vector3[0], vector3[1], vector3[2],
+                                                                      vector3[3]) {};
 
-        explicit Vector4Float(Vector4<float> &&vector3) : Vector4Float(vector3[0], vector3[1], vector3[2], vector3[3]) {};
+        explicit Vector4Float(Vector4<float> &&vector3) : Vector4Float(vector3[0], vector3[1], vector3[2],
+                                                                       vector3[3]) {};
 
         Vector4Float() : Vector4Float(0.f, 0.f, 0.f, 0.f) {};
 
@@ -202,7 +204,6 @@ namespace OdinMath {
         rhs[2] *= c;
         rhs[3] *= c;
     }
-
 
 
     template<typename real>

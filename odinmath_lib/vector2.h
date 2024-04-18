@@ -75,12 +75,12 @@ namespace OdinMath {
             this->floatVector128 = load2(this->data);
         }
 
-        Vector2Float(FloatVector128& v){
+        Vector2Float(FloatVector128 &v) {
             store2(this->data, v);
             this->floatVector128 = v;
         };
 
-        Vector2Float(FloatVector128&& v){
+        Vector2Float(FloatVector128 &&v) {
             store2(this->data, v);
             this->floatVector128 = v;
         };

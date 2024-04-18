@@ -4,11 +4,13 @@
 
 #ifndef ODINMATH_EXCEPTION_H
 #define ODINMATH_EXCEPTION_H
+
 #include <exception>
 #include <string>
-namespace OdinMath{
 
-    class InvalidArgument : std::exception{
+namespace OdinMath {
+
+    class InvalidArgument : std::exception {
     private:
         std::string cause;
     public:
@@ -21,7 +23,7 @@ namespace OdinMath{
         const char *what() const _NOEXCEPT override;
     };
 
-    class UnimplementedException : std::exception{
+    class UnimplementedException : std::exception {
     private:
         std::string cause;
     public:

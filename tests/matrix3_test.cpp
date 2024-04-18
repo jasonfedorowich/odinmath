@@ -70,12 +70,12 @@ TEST(TestMatrix3, TestInversion) {
     bool res = m1.inverse(inv, 0.00000001, &det);
     float dd = m1.det();
     EXPECT_TRUE(res);
-    Matrix3<float> expected = Matrix3<float>( 0.1429,  -2.7857,   1.6429,
-                                              -0.2857,   2.8214 , -1.5357,
-                                              0.1429,  -0.2857,  0.1429);
+    Matrix3<float> expected = Matrix3<float>(0.1429, -2.7857, 1.6429,
+                                             -0.2857, 2.8214, -1.5357,
+                                             0.1429, -0.2857, 0.1429);
 
-    for(int i = 0; i < 3; i++){
-        for(int j = 0; j < 3; j++){
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
             expected(i, j) = round(expected(i, j));
             inv(i, j) = round(inv(i, j));
         }
@@ -98,9 +98,9 @@ TEST(TestMatrix3, TestArithmetic) {
     EXPECT_EQ(expAdd, R);
 
     Matrix3<float> expMul = Matrix3<float>(
-    105,    87,   139,
-    87,   110,   182,
-    139,   182,   302
+            105, 87, 139,
+            87, 110, 182,
+            139, 182, 302
     );
     Matrix3<float> RR = m * T;
     EXPECT_EQ(expMul, RR);
@@ -137,7 +137,7 @@ TEST(TestMatrix3, TestVectorMult) {
     Vector3<double> R = m * v;
     EXPECT_EQ(expected, R);
 
-    Vector3<double> expL = {38,  44,   57};
+    Vector3<double> expL = {38, 44, 57};
     Vector3<double> RR = v * m;
     EXPECT_EQ(expL, RR);
 }

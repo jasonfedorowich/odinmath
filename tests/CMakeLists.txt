@@ -14,7 +14,9 @@ add_executable(odinmath_tests_run
         vector2_test.cpp
         vector4_test.cpp
         matrix4_test.cpp
-        matrix3_test.cpp)
+        matrix3_test.cpp
+        vector_test.cpp
+        matrix_test.cpp)
 
 target_link_libraries(odinmath_tests_run odinmath_lib)
 

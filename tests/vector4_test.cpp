@@ -6,7 +6,7 @@
 
 using namespace OdinMath;
 
-TEST(Vector4TestSuit, TestDefaultConstructor){
+TEST(Vector4TestSuit, TestDefaultConstructor) {
     Vector4<double> v;
     EXPECT_EQ(0.0, v.getX());
     EXPECT_EQ(0.0, v.getY());
@@ -14,7 +14,7 @@ TEST(Vector4TestSuit, TestDefaultConstructor){
     EXPECT_EQ(0.0, v.getW());
 }
 
-TEST(Vector4TestSuit, TestValueConstructor){
+TEST(Vector4TestSuit, TestValueConstructor) {
     Vector4<float> v(1.f, 2.f, 3.f, 4.f);
     EXPECT_EQ(1.f, v.getX());
     EXPECT_EQ(2.f, v.getY());
@@ -22,7 +22,7 @@ TEST(Vector4TestSuit, TestValueConstructor){
     EXPECT_EQ(4.f, v.getW());
 }
 
-TEST(Vector4TestSuit, TestCopyConstructor){
+TEST(Vector4TestSuit, TestCopyConstructor) {
     Vector4<float> v(1.f, 2.f, 3.f, 5.f);
     Vector4<float> copy(v);
     EXPECT_EQ(1.f, copy.getX());
@@ -35,19 +35,19 @@ TEST(Vector4TestSuit, TestCopyConstructor){
 
 }
 
-TEST(Vector4TestSuit, TestValidIndexOperator){
+TEST(Vector4TestSuit, TestValidIndexOperator) {
     Vector4<double> v(1.f, 2.f, 3.f, 6.f);
     v[3] = 3.0;
     EXPECT_EQ(3.0, v[3]);
 }
 
-TEST(Vector4TestSuit, TestInvalidIndexOperator){
+TEST(Vector4TestSuit, TestInvalidIndexOperator) {
     Vector4<double> v(1.f, 2.f, 3.f, 1.f);
     v[0] = 3.0;
     EXPECT_THROW(v[5], OdinMath::InvalidArgument);
 }
 
-TEST(Vector4TestSuit, TestAddingAndMultiply){
+TEST(Vector4TestSuit, TestAddingAndMultiply) {
     Vector4<double> v(1.f, 2.f, 3.f, 2.f);
     Vector4<double> v1(2.0, 4.0, 5.0, 5.f);
     Vector4<double> res = v + v1;
@@ -62,7 +62,7 @@ TEST(Vector4TestSuit, TestAddingAndMultiply){
 }
 
 
-TEST(Vector4TestSuit, TestRHSOperators){
+TEST(Vector4TestSuit, TestRHSOperators) {
     Vector4<float> v(1.f, 2.f, 3.f, 5.f);
     Vector4<float> r = 200.f * v;
     EXPECT_EQ(r[0], 200.f);
@@ -77,7 +77,7 @@ TEST(Vector4TestSuit, TestRHSOperators){
     EXPECT_EQ(r[3], 2000.f);
 }
 
-TEST(Vector4TestSuit, TestDotCross){
+TEST(Vector4TestSuit, TestDotCross) {
     Vector4<double> v1 = Vector4<double>(1.f, 2.f, 3.f, 5.f);
     Vector4<double> v2 = Vector4<double>(5.f, 6.f, 7.f, 6.f);
     double d = v1.dot(v2);
