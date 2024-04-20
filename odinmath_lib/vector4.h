@@ -89,25 +89,27 @@ namespace OdinMath {
 
 #if defined(INTRIN) && (defined(__aarch64__) || defined(__x86_64__))
 
-    class Vector4Float : public Vector<4, float> {
-    private:
+    class Vector4Float {
+    protected:
         FloatVector128 floatVector128;
     public:
         Vector4Float(float x, float y, float z, float w) {
-            this->data[0] = x;
-            this->data[1] = y;
-            this->data[2] = z;
-            this->data[3] = w;
-            this->floatVector128 = load4(this->data);
+            float tmp[4];
+            tmp[0] = x;
+            tmp[1] = y;
+            tmp[2] = z;
+            tmp[3] = w;
+            this->floatVector128 = load4(tmp);
+        }
+        explicit Vector4Float(const float* vector){
+            this->floatVector128 = load4(vector);
         }
 
-        Vector4Float(FloatVector128 &v) {
-            store4(this->data, v);
+        explicit Vector4Float(FloatVector128 &v) {
             this->floatVector128 = v;
         };
 
-        Vector4Float(FloatVector128 &&v) {
-            store4(this->data, v);
+        explicit Vector4Float(FloatVector128 &&v) {
             this->floatVector128 = v;
         };
 
@@ -119,35 +121,31 @@ namespace OdinMath {
 
         Vector4Float() : Vector4Float(0.f, 0.f, 0.f, 0.f) {};
 
-        ~Vector4Float() override = default;
+        ~Vector4Float() = default;
 
         float getX() {
-            store4(this->data, this->floatVector128);
-            return this->data[0];
+            return GET_LANE_VECTOR(this->floatVector128, 0);
         }
 
         float getY() {
-            store4(this->data, this->floatVector128);
-            return this->data[1];
+            return GET_LANE_VECTOR(this->floatVector128, 1);
         }
 
-        float getZ() {
-            store4(this->data, this->floatVector128);
-            return this->data[2];
+        virtual float getZ() {
+            return GET_LANE_VECTOR(this->floatVector128, 2);
         }
 
-        float getW() {
-            store3(this->data, this->floatVector128);
-            return this->data[3];
+        virtual float getW() {
+            return GET_LANE_VECTOR(this->floatVector128, 3);
         }
 
         void setX(float x);
 
         void setY(float y);
 
-        void setZ(float z);
+        virtual void setZ(float z);
 
-        void setW(float w);
+        virtual void setW(float w);
 
         Vector4Float &operator=(const Vector4Float &v);
 
@@ -159,23 +157,23 @@ namespace OdinMath {
 
         void operator+=(const Vector4Float &&rhs);
 
-        void operator/=(float c);
+        virtual void operator/=(float c);
 
-        void operator*=(float c);
+        virtual void operator*=(float c);
 
         Vector4Float operator*(float val);
 
-        const float &operator[](int idx) const override;
-
-        float &operator[](int idx) override;
-
-        const float *getData() override;
+        virtual //todo make tests
+        void getData(float* data);
 
         float dot(const Vector4Float &rhs);
 
         Vector4Float cross(const Vector4Float &rhs);
 
+
+
     };
+
 
 #endif
 

@@ -26,11 +26,7 @@ namespace OdinMath {
 
     Vector4Float &Vector4Float::operator=(const Vector4Float &v) {
         if (this != &v) {
-            this->data[0] = v.data[0];
-            this->data[1] = v.data[1];
-            this->data[2] = v.data[2];
-            this->data[3] = v.data[3];
-            this->floatVector128 = load4(v.data);
+            this->floatVector128 = v.floatVector128;
         }
         return *this;
     }
@@ -71,22 +67,13 @@ namespace OdinMath {
     }
 
     Vector4Float Vector4Float::cross(const Vector4Float &rhs) {
-        FloatVector128 v31 = load3(this->data);
-        FloatVector128 v32 = load3(rhs.data);
+        FloatVector128 v31 = zeroLast(this->floatVector128);
+        FloatVector128 v32 = zeroLast(rhs.floatVector128);
         return Vector4Float(cross3(v31, v32));
     }
 
-    const float *Vector4Float::getData() {
-        store4(this->data, this->floatVector128);
-        return data;
-    }
-
-    const float &Vector4Float::operator[](int idx) const {
-        throw UnimplementedException("Override of [] unimplemented for Vector4Float");
-    }
-
-    float &Vector4Float::operator[](int idx) {
-        throw UnimplementedException("Override of [] unimplemented for Vector4Float");
+    void Vector4Float::getData(float* data) {
+        store4(data, this->floatVector128);
     }
 
 

@@ -3,6 +3,8 @@
 //
 
 #include "odinmath.h"
+#include "vector3.h"
+
 
 namespace OdinMath {
 
@@ -20,32 +22,9 @@ namespace OdinMath {
 
     Vector3Float &Vector3Float::operator=(const Vector3Float &v) {
         if (this != &v) {
-            this->data[0] = v.data[0];
-            this->data[1] = v.data[1];
-            this->data[2] = v.data[2];
-            this->floatVector128 = load3(this->data);
+            this->floatVector128 = v.floatVector128;
         }
         return *this;
-    }
-
-    void Vector3Float::setX(float x) {
-        this->floatVector128 = SET_LANE_VECTOR(x, this->floatVector128, 0);
-    }
-
-    void Vector3Float::setY(float y) {
-        this->floatVector128 = SET_LANE_VECTOR(y, this->floatVector128, 1);
-    }
-
-    void Vector3Float::setZ(float z) {
-        this->floatVector128 = SET_LANE_VECTOR(z, this->floatVector128, 2);
-    }
-
-    const float &Vector3Float::operator[](int idx) const {
-        throw UnimplementedException("Override of [] unimplemented for Vector3Float");
-    }
-
-    float &Vector3Float::operator[](int idx) {
-        throw UnimplementedException("Override of [] unimplemented for Vector3Float");
     }
 
     void Vector3Float::operator+=(const Vector3Float &rhs) {
@@ -79,10 +58,10 @@ namespace OdinMath {
         return Vector3Float(v);
     }
 
-    const float *Vector3Float::getData() {
-        store4(this->data, this->floatVector128);
-        return data;
+    void Vector3Float::getData(float *data) {
+        store3(data, this->floatVector128);
     }
+
 
 #endif
 

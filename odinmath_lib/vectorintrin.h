@@ -156,6 +156,12 @@ namespace OdinMath {
         return vmulq_f32(sub, tmp);
     }
 
+    //todo make tests
+    inline float32x4_t zeroLast(float32x4_t vector){
+        float32x4_t zeros = vdupq_n_f32(0.f);
+        return vcopyq_laneq_f32(vector, 3, zeros, 0);
+    }
+
 #define SET_LANE_VECTOR(v, vector, lane) \
     vsetq_lane_f32(v, vector, lane)
 

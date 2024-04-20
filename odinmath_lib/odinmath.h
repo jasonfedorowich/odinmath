@@ -20,9 +20,9 @@
 #include <exception>
 #include "exception.h"
 #include "Vector.h"
+#include "vector4.h"
 #include "vector3.h"
 #include "vector2.h"
-#include "vector4.h"
 #include "Matrix.h"
 #include "matrix4.h"
 #include "matrix3.h"

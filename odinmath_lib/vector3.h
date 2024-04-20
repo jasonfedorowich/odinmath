@@ -80,27 +80,13 @@ namespace OdinMath {
 
 #if defined(INTRIN) && (defined(__aarch64__) || defined(__x86_64__))
 
-    //todo should remove this superclass
-    class Vector3Float : public Vector<3, float> {
-    private:
-        FloatVector128 floatVector128;
+    class Vector3Float : public Vector4Float {
     public:
-        Vector3Float(float x, float y, float z) {
-            this->data[0] = x;
-            this->data[1] = y;
-            this->data[2] = z;
-            this->floatVector128 = load3(this->data);
-        }
+        Vector3Float(float x, float y, float z) : Vector4Float(x, y, z, 0.f) { }
 
-        Vector3Float(FloatVector128 &v) {
-            store3(this->data, v);
-            this->floatVector128 = v;
-        };
+        explicit Vector3Float(FloatVector128 &v) : Vector4Float(v) { }
 
-        Vector3Float(FloatVector128 &&v) {
-            store3(this->data, v);
-            this->floatVector128 = v;
-        };
+        explicit Vector3Float(FloatVector128 &&v) : Vector4Float(v) { };
 
         explicit Vector3Float(Vector3<float> &vector3) : Vector3Float(vector3[0], vector3[1], vector3[2]) {};
 
@@ -108,30 +94,19 @@ namespace OdinMath {
 
         Vector3Float() : Vector3Float(0.f, 0.f, 0.f) {};
 
-        ~Vector3Float() override = default;
-
-
-        float getX() {
-            store3(this->data, this->floatVector128);
-            return this->data[0];
+        explicit Vector3Float(const float* data){
+            this->floatVector128 = load3(data);
         }
 
-        float getY() {
-            store3(this->data, this->floatVector128);
-            return this->data[1];
+        ~Vector3Float() = default;
+
+        float getW() override{
+            throw UnimplementedException("No W parameter for size 3 vectors");
         }
 
-        float getZ() {
-            store3(this->data, this->floatVector128);
-            return this->data[2];
+        void setW(float w) override{
+            throw UnimplementedException("No W parameter for size 3 vectors");
         }
-
-        void setX(float x);
-
-        void setY(float y);
-
-        void setZ(float z);
-
 
         Vector3Float &operator=(const Vector3Float &v);
 
@@ -143,9 +118,9 @@ namespace OdinMath {
 
         void operator+=(const Vector3Float &&rhs);
 
-        void operator/=(float c);
+        void operator/=(float c) override;
 
-        void operator*=(float val);
+        void operator*=(float val) override;
 
         Vector3Float operator*(float val);
 
@@ -153,11 +128,7 @@ namespace OdinMath {
 
         Vector3Float cross(const Vector3Float &rhs);
 
-        const float &operator[](int idx) const override;
-
-        float &operator[](int idx) override;
-
-        const float *getData() override;
+        void getData(float* data) override;
 
     };
 

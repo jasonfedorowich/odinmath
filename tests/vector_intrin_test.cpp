@@ -180,9 +180,23 @@ TEST(VectorIntrinTestSuite, ScalarMult) {
 
 }
 
+
+TEST(VectorIntrinTestSuite, ZeroLast) {
+    float f[4] = {500, 600, 3, 100};
+    auto v1 = load4(f);
+    v1 = zeroLast(v1);
+    float rr[4];
+    store4(rr, v1);
+    EXPECT_EQ(500.f, rr[0]);
+    EXPECT_EQ(600.f, rr[1]);
+    EXPECT_EQ(3.f, rr[2]);
+    EXPECT_EQ(0.f, rr[3]);
+
+}
+
+
 TEST(Vector2FloatTestSuite, Constructor) {
     Vector2Float v;
-    EXPECT_THROW(v[1], UnimplementedException);
     float x = 1 + 2;
     v.setX(x);
     EXPECT_EQ(3.f, v.getX());
@@ -226,7 +240,6 @@ TEST(Vector2FloatTestSuite, TestDot) {
 
 TEST(Vector3FloatTestSuite, Constructor) {
     Vector3Float v = Vector3Float();
-    EXPECT_THROW(v[1], UnimplementedException);
     float x = 1 + 2;
     v.setX(x);
     v.setY(x);
@@ -285,14 +298,25 @@ TEST(Vector3FloatTestSuite, TestDotAndCross) {
 
 TEST(Vector4FloatTestSuite, Constructor) {
     Vector4Float v = Vector4Float();
-    EXPECT_THROW(v[1], UnimplementedException);
+    EXPECT_EQ(0.f, v.getX());
+    EXPECT_EQ(0.f, v.getY());
+    EXPECT_EQ(0.f, v.getZ());
+    EXPECT_EQ(0.f, v.getW());
     float x = 1 + 2;
     v.setX(x);
     v.setY(x);
     v.setZ(x);
+    v.setW(3 + 4);
     EXPECT_EQ(3.f, v.getX());
     EXPECT_EQ(3.f, v.getY());
     EXPECT_EQ(3.f, v.getZ());
+    EXPECT_EQ(7.f, v.getW());
+    Vector4Float vv = {1, 2, 3, 4};
+    v = vv;
+    EXPECT_EQ(1.f, v.getX());
+    EXPECT_EQ(2.f, v.getY());
+    EXPECT_EQ(3.f, v.getZ());
+    EXPECT_EQ(4.f, v.getW());
 }
 
 TEST(Vector4FloatTestSuite, Arithmetic) {

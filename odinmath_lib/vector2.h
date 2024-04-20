@@ -65,25 +65,13 @@ namespace OdinMath {
 
 #if defined(INTRIN) && (defined(__aarch64__) || defined(__x86_64__))
 
-    class Vector2Float : public Vector<2, float> {
-    private:
-        FloatVector128 floatVector128;
+    class Vector2Float : public Vector4Float {
     public:
-        Vector2Float(float x, float y) {
-            this->data[0] = x;
-            this->data[1] = y;
-            this->floatVector128 = load2(this->data);
-        }
+        Vector2Float(float x, float y) : Vector4Float(x, y, 0.f, 0.f) {}
 
-        Vector2Float(FloatVector128 &v) {
-            store2(this->data, v);
-            this->floatVector128 = v;
-        };
+        explicit Vector2Float(FloatVector128 &v) : Vector4Float(v) {};
 
-        Vector2Float(FloatVector128 &&v) {
-            store2(this->data, v);
-            this->floatVector128 = v;
-        };
+        explicit Vector2Float(FloatVector128 &&v) : Vector4Float(v) {};
 
         explicit Vector2Float(Vector2<float> &vector) : Vector2Float(vector[0], vector[1]) {};
 
@@ -91,22 +79,23 @@ namespace OdinMath {
 
         Vector2Float() : Vector2Float(0.f, 0.f) {};
 
-        ~Vector2Float() override = default;
+        ~Vector2Float() = default;
 
-        float getX() {
-            store2(this->data, this->floatVector128);
-            return this->data[0];
+        float getZ() override {
+            throw UnimplementedException("No Z parameter for size 2 vectors");
         }
 
-        float getY() {
-            store2(this->data, this->floatVector128);
-            return this->data[1];
+        float getW() override {
+            throw UnimplementedException("No W parameter for size 2 vectors");
         }
 
-        void setX(float x);
+        void setZ(float z) override {
+            throw UnimplementedException("No Z parameter for size 2 vectors");
+        }
 
-        void setY(float y);
-
+        void setW(float w) override {
+            throw UnimplementedException("No W parameter for size 2 vectors");
+        }
 
         Vector2Float &operator=(const Vector2Float &v);
 
@@ -118,19 +107,15 @@ namespace OdinMath {
 
         void operator+=(const Vector2Float &&rhs);
 
-        void operator/=(float c);
+        void operator/=(float c) override;
 
-        void operator*=(float val);
+        void operator*=(float val) override;
 
         Vector2Float operator*(float val);
 
         float dot(const Vector2Float &rhs);
 
-        const float &operator[](int idx) const override;
-
-        float &operator[](int idx) override;
-
-        const float *getData() override;
+        void getData(float *data) override;
 
     };
 
