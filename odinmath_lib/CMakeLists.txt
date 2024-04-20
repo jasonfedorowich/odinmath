@@ -5,25 +5,25 @@ cmake_minimum_required(VERSION 3.27)
 project(odinmath)
 
 set(HEADER_FILES
-        vector3.h
-        Vector.h
+        include/vector3.h
+        include/Vector.h
         odinmath.h
-        vectorintrin.h
-        vector2.h
-        vector4.h
-        Matrix.h
-        matrix4.h
-        matrix3.h
+        include/vectorintrin.h
+        include/vector2.h
+        include/vector4.h
+        include/Matrix.h
+        include/matrix4.h
+        include/matrix3.h
 )
 
 set(SOURCE_FILES
-        vector3.cpp
-        exception.cpp
-        vector2.cpp
-        vector4.cpp
-        matrix4.cpp
-        matrix3.cpp
-        matrix3.h
+        src/vector3.cpp
+        src/exception.cpp
+        src/vector2.cpp
+        src/vector4.cpp
+        src/matrix4.cpp
+        src/matrix3.cpp
+        include/matrix3.h
 )
 
 add_library(odinmath_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})

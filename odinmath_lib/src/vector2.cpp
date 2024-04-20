@@ -3,7 +3,6 @@
 //
 
 #include "odinmath.h"
-#include "vector2.h"
 
 
 namespace OdinMath {

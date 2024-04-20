@@ -8,7 +8,7 @@
 #if defined(INTRIN) && defined(__aarch64__)
 
 #include <arm_neon.h>
-#include "vectorintrin.h"
+#include "include/vectorintrin.h"
 
 #elif defined(INTRIN) && defined(__x86_64__)
 #include <immintrin.h>
@@ -18,13 +18,13 @@
 #endif
 
 #include <exception>
-#include "exception.h"
-#include "Vector.h"
-#include "vector4.h"
-#include "vector3.h"
-#include "vector2.h"
-#include "Matrix.h"
-#include "matrix4.h"
-#include "matrix3.h"
+#include "include/exception.h"
+#include "include/Vector.h"
+#include "include/vector4.h"
+#include "include/vector3.h"
+#include "include/vector2.h"
+#include "include/Matrix.h"
+#include "include/matrix4.h"
+#include "include/matrix3.h"
 
 #endif //ODINMATH_ODINMATH_H
