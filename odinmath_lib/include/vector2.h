@@ -58,6 +58,8 @@ namespace OdinMath {
 
         Vector2<real> operator*(real val);
 
+        bool operator==(const Vector2<real> &rhs) const;
+
         real dot(const Vector2<real> &rhs);
 
     };
@@ -123,6 +125,7 @@ namespace OdinMath {
 #endif
 
 
+
     template<typename real>
     inline Vector2<real> operator*(real c, Vector2<real> &rhs) {
         real x = c * rhs[0];
@@ -141,6 +144,11 @@ namespace OdinMath {
     inline void operator*=(real c, Vector2<real> &rhs) {
         rhs[0] *= c;
         rhs[1] *= c;
+    }
+
+    template<typename real>
+    inline bool Vector2<real>::operator==(const Vector2<real> &rhs) const {
+        return this->data[0] == rhs[0] && this->data[1] == rhs[1];
     }
 
     template<typename real>

@@ -115,7 +115,7 @@ namespace OdinMath {
     }
 
     template<typename real>
-    inline Vector4<real> operator*(Vector3<real> &&v, Matrix3<real> &m) {
+    inline Vector3<real> operator*(Vector3<real> &&v, Matrix3<real> &m) {
         return Vector3<real>(
                 v[0] * m(0, 0) + v[1] * m(1, 0) + v[2] * m(2, 0),
                 v[0] * m(0, 1) + v[1] * m(1, 1) + v[2] * m(2, 1),

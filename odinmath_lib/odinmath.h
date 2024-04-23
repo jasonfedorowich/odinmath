@@ -26,5 +26,6 @@
 #include "include/Matrix.h"
 #include "include/matrix4.h"
 #include "include/matrix3.h"
+#include "include/matrix2.h"
 
 #endif //ODINMATH_ODINMATH_H
