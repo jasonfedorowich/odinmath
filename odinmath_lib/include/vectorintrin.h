@@ -2,6 +2,8 @@
 // Created by Jason Fedorowich on 2024-02-18.
 //
 
+#ifndef ODINMATH_VECTORINTRIN_H
+#define ODINMATH_VECTORINTRIN_H
 
 #include "odinmath.h"
 
@@ -40,6 +42,7 @@ namespace OdinMath {
 
 #if defined(INTRIN) && defined(__aarch64__)
 
+    //region load/store
 
     inline float32x4_t load4(const float *in) {
         return vld1q_f32(in);
@@ -77,6 +80,8 @@ namespace OdinMath {
         float32x2_t lo = vget_low_f32(in);
         vst1_f32(out, lo);
     }
+
+    // endregion
 
     inline float32x4_t add(const float32x4_t lhs, const float32x4_t rhs) {
         return vaddq_f32(lhs, rhs);
@@ -156,10 +161,21 @@ namespace OdinMath {
         return vmulq_f32(sub, tmp);
     }
 
-    //todo make tests
     inline float32x4_t zeroLast(float32x4_t vector){
         float32x4_t zeros = vdupq_n_f32(0.f);
         return vcopyq_laneq_f32(vector, 3, zeros, 0);
+    }
+
+    inline float32x4_t duplicate(float number){
+        return vdupq_n_f32(number);
+    }
+
+    inline float32x4_t zeros(){
+        return duplicate(0.f);
+    }
+
+    inline float32x4_t ones(){
+        return duplicate(1.f);
     }
 
 #define SET_LANE_VECTOR(v, vector, lane) \
@@ -171,4 +187,6 @@ namespace OdinMath {
 #endif
 
 }
+
+#endif
 

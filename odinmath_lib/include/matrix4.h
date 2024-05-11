@@ -234,6 +234,7 @@ namespace OdinMath {
         tmp[9] = src[2][2] * src[3][0];
         tmp[10] = src[2][0] * src[3][1];
         tmp[11] = src[2][1] * src[3][0];
+
         /* calculate first 8 elements (cofactors) */
         inv(0, 0) = tmp[0] * src[1][1] + tmp[3] * src[1][2] + tmp[4] * src[1][3];
         inv(0, 0) -= tmp[1] * src[1][1] + tmp[2] * src[1][2] + tmp[5] * src[1][3];
@@ -243,6 +244,7 @@ namespace OdinMath {
         inv(0, 2) -= tmp[3] * src[1][0] + tmp[6] * src[1][1] + tmp[11] * src[1][3];
         inv(0, 3) = tmp[5] * src[1][0] + tmp[8] * src[1][1] + tmp[11] * src[1][2];
         inv(0, 3) -= tmp[4] * src[1][0] + tmp[9] * src[1][1] + tmp[10] * src[1][2];
+
         inv(1, 0) = tmp[1] * src[0][1] + tmp[2] * src[0][2] + tmp[5] * src[0][3];
         inv(1, 0) -= tmp[0] * src[0][1] + tmp[3] * src[0][2] + tmp[4] * src[0][3];
         inv(1, 1) = tmp[0] * src[0][0] + tmp[7] * src[0][2] + tmp[8] * src[0][3];
@@ -265,6 +267,7 @@ namespace OdinMath {
         tmp[9] = src[0][2] * src[1][0];
         tmp[10] = src[0][0] * src[1][1];
         tmp[11] = src[0][1] * src[1][0];
+
         /* calculate second 8 elements (cofactors) */
         inv(2, 0) = tmp[0] * src[3][1] + tmp[3] * src[3][2] + tmp[4] * src[3][3];
         inv(2, 0) -= tmp[1] * src[3][1] + tmp[2] * src[3][2] + tmp[5] * src[3][3];
@@ -274,6 +277,7 @@ namespace OdinMath {
         inv(2, 2) -= tmp[3] * src[3][0] + tmp[6] * src[3][1] + tmp[11] * src[3][3];
         inv(2, 3) = tmp[5] * src[3][0] + tmp[8] * src[3][1] + tmp[11] * src[3][2];
         inv(2, 3) -= tmp[4] * src[3][0] + tmp[9] * src[3][1] + tmp[10] * src[3][2];
+
         inv(3, 0) = tmp[2] * src[2][2] + tmp[5] * src[2][3] + tmp[1] * src[2][1];
         inv(3, 0) -= tmp[4] * src[2][3] + tmp[0] * src[2][1] + tmp[3] * src[2][2];
         inv(3, 1) = tmp[8] * src[2][3] + tmp[0] * src[2][0] + tmp[7] * src[2][2];

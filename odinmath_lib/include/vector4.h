@@ -162,8 +162,8 @@ namespace OdinMath {
         virtual void operator*=(float c);
 
         Vector4Float operator*(float val);
-
-        virtual //todo make tests
+        //todo make getData(Vector4* out)
+        virtual
         void getData(float* data);
 
         float dot(const Vector4Float &rhs);
