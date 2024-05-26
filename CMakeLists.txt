@@ -6,6 +6,7 @@ cmake_minimum_required(VERSION 3.27)
 
 #Tests
 #ctest --rerun-failed --output-on-failure
+#ctest --test-dir ./tests
 
 project(odinmath)
 

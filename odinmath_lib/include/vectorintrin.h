@@ -42,6 +42,15 @@ namespace OdinMath {
 
 #if defined(INTRIN) && defined(__aarch64__)
 
+#define SET_LANE_VECTOR(v, vector, lane) \
+    vsetq_lane_f32(v, vector, lane)
+
+#define GET_LANE_VECTOR(vector, lane) \
+    vgetq_lane_f32(vector, lane)
+
+#define GET_LANE_UINT_VECTOR(vector, lane) \
+    vgetq_lane_s32(vector, lane)
+
     //region load/store
 
     inline float32x4_t load4(const float *in) {
@@ -178,11 +187,23 @@ namespace OdinMath {
         return duplicate(1.f);
     }
 
-#define SET_LANE_VECTOR(v, vector, lane) \
-    vsetq_lane_f32(v, vector, lane)
+    inline uint32x4_t equal(float32x4_t lhs, float32x4_t rhs){
+        return vceqq_f32(lhs, rhs);
+    }
 
-#define GET_LANE_VECTOR(vector, lane) \
-    vgetq_lane_f32(vector, lane)
+    inline bool equals(float32x4_t lhs, float32x4_t rhs){
+        uint32x4_t r = equal(lhs, rhs);
+        return GET_LANE_UINT_VECTOR(r, 0) != 0 &&
+                GET_LANE_UINT_VECTOR(r, 1) != 0 &&
+                GET_LANE_UINT_VECTOR(r, 2) != 0 &&
+                GET_LANE_UINT_VECTOR(r, 3) != 0;
+    }
+
+    inline uint32x4_t _and(uint32x4_t lhs, uint32x4_t rhs){
+        return vandq_u32(lhs, rhs);
+    }
+
+
 
 #endif
 

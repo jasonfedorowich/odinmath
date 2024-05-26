@@ -76,6 +76,10 @@ namespace OdinMath {
         store4(data, this->floatVector128);
     }
 
+    bool Vector4Float::operator==(const Vector4Float &v) const {
+        return equals(this->floatVector128, v.floatVector128);
+    }
+
 
 #endif
 

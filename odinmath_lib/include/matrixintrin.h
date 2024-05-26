@@ -73,6 +73,22 @@ namespace OdinMath{
             vectors[3] = fourth;
         }
 
+        bool operator==(const FloatMatrix128x4& lhs) const{
+            uint32x4_t first = equal(this->vectors[0], lhs.vectors[0]);
+            uint32x4_t second = equal(this->vectors[1], lhs.vectors[1]);
+            uint32x4_t third = equal(this->vectors[2], lhs.vectors[2]);
+            uint32x4_t fourth = equal(this->vectors[3], lhs.vectors[3]);
+
+            uint32x4_t tmp1 = _and(first, second);
+            uint32x4_t tmp2 = _and(third, fourth);
+            tmp1 = _and(tmp1, tmp2);
+            return GET_LANE_UINT_VECTOR(tmp1, 0) !=0 &&
+                    GET_LANE_UINT_VECTOR(tmp1, 1) !=0 &&
+                    GET_LANE_UINT_VECTOR(tmp1, 2) !=0 &&
+                    GET_LANE_UINT_VECTOR(tmp1, 3) !=0;
+
+        }
+
     };
 
     inline void store4(Matrix<4, 4, float>* output, FloatMatrix128x4 matrix){
@@ -549,6 +565,66 @@ namespace OdinMath{
         float32x2_t tmpd = vadd_f32(lo, hi);
         tmpd = vadd_f32(vrev64_f32(tmpd), tmpd);
         return vcombine_f32(tmpd, tmpd);
+    }
+
+    // lhs vector rhs matrix
+    inline float32x4_t matrixVectorMul(float32x4_t vector, FloatMatrix128x4 matrix){
+        float32x4_t v0 = vcopyq_laneq_f32(vector, 0, vector, 0);
+        v0 = vcopyq_laneq_f32(v0, 1, vector, 0);
+        v0 = vcopyq_laneq_f32(v0, 2, vector, 0);
+        v0 = vcopyq_laneq_f32(v0, 3, vector, 0);
+
+        float32x4_t v1 = vcopyq_laneq_f32(vector, 0, vector, 1);
+        v1 = vcopyq_laneq_f32(v1, 1, vector, 1);
+        v1 = vcopyq_laneq_f32(v1, 2, vector, 1);
+        v1 = vcopyq_laneq_f32(v1, 3, vector, 1);
+
+        float32x4_t v2 = vcopyq_laneq_f32(vector, 0, vector, 2);
+        v2 = vcopyq_laneq_f32(v2, 1, vector, 2);
+        v2 = vcopyq_laneq_f32(v2, 2, vector, 2);
+        v2 = vcopyq_laneq_f32(v2, 3, vector, 2);
+
+        float32x4_t v3 = vcopyq_laneq_f32(vector, 0, vector, 3);
+        v3 = vcopyq_laneq_f32(v3, 1, vector, 3);
+        v3 = vcopyq_laneq_f32(v3, 2, vector, 3);
+        v3 = vcopyq_laneq_f32(v3, 3, vector, 3);
+
+        float32x4_t v = vmulq_f32(v0, matrix.vectors[0]);
+        v = vmlaq_f32(v, v1, matrix.vectors[1]);
+        v = vmlaq_f32(v, v2, matrix.vectors[2]);
+        v = vmlaq_f32(v, v3, matrix.vectors[3]);
+        return v;
+    }
+
+    // lhs matrix rhs vector
+    inline float32x4_t matrixVectorMul(FloatMatrix128x4 matrix, float32x4_t vector){
+        FloatMatrix128x4 t = transpose(matrix);
+
+        float32x4_t v0 = vcopyq_laneq_f32(vector, 0, vector, 0);
+        v0 = vcopyq_laneq_f32(v0, 1, vector, 0);
+        v0 = vcopyq_laneq_f32(v0, 2, vector, 0);
+        v0 = vcopyq_laneq_f32(v0, 3, vector, 0);
+
+        float32x4_t v1 = vcopyq_laneq_f32(vector, 0, vector, 1);
+        v1 = vcopyq_laneq_f32(v1, 1, vector, 1);
+        v1 = vcopyq_laneq_f32(v1, 2, vector, 1);
+        v1 = vcopyq_laneq_f32(v1, 3, vector, 1);
+
+        float32x4_t v2 = vcopyq_laneq_f32(vector, 0, vector, 2);
+        v2 = vcopyq_laneq_f32(v2, 1, vector, 2);
+        v2 = vcopyq_laneq_f32(v2, 2, vector, 2);
+        v2 = vcopyq_laneq_f32(v2, 3, vector, 2);
+
+        float32x4_t v3 = vcopyq_laneq_f32(vector, 0, vector, 3);
+        v3 = vcopyq_laneq_f32(v3, 1, vector, 3);
+        v3 = vcopyq_laneq_f32(v3, 2, vector, 3);
+        v3 = vcopyq_laneq_f32(v3, 3, vector, 3);
+
+        float32x4_t v = vmulq_f32(v0, t.vectors[0]);
+        v = vmlaq_f32(v, v1, t.vectors[1]);
+        v = vmlaq_f32(v, v2, t.vectors[2]);
+        v = vmlaq_f32(v, v3, t.vectors[3]);
+        return v;
     }
 
 

@@ -81,6 +81,104 @@ namespace OdinMath {
         static Matrix4<real> zeros();
     };
 
+#if defined(INTRIN) && (defined(__aarch64__) || defined(__x86_64__))
+
+    class Matrix4Float{
+    protected:
+        FloatMatrix128x4 floatMatrix128X4{};
+    public:
+        Matrix4Float(float _11, float _12, float _13, float _14,
+                     float _21, float _22, float _23, float _24,
+                     float _31, float _32, float _33, float _34,
+                     float _41, float _42, float _43, float _44) {
+            float mat[4][4];
+            mat[0][0] = _11;
+            mat[0][1] = _12;
+            mat[0][2] = _13;
+            mat[0][3] = _14;
+
+            mat[1][0] = _21;
+            mat[1][1] = _22;
+            mat[1][2] = _23;
+            mat[1][3] = _24;
+
+            mat[2][0] = _31;
+            mat[2][1] = _32;
+            mat[2][2] = _33;
+            mat[2][3] = _34;
+
+            mat[3][0] = _41;
+            mat[3][1] = _42;
+            mat[3][2] = _43;
+            mat[3][3] = _44;
+            this->floatMatrix128X4 = FloatMatrix128x4(mat);
+        }
+
+        Matrix4Float(Matrix4Float &mat) {
+            *this = mat;
+        }
+
+        Matrix4Float() : Matrix4Float( 0.0f, 0.0f,0.0f, 0.0f,
+                             0.0f, 0.0f, 0.0f,0.0f,
+                             0.0f, 0.0f, 0.0f,0.0f,
+                             0.0f, 0.0f, 0.0f,0.0f) {}
+
+        explicit Matrix4Float(FloatMatrix128x4& floatMatrix128X4){
+            this->floatMatrix128X4 = floatMatrix128X4;
+        }
+        explicit Matrix4Float(FloatMatrix128x4&& floatMatrix128X4){
+            this->floatMatrix128X4 = floatMatrix128X4;
+        }
+        virtual ~Matrix4Float() = default;
+
+        [[nodiscard]] float get(int r, int c) const;
+
+        void set(int r, int c, float v);
+
+        Matrix4Float &operator=(const Matrix4Float &rhs);
+
+        Matrix4Float operator+(const Matrix4Float &rhs);
+
+        Matrix4Float operator+(const Matrix4Float &&rhs);
+
+        Matrix4Float operator-(const Matrix4Float &rhs);
+
+        Matrix4Float operator-(const Matrix4Float &&rhs);
+
+        Matrix4Float operator*(Matrix4Float &rhs);
+
+        Matrix4Float operator*(Matrix4Float &&rhs);
+
+        Vector4Float operator*(Vector4Float &v);
+
+        Vector4Float operator*(Vector4Float &&v);
+
+        bool operator==(const Matrix4Float &rhs) const;
+
+        float det();
+
+        /*Method returns true if Matrix is invertible argument `inv` holds in the inverse matrix if invertible
+         * argument `eps` matrix is invertible determinant is greater than `eps` due to rounding errors
+         * argument `det` holds the result of the determinant*/
+        bool inverse(Matrix4Float &inv, float eps, float *det);
+
+        Matrix4Float transpose();
+
+        static Matrix4Float identity();
+
+        static Matrix4Float zeros();
+
+        friend Vector4Float operator*(Vector4Float& v, Matrix4Float& m);
+
+        friend Vector4Float operator*(Vector4Float&& v, Matrix4Float&& m);
+
+
+    };
+
+
+#endif
+
+
     template<typename real>
     Matrix4<real> Matrix4<real>::zeros() {
         return Matrix4<real>();

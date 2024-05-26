@@ -123,6 +123,8 @@ namespace OdinMath {
 
         ~Vector4Float() = default;
 
+        FloatVector128 getVector() { return this->floatVector128; }
+
         float getX() {
             return GET_LANE_VECTOR(this->floatVector128, 0);
         }
@@ -162,6 +164,9 @@ namespace OdinMath {
         virtual void operator*=(float c);
 
         Vector4Float operator*(float val);
+
+        bool operator==(const Vector4Float& v) const;
+
         //todo make getData(Vector4* out)
         virtual
         void getData(float* data);
