@@ -66,14 +66,17 @@ namespace OdinMath{
     }
 
     Matrix4Float Matrix4Float::identity() {
-        return Matrix4Float(1.f, 0.f, 0.f, 0.f,
+        return {1.f, 0.f, 0.f, 0.f,
                             0.f, 1.f, 0.f, 0.f,
                             0.f, 0.f, 1.f, 0.f,
-                            0.f, 0.f, 0.f, 1.f);
+                            0.f, 0.f, 0.f, 1.f};
     }
 
     Matrix4Float Matrix4Float::zeros() {
-        return Matrix4Float();
+        return {0.f, 0.f, 0.f, 0.f,
+                0.f, 0.f, 0.f, 0.f,
+                0.f, 0.f, 0.f, 0.f,
+                0.f, 0.f, 0.f, 0.f};
     }
 
     Vector4Float operator*(Vector4Float& v, Matrix4Float& m){

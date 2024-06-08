@@ -119,9 +119,10 @@ namespace OdinMath {
         explicit Vector4Float(Vector4<float> &&vector3) : Vector4Float(vector3[0], vector3[1], vector3[2],
                                                                        vector3[3]) {};
 
+        //todo fix this for subclasses
         Vector4Float() : Vector4Float(0.f, 0.f, 0.f, 0.f) {};
 
-        ~Vector4Float() = default;
+        virtual ~Vector4Float() = default;
 
         FloatVector128 getVector() { return this->floatVector128; }
 

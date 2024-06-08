@@ -72,6 +72,92 @@ namespace OdinMath {
         static Matrix3<real> zeros();
     };
 
+#if defined(INTRIN) && (defined(__aarch64__) || defined(__x86_64__))
+
+    class Matrix3Float : Matrix4Float{
+    public:
+        Matrix3Float(float _11, float _12, float _13,
+                     float _21, float _22, float _23,
+                     float _31, float _32, float _33) {
+            float mat[3][3];
+            mat[0][0] = _11;
+            mat[0][1] = _12;
+            mat[0][2] = _13;
+
+            mat[1][0] = _21;
+            mat[1][1] = _22;
+            mat[1][2] = _23;
+
+            mat[2][0] = _31;
+            mat[2][1] = _32;
+            mat[2][2] = _33;
+
+            this->floatMatrix128X4 = FloatMatrix128x4(mat);
+        }
+
+        Matrix3Float(Matrix3Float &mat) {
+            *this = mat;
+        }
+
+        Matrix3Float() {}
+
+        explicit Matrix3Float(FloatMatrix128x4& floatMatrix128X4) : Matrix4Float() {
+            this->floatMatrix128X4 = OdinMath::clear3(floatMatrix128X4);
+        }
+
+        explicit Matrix3Float(FloatMatrix128x4&& floatMatrix128X4) : Matrix4Float() {
+            this->floatMatrix128X4 = OdinMath::clear3(floatMatrix128X4);
+        }
+
+        ~Matrix3Float() override = default;
+
+        float get(int r, int c) const override;
+
+        void set(int r, int c, float v) override;
+
+        Matrix3Float &operator=(const Matrix3Float &rhs);
+
+        Matrix3Float operator+(const Matrix3Float &rhs);
+
+        Matrix3Float operator+(const Matrix3Float &&rhs);
+
+        Matrix3Float operator-(const Matrix3Float &rhs);
+
+        Matrix3Float operator-(const Matrix3Float &&rhs);
+
+        Matrix3Float operator*(Matrix3Float &rhs);
+
+        Matrix3Float operator*(Matrix3Float &&rhs);
+
+        Vector3Float operator*(Vector3Float &v);
+
+        Vector3Float operator*(Vector3Float &&v);
+
+        bool operator==(const Matrix3Float &rhs) const;
+
+        float det() override;
+
+        /*Method returns true if Matrix is invertible argument `inv` holds in the inverse matrix if invertible
+         * argument `eps` matrix is invertible determinant is greater than `eps` due to rounding errors
+         * argument `det` holds the result of the determinant*/
+        bool inverse(Matrix3Float &inv, float eps, float *det);
+
+        Matrix3Float transpose();
+
+        static Matrix3Float identity();
+
+        static Matrix3Float zeros();
+
+        friend Vector3Float operator*(Vector3Float& v, Matrix3Float& m);
+
+        friend Vector3Float operator*(Vector3Float&& v, Matrix3Float&& m);
+
+
+    };
+
+
+#endif
+
     template<typename real>
     Matrix3<real> Matrix3<real>::zeros() {
         return Matrix3<real>();

@@ -81,7 +81,7 @@ namespace OdinMath {
 
         Vector2Float() : Vector2Float(0.f, 0.f) {};
 
-        ~Vector2Float() = default;
+        ~Vector2Float() override = default;
 
         float getZ() override {
             throw UnimplementedException("No Z parameter for size 2 vectors");
@@ -112,6 +112,8 @@ namespace OdinMath {
         void operator/=(float c) override;
 
         void operator*=(float val) override;
+
+        bool operator==(const Vector2Float& v) const;
 
         Vector2Float operator*(float val);
 

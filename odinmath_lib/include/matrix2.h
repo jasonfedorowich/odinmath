@@ -66,6 +66,77 @@ namespace OdinMath{
         static Matrix2<real> zeros();
     };
 
+#if defined(INTRIN) && (defined(__aarch64__) || defined(__x86_64__))
+
+    class Matrix2Float : Matrix4Float{
+    public:
+        Matrix2Float(float _11, float _12,
+                     float _21, float _22) {
+            float mat[2][2];
+            mat[0][0] = _11;
+            mat[0][1] = _12;
+
+            mat[1][0] = _21;
+            mat[1][1] = _22;
+
+            this->floatMatrix128X4 = FloatMatrix128x4(mat);
+        }
+
+        Matrix2Float(Matrix2Float &mat) {
+            *this = mat;
+        }
+
+        Matrix2Float() {}
+
+        explicit Matrix2Float(FloatMatrix128x4& floatMatrix128X4) : Matrix4Float() {
+            this->floatMatrix128X4 = OdinMath::clear2(floatMatrix128X4);
+        }
+
+        explicit Matrix2Float(FloatMatrix128x4&& floatMatrix128X4) : Matrix4Float() {
+            this->floatMatrix128X4 = OdinMath::clear2(floatMatrix128X4);
+        }
+
+        ~Matrix2Float() override = default;
+
+        float get(int r, int c) const override;
+
+        void set(int r, int c, float v) override;
+
+        Matrix2Float &operator=(const Matrix2Float &rhs);
+        Matrix2Float operator+(const Matrix2Float &rhs);
+        Matrix2Float operator+(const Matrix2Float &&rhs);
+        Matrix2Float operator-(const Matrix2Float &rhs);
+        Matrix2Float operator-(const Matrix2Float &&rhs);
+        Matrix2Float operator*(Matrix2Float &rhs);
+        Matrix2Float operator*(Matrix2Float &&rhs);
+
+        Vector2Float operator*(Vector2Float &v);
+        Vector2Float operator*(Vector2Float &&v);
+
+        bool operator==(const Matrix2Float &rhs) const;
+
+        float det() override;
+
+        /*Method returns true if Matrix is invertible argument `inv` holds in the inverse matrix if invertible
+         * argument `eps` matrix is invertible determinant is greater than `eps` due to rounding errors
+         * argument `det` holds the result of the determinant*/
+        bool inverse(Matrix2Float &inv, float eps, float *det);
+
+        Matrix2Float transpose();
+
+        static Matrix2Float identity();
+
+        static Matrix2Float zeros();
+
+        friend Vector2Float operator*(Vector2Float& v, Matrix2Float& m);
+
+        friend Vector2Float operator*(Vector2Float&& v, Matrix2Float&& m);
+
+
+    };
+
+#endif
+
     template<typename real>
     inline Matrix2<real> operator*(real c, Matrix2<real> &m) {
         return Matrix2<real>(c * m(0, 0), c * m(0, 1),

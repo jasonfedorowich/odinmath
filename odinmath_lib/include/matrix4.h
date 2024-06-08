@@ -118,10 +118,7 @@ namespace OdinMath {
             *this = mat;
         }
 
-        Matrix4Float() : Matrix4Float( 0.0f, 0.0f,0.0f, 0.0f,
-                             0.0f, 0.0f, 0.0f,0.0f,
-                             0.0f, 0.0f, 0.0f,0.0f,
-                             0.0f, 0.0f, 0.0f,0.0f) {}
+        Matrix4Float() {}
 
         explicit Matrix4Float(FloatMatrix128x4& floatMatrix128X4){
             this->floatMatrix128X4 = floatMatrix128X4;
@@ -131,9 +128,9 @@ namespace OdinMath {
         }
         virtual ~Matrix4Float() = default;
 
-        [[nodiscard]] float get(int r, int c) const;
+        virtual float get(int r, int c) const;
 
-        void set(int r, int c, float v);
+        virtual void set(int r, int c, float v);
 
         Matrix4Float &operator=(const Matrix4Float &rhs);
 
@@ -155,7 +152,7 @@ namespace OdinMath {
 
         bool operator==(const Matrix4Float &rhs) const;
 
-        float det();
+        virtual float det();
 
         /*Method returns true if Matrix is invertible argument `inv` holds in the inverse matrix if invertible
          * argument `eps` matrix is invertible determinant is greater than `eps` due to rounding errors

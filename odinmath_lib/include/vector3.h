@@ -98,7 +98,7 @@ namespace OdinMath {
             this->floatVector128 = load3(data);
         }
 
-        ~Vector3Float() = default;
+        ~Vector3Float() override = default;
 
         float getW() override{
             throw UnimplementedException("No W parameter for size 3 vectors");
@@ -123,6 +123,8 @@ namespace OdinMath {
         void operator*=(float val) override;
 
         Vector3Float operator*(float val);
+
+        bool operator==(const Vector3Float& v) const;
 
         float dot(const Vector3Float &rhs);
 

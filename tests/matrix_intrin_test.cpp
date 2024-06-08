@@ -288,4 +288,129 @@ TEST(Matrix4FloatTestSuit, TestInverseAndDeter){
     EXPECT_EQ(expT, t);
 
 }
+
+
+TEST(Matrix3FloatTestSuite, TestArithmetic){
+    Matrix3Float matrix3Float1(1,    2,  10,
+                               5,    6,    7,
+                               9,   10,   11);
+
+    Matrix3Float matrix3Float2(1,    23,  10,
+                               5,    6,    7,
+                               9,   10,   11);
+    Matrix3Float res = matrix3Float1 + matrix3Float2;
+    Matrix3Float expAdd(2, 25, 20,
+                        10, 12, 14,
+                        18, 20, 22);
+    EXPECT_EQ(expAdd, res);
+    Matrix3Float t = expAdd;
+
+    Matrix3Float resMul = matrix3Float1 * matrix3Float2;
+    Matrix3Float expMul(101,   135,   134,
+                        98,   221,   169,
+                        158,   377,   281);
+    EXPECT_EQ(expMul, resMul);
+
+    Matrix3Float resSub = matrix3Float1 - matrix3Float2;
+    Matrix3Float expSub(0, -21, 0,
+                        0, 0, 0,
+                        0, 0, 0);
+    EXPECT_EQ(expSub, resSub);
+
+    Vector3Float v(1, 2, 3);
+    Vector3Float resL = v * matrix3Float1;
+    Vector3Float expL(38,   44,   57);
+    EXPECT_EQ(expL, resL);
+
+    Vector3Float resR = matrix3Float1 * v;
+    Vector3Float expR(35, 38, 62);
+    EXPECT_EQ(expR, resR);
+
+}
+
+TEST(Matrix3FloatTestSuit, TestInverseAndDeter){
+    Matrix3Float matrix3Float2(1,    23,  10,
+                               5,    6,    7,
+                               9,   10,   11);
+    Matrix3Float inv;
+    float d = 0;
+    bool res = matrix3Float2.inverse(inv, 0.001, &d);
+    EXPECT_TRUE(res);
+    Matrix3Float expI(-0.028571, -1.092857,   0.721429,
+                      0.057143,  -0.564286,   0.307143,
+                        -0.028571,   1.407143,  -0.778571);
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            EXPECT_NEAR(expI.get(i, j), inv.get(i, j), 0.01);
+        }
+    }
+    EXPECT_NEAR(140.0, d, 0.001);
+    d = matrix3Float2.det();
+    EXPECT_EQ(140.0, d);
+
+    Matrix3Float t = matrix3Float2.transpose();
+    Matrix3Float expT(1, 5, 9,
+                      23, 6, 10,
+                      10, 7, 11);
+    EXPECT_EQ(expT, t);
+
+}
+
+TEST(Matrix2FloatTestSuite, TestArithmetic){
+    Matrix2Float matrix2Float1(1,    2,
+                               5,    6);
+
+    Matrix2Float matrix2Float2(1,    23,
+                               5,    6);
+    Matrix2Float res = matrix2Float1 + matrix2Float2;
+    Matrix2Float expAdd(2, 25,
+                        10, 12);
+    EXPECT_EQ(expAdd, res);
+    Matrix2Float t = expAdd;
+
+    Matrix2Float resMul = matrix2Float1 * matrix2Float2;
+    Matrix2Float expMul(11,   35,
+                        35,   151);
+    EXPECT_EQ(expMul, resMul);
+
+    Matrix2Float resSub = matrix2Float1 - matrix2Float2;
+    Matrix2Float expSub(0, -21,
+                        0, 0);
+    EXPECT_EQ(expSub, resSub);
+
+    Vector2Float v(1, 2);
+    Vector2Float resL = v * matrix2Float1;
+    Vector2Float expL(11,   14);
+    EXPECT_EQ(expL, resL);
+
+    Vector2Float resR = matrix2Float1 * v;
+    Vector2Float expR(5, 17);
+    EXPECT_EQ(expR, resR);
+
+}
+
+TEST(Matrix2FloatTestSuit, TestInverseAndDeter){
+    Matrix2Float matrix2Float2(1,    23,
+                               5,    6);
+    Matrix2Float inv;
+    float d = 0;
+    bool res = matrix2Float2.inverse(inv, 0.001, &d);
+    EXPECT_TRUE(res);
+    Matrix2Float expI(-5.5046e-02,   2.1101e-01,
+                      4.5872e-02, -9.1743e-03);
+    for(int i = 0; i < 2; i++){
+        for(int j = 0; j < 2; j++){
+            EXPECT_NEAR(expI.get(i, j), inv.get(i, j), 0.01);
+        }
+    }
+    EXPECT_NEAR(-109.0, d, 0.001);
+    d = matrix2Float2.det();
+    EXPECT_EQ(-109.0, d);
+
+    Matrix2Float t = matrix2Float2.transpose();
+    Matrix2Float expT(1, 5,
+                      23, 6);
+    EXPECT_EQ(expT, t);
+
+}
 #endif

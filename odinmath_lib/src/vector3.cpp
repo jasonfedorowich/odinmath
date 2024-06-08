@@ -3,6 +3,7 @@
 //
 
 #include "odinmath.h"
+#include "include/vector3.h"
 
 
 namespace OdinMath {
@@ -59,6 +60,10 @@ namespace OdinMath {
 
     void Vector3Float::getData(float *data) {
         store3(data, this->floatVector128);
+    }
+
+    bool Vector3Float::operator==(const Vector3Float &v) const {
+        return equals(this->floatVector128, v.floatVector128);
     }
 
 
