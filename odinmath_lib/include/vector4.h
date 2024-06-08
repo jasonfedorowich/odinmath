@@ -101,7 +101,8 @@ namespace OdinMath {
             tmp[3] = w;
             this->floatVector128 = load4(tmp);
         }
-        explicit Vector4Float(const float* vector){
+
+        explicit Vector4Float(const float *vector) {
             this->floatVector128 = load4(vector);
         }
 
@@ -119,8 +120,7 @@ namespace OdinMath {
         explicit Vector4Float(Vector4<float> &&vector3) : Vector4Float(vector3[0], vector3[1], vector3[2],
                                                                        vector3[3]) {};
 
-        //todo fix this for subclasses
-        Vector4Float() : Vector4Float(0.f, 0.f, 0.f, 0.f) {};
+        Vector4Float() {};
 
         virtual ~Vector4Float() = default;
 
@@ -166,16 +166,15 @@ namespace OdinMath {
 
         Vector4Float operator*(float val);
 
-        bool operator==(const Vector4Float& v) const;
+        bool operator==(const Vector4Float &v) const;
 
         //todo make getData(Vector4* out)
         virtual
-        void getData(float* data);
+        void getData(float *data);
 
         float dot(const Vector4Float &rhs);
 
         Vector4Float cross(const Vector4Float &rhs);
-
 
 
     };

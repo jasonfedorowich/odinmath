@@ -170,39 +170,38 @@ namespace OdinMath {
         return vmulq_f32(sub, tmp);
     }
 
-    inline float32x4_t zeroLast(float32x4_t vector){
+    inline float32x4_t zeroLast(float32x4_t vector) {
         float32x4_t zeros = vdupq_n_f32(0.f);
         return vcopyq_laneq_f32(vector, 3, zeros, 0);
     }
 
-    inline float32x4_t duplicate(float number){
+    inline float32x4_t duplicate(float number) {
         return vdupq_n_f32(number);
     }
 
-    inline float32x4_t zeros(){
+    inline float32x4_t zeros() {
         return duplicate(0.f);
     }
 
-    inline float32x4_t ones(){
+    inline float32x4_t ones() {
         return duplicate(1.f);
     }
 
-    inline uint32x4_t equal(float32x4_t lhs, float32x4_t rhs){
+    inline uint32x4_t equal(float32x4_t lhs, float32x4_t rhs) {
         return vceqq_f32(lhs, rhs);
     }
 
-    inline bool equals(float32x4_t lhs, float32x4_t rhs){
+    inline bool equals(float32x4_t lhs, float32x4_t rhs) {
         uint32x4_t r = equal(lhs, rhs);
         return GET_LANE_UINT_VECTOR(r, 0) != 0 &&
-                GET_LANE_UINT_VECTOR(r, 1) != 0 &&
-                GET_LANE_UINT_VECTOR(r, 2) != 0 &&
-                GET_LANE_UINT_VECTOR(r, 3) != 0;
+               GET_LANE_UINT_VECTOR(r, 1) != 0 &&
+               GET_LANE_UINT_VECTOR(r, 2) != 0 &&
+               GET_LANE_UINT_VECTOR(r, 3) != 0;
     }
 
-    inline uint32x4_t _and(uint32x4_t lhs, uint32x4_t rhs){
+    inline uint32x4_t _and(uint32x4_t lhs, uint32x4_t rhs) {
         return vandq_u32(lhs, rhs);
     }
-
 
 
 #endif

@@ -7,7 +7,7 @@
 
 #include "odinmath.h"
 
-namespace OdinMath{
+namespace OdinMath {
 
 #if defined(INTRIN) && defined(__x86_64__)
     //todo
@@ -15,19 +15,19 @@ namespace OdinMath{
 
 #if defined(INTRIN) && defined(__aarch64__)
 
-    struct FloatMatrix128x4{
+    struct FloatMatrix128x4 {
         FloatVector128 vectors[4];
 
-        FloatMatrix128x4()= default;
+        FloatMatrix128x4() = default;
 
-        explicit FloatMatrix128x4(float matrix[4][4]){
+        explicit FloatMatrix128x4(float matrix[4][4]) {
             vectors[0] = load4(matrix[0]);
             vectors[1] = load4(matrix[1]);
             vectors[2] = load4(matrix[2]);
             vectors[3] = load4(matrix[3]);
         }
 
-        explicit FloatMatrix128x4(float matrix[3][3]){
+        explicit FloatMatrix128x4(float matrix[3][3]) {
             vectors[0] = load3(matrix[0]);
             vectors[1] = load3(matrix[1]);
             vectors[2] = load3(matrix[2]);
@@ -35,7 +35,7 @@ namespace OdinMath{
             vectors[3] = SET_LANE_VECTOR(1.f, vectors[3], 3);
         }
 
-        explicit FloatMatrix128x4(float matrix[2][2]){
+        explicit FloatMatrix128x4(float matrix[2][2]) {
             vectors[0] = load2(matrix[0]);
             vectors[1] = load2(matrix[1]);
             vectors[2] = duplicate(0.f);
@@ -44,21 +44,21 @@ namespace OdinMath{
             vectors[3] = SET_LANE_VECTOR(1.f, vectors[3], 3);
         }
 
-        explicit FloatMatrix128x4(Matrix<4, 4, float>& matrix){
+        explicit FloatMatrix128x4(Matrix<4, 4, float> &matrix) {
             vectors[0] = load4(matrix[0]);
             vectors[1] = load4(matrix[1]);
             vectors[2] = load4(matrix[2]);
             vectors[3] = load4(matrix[3]);
         }
 
-        explicit FloatMatrix128x4(Matrix<3, 3, float>& matrix){
+        explicit FloatMatrix128x4(Matrix<3, 3, float> &matrix) {
             vectors[0] = load3(matrix[0]);
             vectors[1] = load3(matrix[1]);
             vectors[2] = load3(matrix[2]);
             vectors[3] = duplicate(0.f);
         }
 
-        explicit FloatMatrix128x4(Matrix<2, 2, float>& matrix){
+        explicit FloatMatrix128x4(Matrix<2, 2, float> &matrix) {
             vectors[0] = load3(matrix[0]);
             vectors[1] = load3(matrix[1]);
             vectors[2] = duplicate(0.f);
@@ -68,14 +68,14 @@ namespace OdinMath{
         explicit FloatMatrix128x4(FloatVector128 first,
                                   FloatVector128 second,
                                   FloatVector128 third,
-                                  FloatVector128 fourth){
+                                  FloatVector128 fourth) {
             vectors[0] = first;
             vectors[1] = second;
             vectors[2] = third;
             vectors[3] = fourth;
         }
 
-        bool operator==(const FloatMatrix128x4& lhs) const{
+        bool operator==(const FloatMatrix128x4 &lhs) const {
             uint32x4_t first = equal(this->vectors[0], lhs.vectors[0]);
             uint32x4_t second = equal(this->vectors[1], lhs.vectors[1]);
             uint32x4_t third = equal(this->vectors[2], lhs.vectors[2]);
@@ -84,44 +84,44 @@ namespace OdinMath{
             uint32x4_t tmp1 = _and(first, second);
             uint32x4_t tmp2 = _and(third, fourth);
             tmp1 = _and(tmp1, tmp2);
-            return GET_LANE_UINT_VECTOR(tmp1, 0) !=0 &&
-                    GET_LANE_UINT_VECTOR(tmp1, 1) !=0 &&
-                    GET_LANE_UINT_VECTOR(tmp1, 2) !=0 &&
-                    GET_LANE_UINT_VECTOR(tmp1, 3) !=0;
+            return GET_LANE_UINT_VECTOR(tmp1, 0) != 0 &&
+                   GET_LANE_UINT_VECTOR(tmp1, 1) != 0 &&
+                   GET_LANE_UINT_VECTOR(tmp1, 2) != 0 &&
+                   GET_LANE_UINT_VECTOR(tmp1, 3) != 0;
 
         }
 
     };
 
-    inline void store4(Matrix<4, 4, float>* output, FloatMatrix128x4 matrix){
+    inline void store4(Matrix<4, 4, float> *output, FloatMatrix128x4 matrix) {
         store4(output->getRow(0), matrix.vectors[0]);
         store4(output->getRow(1), matrix.vectors[1]);
         store4(output->getRow(2), matrix.vectors[2]);
         store4(output->getRow(3), matrix.vectors[3]);
     }
 
-    inline void store3(Matrix<3, 3, float>* output, FloatMatrix128x4 matrix){
+    inline void store3(Matrix<3, 3, float> *output, FloatMatrix128x4 matrix) {
         store3(output->getRow(0), matrix.vectors[0]);
         store3(output->getRow(1), matrix.vectors[1]);
         store3(output->getRow(2), matrix.vectors[2]);
     }
 
 
-    inline FloatMatrix128x4 add(FloatMatrix128x4 lhs, FloatMatrix128x4 rhs){
+    inline FloatMatrix128x4 add(FloatMatrix128x4 lhs, FloatMatrix128x4 rhs) {
         return FloatMatrix128x4(add(lhs.vectors[0], rhs.vectors[0]),
                                 add(lhs.vectors[1], rhs.vectors[1]),
                                 add(lhs.vectors[2], rhs.vectors[2]),
                                 add(lhs.vectors[3], rhs.vectors[3]));
     }
 
-    inline FloatMatrix128x4 sub(FloatMatrix128x4 lhs, FloatMatrix128x4 rhs){
+    inline FloatMatrix128x4 sub(FloatMatrix128x4 lhs, FloatMatrix128x4 rhs) {
         return FloatMatrix128x4(sub(lhs.vectors[0], rhs.vectors[0]),
                                 sub(lhs.vectors[1], rhs.vectors[1]),
                                 sub(lhs.vectors[2], rhs.vectors[2]),
                                 sub(lhs.vectors[3], rhs.vectors[3]));
     }
 
-    inline FloatMatrix128x4 mul(FloatMatrix128x4 lhs, FloatMatrix128x4 rhs){
+    inline FloatMatrix128x4 mul(FloatMatrix128x4 lhs, FloatMatrix128x4 rhs) {
         float32x2_t lo = vget_low_f32(lhs.vectors[0]);
         float32x2_t hi = vget_high_f32(lhs.vectors[0]);
         float32x4_t first = vmulq_lane_f32(rhs.vectors[0], lo, 0);
@@ -158,7 +158,7 @@ namespace OdinMath{
 
     }
 
-    inline FloatMatrix128x4 transpose(FloatMatrix128x4 matrix){
+    inline FloatMatrix128x4 transpose(FloatMatrix128x4 matrix) {
         float32x2_t loFirst = vget_low_f32(matrix.vectors[0]);
         float32x2_t loThird = vget_low_f32(matrix.vectors[2]);
         float32x4_t tmp1 = vcombine_f32(loFirst, loThird);
@@ -197,7 +197,7 @@ namespace OdinMath{
         return FloatMatrix128x4(row1, row2, row3, row4);
     }
 
-    inline FloatMatrix128x4 inverse(FloatMatrix128x4 matrix, float* d){
+    inline FloatMatrix128x4 inverse(FloatMatrix128x4 matrix, float *d) {
         FloatMatrix128x4 t = transpose(matrix);
         float32x2_t lo = vget_low_f32(t.vectors[2]);
         float32x2_t hi = vget_high_f32(t.vectors[2]);
@@ -493,7 +493,7 @@ namespace OdinMath{
         return FloatMatrix128x4(row0, row1, row2, row3);
     }
 
-    inline float32x4_t determinant(FloatMatrix128x4 matrix){
+    inline float32x4_t determinant(FloatMatrix128x4 matrix) {
         FloatMatrix128x4 t = transpose(matrix);
         float32x2_t lo = vget_low_f32(t.vectors[2]);
         float32x2_t hi = vget_high_f32(t.vectors[2]);
@@ -570,7 +570,7 @@ namespace OdinMath{
     }
 
     // lhs vector rhs matrix
-    inline float32x4_t matrixVectorMul(float32x4_t vector, FloatMatrix128x4 matrix){
+    inline float32x4_t matrixVectorMul(float32x4_t vector, FloatMatrix128x4 matrix) {
         float32x4_t v0 = vcopyq_laneq_f32(vector, 0, vector, 0);
         v0 = vcopyq_laneq_f32(v0, 1, vector, 0);
         v0 = vcopyq_laneq_f32(v0, 2, vector, 0);
@@ -599,7 +599,7 @@ namespace OdinMath{
     }
 
     // lhs matrix rhs vector
-    inline float32x4_t matrixVectorMul(FloatMatrix128x4 matrix, float32x4_t vector){
+    inline float32x4_t matrixVectorMul(FloatMatrix128x4 matrix, float32x4_t vector) {
         FloatMatrix128x4 t = transpose(matrix);
 
         float32x4_t v0 = vcopyq_laneq_f32(vector, 0, vector, 0);
@@ -629,7 +629,7 @@ namespace OdinMath{
         return v;
     }
 
-    inline FloatMatrix128x4 clear3(FloatMatrix128x4 matrix){
+    inline FloatMatrix128x4 clear3(FloatMatrix128x4 matrix) {
         FloatMatrix128x4 m{};
         m.vectors[0] = SET_LANE_VECTOR(0, matrix.vectors[0], 3);
         m.vectors[1] = SET_LANE_VECTOR(0, matrix.vectors[1], 3);
@@ -639,7 +639,7 @@ namespace OdinMath{
         return m;
     }
 
-    inline FloatMatrix128x4 clear2(FloatMatrix128x4 matrix){
+    inline FloatMatrix128x4 clear2(FloatMatrix128x4 matrix) {
         FloatMatrix128x4 m{};
         float32x2_t zeros = vdup_n_f32(0.f);
         m.vectors[0] = vcombine_f32(vget_low_f32(matrix.vectors[0]), zeros);
@@ -651,7 +651,6 @@ namespace OdinMath{
         m.vectors[3] = SET_LANE_VECTOR(1.f, m.vectors[3], 3);
         return m;
     }
-
 
 
 #endif

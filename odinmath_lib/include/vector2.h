@@ -79,7 +79,7 @@ namespace OdinMath {
 
         explicit Vector2Float(Vector2<float> &&vector) : Vector2Float(vector[0], vector[1]) {};
 
-        Vector2Float() : Vector2Float(0.f, 0.f) {};
+        Vector2Float() {};
 
         ~Vector2Float() override = default;
 
@@ -113,7 +113,7 @@ namespace OdinMath {
 
         void operator*=(float val) override;
 
-        bool operator==(const Vector2Float& v) const;
+        bool operator==(const Vector2Float &v) const;
 
         Vector2Float operator*(float val);
 
@@ -125,7 +125,6 @@ namespace OdinMath {
 
 
 #endif
-
 
 
     template<typename real>

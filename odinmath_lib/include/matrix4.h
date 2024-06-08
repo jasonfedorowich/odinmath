@@ -83,7 +83,7 @@ namespace OdinMath {
 
 #if defined(INTRIN) && (defined(__aarch64__) || defined(__x86_64__))
 
-    class Matrix4Float{
+    class Matrix4Float {
     protected:
         FloatMatrix128x4 floatMatrix128X4{};
     public:
@@ -120,12 +120,14 @@ namespace OdinMath {
 
         Matrix4Float() {}
 
-        explicit Matrix4Float(FloatMatrix128x4& floatMatrix128X4){
+        explicit Matrix4Float(FloatMatrix128x4 &floatMatrix128X4) {
             this->floatMatrix128X4 = floatMatrix128X4;
         }
-        explicit Matrix4Float(FloatMatrix128x4&& floatMatrix128X4){
+
+        explicit Matrix4Float(FloatMatrix128x4 &&floatMatrix128X4) {
             this->floatMatrix128X4 = floatMatrix128X4;
         }
+
         virtual ~Matrix4Float() = default;
 
         virtual float get(int r, int c) const;
@@ -165,9 +167,9 @@ namespace OdinMath {
 
         static Matrix4Float zeros();
 
-        friend Vector4Float operator*(Vector4Float& v, Matrix4Float& m);
+        friend Vector4Float operator*(Vector4Float &v, Matrix4Float &m);
 
-        friend Vector4Float operator*(Vector4Float&& v, Matrix4Float&& m);
+        friend Vector4Float operator*(Vector4Float &&v, Matrix4Float &&m);
 
 
     };

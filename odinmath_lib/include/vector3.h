@@ -82,29 +82,29 @@ namespace OdinMath {
 
     class Vector3Float : public Vector4Float {
     public:
-        Vector3Float(float x, float y, float z) : Vector4Float(x, y, z, 0.f) { }
+        Vector3Float(float x, float y, float z) : Vector4Float(x, y, z, 0.f) {}
 
-        explicit Vector3Float(FloatVector128 &v) : Vector4Float(v) { }
+        explicit Vector3Float(FloatVector128 &v) : Vector4Float(v) {}
 
-        explicit Vector3Float(FloatVector128 &&v) : Vector4Float(v) { };
+        explicit Vector3Float(FloatVector128 &&v) : Vector4Float(v) {};
 
         explicit Vector3Float(Vector3<float> &vector3) : Vector3Float(vector3[0], vector3[1], vector3[2]) {};
 
         explicit Vector3Float(Vector3<float> &&vector3) : Vector3Float(vector3[0], vector3[1], vector3[2]) {};
 
-        Vector3Float() : Vector3Float(0.f, 0.f, 0.f) {};
+        Vector3Float() : Vector4Float() {};
 
-        explicit Vector3Float(const float* data){
+        explicit Vector3Float(const float *data) {
             this->floatVector128 = load3(data);
         }
 
         ~Vector3Float() override = default;
 
-        float getW() override{
+        float getW() override {
             throw UnimplementedException("No W parameter for size 3 vectors");
         }
 
-        void setW(float w) override{
+        void setW(float w) override {
             throw UnimplementedException("No W parameter for size 3 vectors");
         }
 
@@ -124,13 +124,13 @@ namespace OdinMath {
 
         Vector3Float operator*(float val);
 
-        bool operator==(const Vector3Float& v) const;
+        bool operator==(const Vector3Float &v) const;
 
         float dot(const Vector3Float &rhs);
 
         Vector3Float cross(const Vector3Float &rhs);
 
-        void getData(float* data) override;
+        void getData(float *data) override;
 
     };
 

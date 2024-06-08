@@ -23,8 +23,8 @@ namespace OdinMath {
 
         Vector() = default;
 
-        explicit Vector(real* data){
-            for(int i = 0; i < SIZE; i++){
+        explicit Vector(real *data) {
+            for (int i = 0; i < SIZE; i++) {
                 this->data[i] = data[i];
             }
         }
@@ -49,11 +49,15 @@ namespace OdinMath {
 
             real operator*() { return (*vector)[element]; }
 
-            friend bool operator==(const Iterator &a, const Iterator &b) { return (a.element == b.element)
-            && (a.vector == b.vector); }
+            friend bool operator==(const Iterator &a, const Iterator &b) {
+                return (a.element == b.element)
+                       && (a.vector == b.vector);
+            }
 
-            friend bool operator!=(const Iterator &a, const Iterator &b) { return a.element != b.element
-            && (a.vector == b.vector); }
+            friend bool operator!=(const Iterator &a, const Iterator &b) {
+                return a.element != b.element
+                       && (a.vector == b.vector);
+            }
 
             Iterator &operator=(const Iterator &it) {
                 if (this != &it) {

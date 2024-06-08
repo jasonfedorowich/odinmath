@@ -308,7 +308,7 @@ TEST(Vector3FloatTestSuite, TestDotAndCross) {
 
 
 TEST(Vector4FloatTestSuite, Constructor) {
-    Vector4Float v = Vector4Float();
+    Vector4Float v = Vector4Float(0.f, 0.f, 0.f, 0.f);
     EXPECT_EQ(0.f, v.getX());
     EXPECT_EQ(0.f, v.getY());
     EXPECT_EQ(0.f, v.getZ());

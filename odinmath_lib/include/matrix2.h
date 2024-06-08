@@ -7,8 +7,8 @@
 
 #include "odinmath.h"
 
-namespace OdinMath{
-    
+namespace OdinMath {
+
     template<typename real>
     class Matrix2 : public Matrix<2, 2, real> {
     public:
@@ -68,7 +68,7 @@ namespace OdinMath{
 
 #if defined(INTRIN) && (defined(__aarch64__) || defined(__x86_64__))
 
-    class Matrix2Float : Matrix4Float{
+    class Matrix2Float : Matrix4Float {
     public:
         Matrix2Float(float _11, float _12,
                      float _21, float _22) {
@@ -88,11 +88,11 @@ namespace OdinMath{
 
         Matrix2Float() {}
 
-        explicit Matrix2Float(FloatMatrix128x4& floatMatrix128X4) : Matrix4Float() {
+        explicit Matrix2Float(FloatMatrix128x4 &floatMatrix128X4) : Matrix4Float() {
             this->floatMatrix128X4 = OdinMath::clear2(floatMatrix128X4);
         }
 
-        explicit Matrix2Float(FloatMatrix128x4&& floatMatrix128X4) : Matrix4Float() {
+        explicit Matrix2Float(FloatMatrix128x4 &&floatMatrix128X4) : Matrix4Float() {
             this->floatMatrix128X4 = OdinMath::clear2(floatMatrix128X4);
         }
 
@@ -103,14 +103,21 @@ namespace OdinMath{
         void set(int r, int c, float v) override;
 
         Matrix2Float &operator=(const Matrix2Float &rhs);
+
         Matrix2Float operator+(const Matrix2Float &rhs);
+
         Matrix2Float operator+(const Matrix2Float &&rhs);
+
         Matrix2Float operator-(const Matrix2Float &rhs);
+
         Matrix2Float operator-(const Matrix2Float &&rhs);
+
         Matrix2Float operator*(Matrix2Float &rhs);
+
         Matrix2Float operator*(Matrix2Float &&rhs);
 
         Vector2Float operator*(Vector2Float &v);
+
         Vector2Float operator*(Vector2Float &&v);
 
         bool operator==(const Matrix2Float &rhs) const;
@@ -128,9 +135,9 @@ namespace OdinMath{
 
         static Matrix2Float zeros();
 
-        friend Vector2Float operator*(Vector2Float& v, Matrix2Float& m);
+        friend Vector2Float operator*(Vector2Float &v, Matrix2Float &m);
 
-        friend Vector2Float operator*(Vector2Float&& v, Matrix2Float&& m);
+        friend Vector2Float operator*(Vector2Float &&v, Matrix2Float &&m);
 
 
     };
@@ -173,8 +180,8 @@ namespace OdinMath{
 
     template<typename real>
     Matrix2<real> Matrix2<real>::identity() {
-        return Matrix2<real>((real)1.f, (real)0.f,
-                             (real)0.f, (real)1.f);
+        return Matrix2<real>((real) 1.f, (real) 0.f,
+                             (real) 0.f, (real) 1.f);
     }
 
     template<typename real>
@@ -307,7 +314,7 @@ namespace OdinMath{
 
     template<typename real>
     Matrix2<real> &Matrix2<real>::operator=(const Matrix2<real> &rhs) {
-        if(this != &rhs){
+        if (this != &rhs) {
             this->mat[0][0] = rhs(0, 0);
             this->mat[0][1] = rhs(0, 1);
             this->mat[1][0] = rhs(1, 0);

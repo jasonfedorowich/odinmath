@@ -74,7 +74,7 @@ namespace OdinMath {
 
 #if defined(INTRIN) && (defined(__aarch64__) || defined(__x86_64__))
 
-    class Matrix3Float : Matrix4Float{
+    class Matrix3Float : Matrix4Float {
     public:
         Matrix3Float(float _11, float _12, float _13,
                      float _21, float _22, float _23,
@@ -101,11 +101,11 @@ namespace OdinMath {
 
         Matrix3Float() {}
 
-        explicit Matrix3Float(FloatMatrix128x4& floatMatrix128X4) : Matrix4Float() {
+        explicit Matrix3Float(FloatMatrix128x4 &floatMatrix128X4) : Matrix4Float() {
             this->floatMatrix128X4 = OdinMath::clear3(floatMatrix128X4);
         }
 
-        explicit Matrix3Float(FloatMatrix128x4&& floatMatrix128X4) : Matrix4Float() {
+        explicit Matrix3Float(FloatMatrix128x4 &&floatMatrix128X4) : Matrix4Float() {
             this->floatMatrix128X4 = OdinMath::clear3(floatMatrix128X4);
         }
 
@@ -148,9 +148,9 @@ namespace OdinMath {
 
         static Matrix3Float zeros();
 
-        friend Vector3Float operator*(Vector3Float& v, Matrix3Float& m);
+        friend Vector3Float operator*(Vector3Float &v, Matrix3Float &m);
 
-        friend Vector3Float operator*(Vector3Float&& v, Matrix3Float&& m);
+        friend Vector3Float operator*(Vector3Float &&v, Matrix3Float &&m);
 
 
     };

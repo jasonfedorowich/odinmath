@@ -17,9 +17,9 @@ namespace OdinMath {
 
         Matrix() = default;
 
-        explicit Matrix(real matrix[ROW_SIZE][COL_SIZE]){
-            for(int i = 0; i < ROW_SIZE; i++){
-                for(int j = 0; j < COL_SIZE; j++){
+        explicit Matrix(real matrix[ROW_SIZE][COL_SIZE]) {
+            for (int i = 0; i < ROW_SIZE; i++) {
+                for (int j = 0; j < COL_SIZE; j++) {
                     mat[i][j] = matrix[i][j];
                 }
             }
@@ -31,9 +31,9 @@ namespace OdinMath {
 
         virtual const real &operator()(int row, int col) const;
 
-        virtual real* operator[](int row);
+        virtual real *operator[](int row);
 
-        virtual bool operator==(const Matrix<ROW_SIZE, COL_SIZE, real>& lhs) const;
+        virtual bool operator==(const Matrix<ROW_SIZE, COL_SIZE, real> &lhs) const;
 
         virtual real *getRow(int r) {
             if (r < 0) throw InvalidArgument("Row must be greater than 0");
@@ -50,7 +50,6 @@ namespace OdinMath {
             }
             return col;
         }
-
 
 
         struct Iterator {
@@ -93,9 +92,9 @@ namespace OdinMath {
 
     template<int ROW_SIZE, int COL_SIZE, typename real>
     bool Matrix<ROW_SIZE, COL_SIZE, real>::operator==(const Matrix<ROW_SIZE, COL_SIZE, real> &lhs) const {
-        for(int i = 0; i < ROW_SIZE; i++){
-            for(int j = 0; j < COL_SIZE; j++){
-                if(this->mat[i][j] != lhs(i, j)) return false;
+        for (int i = 0; i < ROW_SIZE; i++) {
+            for (int j = 0; j < COL_SIZE; j++) {
+                if (this->mat[i][j] != lhs(i, j)) return false;
             }
         }
         return true;
@@ -103,7 +102,7 @@ namespace OdinMath {
 
     template<int ROW_SIZE, int COL_SIZE, typename real>
     real *Matrix<ROW_SIZE, COL_SIZE, real>::operator[](int row) {
-        if(row >= ROW_SIZE || row < 0)
+        if (row >= ROW_SIZE || row < 0)
             throw InvalidArgument("Invalid argument passed to index");
         return mat[row];
     }

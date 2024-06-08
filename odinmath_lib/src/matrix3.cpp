@@ -6,11 +6,11 @@
 #include "include/matrix3.h"
 
 
-namespace OdinMath{
+namespace OdinMath {
 
     float Matrix3Float::get(int r, int c) const {
-        if(r >= 3 || r < 0) throw InvalidArgument("Invalid row in get matrix3");
-        switch(c){
+        if (r >= 3 || r < 0) throw InvalidArgument("Invalid row in get matrix3");
+        switch (c) {
             case 0:
                 return GET_LANE_VECTOR(this->floatMatrix128X4.vectors[r], 0);
             case 1:
@@ -23,8 +23,8 @@ namespace OdinMath{
     }
 
     void Matrix3Float::set(int r, int c, float v) {
-        if(r >= 3 || r < 0) throw InvalidArgument("Invalid row in set matrix4");
-        switch(c){
+        if (r >= 3 || r < 0) throw InvalidArgument("Invalid row in set matrix4");
+        switch (c) {
             case 0:
                 this->floatMatrix128X4.vectors[r] = SET_LANE_VECTOR(v, this->floatMatrix128X4.vectors[r], 0);
             case 1:
@@ -37,7 +37,7 @@ namespace OdinMath{
     }
 
     Matrix3Float &Matrix3Float::operator=(const Matrix3Float &rhs) {
-        if(this != &rhs){
+        if (this != &rhs) {
             this->floatMatrix128X4 = rhs.floatMatrix128X4;
         }
         return *this;
@@ -88,7 +88,7 @@ namespace OdinMath{
 
     bool Matrix3Float::inverse(Matrix3Float &inv, float eps, float *det) {
         inv.floatMatrix128X4 = OdinMath::inverse(this->floatMatrix128X4, det);
-        if(abs(*det) <= eps){
+        if (abs(*det) <= eps) {
             return false;
         }
         return true;
@@ -100,8 +100,8 @@ namespace OdinMath{
 
     Matrix3Float Matrix3Float::identity() {
         return {1.f, 0.f, 0.f,
-                            0.f, 1.f, 0.f,
-                            0.f, 0.f, 1.f};
+                0.f, 1.f, 0.f,
+                0.f, 0.f, 1.f};
     }
 
     Matrix3Float Matrix3Float::zeros() {

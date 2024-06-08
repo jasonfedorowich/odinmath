@@ -72,7 +72,7 @@ namespace OdinMath {
         return Vector4Float(cross3(v31, v32));
     }
 
-    void Vector4Float::getData(float* data) {
+    void Vector4Float::getData(float *data) {
         store4(data, this->floatVector128);
     }
 
