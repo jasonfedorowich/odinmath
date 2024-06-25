@@ -32,6 +32,10 @@
 #include "include/matrix4.h"
 #include "include/matrix3.h"
 #include "include/matrix2.h"
+#include "include/quaternion.h"
+
+//todo create constant thats called by a template
+//inline const float eps<float>
 
 
 #endif //ODINMATH_ODINMATH_H

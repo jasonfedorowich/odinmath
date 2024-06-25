@@ -14,6 +14,10 @@ set(HEADER_FILES
         include/Matrix.h
         include/matrix4.h
         include/matrix3.h
+        include/matrixintrin.h
+        include/matrix2.h
+        include/matrix3.h
+        include/quaternion.h
 )
 
 set(SOURCE_FILES
@@ -23,10 +27,8 @@ set(SOURCE_FILES
         src/vector4.cpp
         src/matrix4.cpp
         src/matrix3.cpp
-        include/matrix3.h
         src/matrix2.cpp
-        include/matrix2.h
-        include/matrixintrin.h
+        src/quaternion.cpp
 )
 
 add_library(odinmath_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})
