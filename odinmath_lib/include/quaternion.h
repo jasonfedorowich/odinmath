@@ -18,6 +18,10 @@ namespace OdinMath{
 
         Quaternion() : Vector<4, real>(){}
 
+        Quaternion(const Quaternion<real>& q){
+            *this = q;
+        }
+
         Quaternion(real x, real y, real z, real w){
             this->data[0] = x;
             this->data[1] = y;
@@ -91,6 +95,8 @@ namespace OdinMath{
             this->data[3] = cHalfRoll * cHalfPitch * cHalfYaw + sHalfRoll * sHalfPitch * sHalfPitch;
         }
 
+        virtual ~Quaternion() = default;
+
 
         Quaternion<real> operator*();
 
@@ -111,6 +117,29 @@ namespace OdinMath{
         bool isNormalized(real& length, real eps);
     };
 
+#if defined(INTRIN) && (defined(__aarch64__) || defined(__x86_64__))
+
+    class QuaternionFloat{
+    protected:
+        FloatVector128 floatVector128{};
+    public:
+
+        QuaternionFloat() = default;
+
+        QuaternionFloat(float x, float y, float z, float w){
+            float tmp[4];
+            tmp[0] = x;
+            tmp[1] = y;
+            tmp[2] = z;
+            tmp[3] = w;
+            this->floatVector128 = load4(tmp);
+        }
+
+        QuaternionFloat(float roll, float pitch, float yaw){
+
+        }
+    };
+#endif
     template<typename real>
     inline void toRotationMatrix(Matrix3<real>& rotation, Quaternion<real>& q){
         real one = (real)1.0;

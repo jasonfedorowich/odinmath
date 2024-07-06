@@ -18,6 +18,7 @@ set(HEADER_FILES
         include/matrix2.h
         include/matrix3.h
         include/quaternion.h
+        include/trigonometry.h
 )
 
 set(SOURCE_FILES
