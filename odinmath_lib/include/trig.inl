@@ -1,3 +1,4 @@
+#include <cfloat>
 
 namespace OdinMath{
 
@@ -425,5 +426,499 @@ namespace OdinMath{
     template<> inline double cosTaylor<double>(double x){
         double xx = x * x;
         return (((((((-1.f /  87.178e9) * xx + (1.f / 4.79e6)) * xx - (1.f / 3628800)) * xx + (1.f / 40320)) * xx - (1.f / 720)) * xx + (1.f / 24)) * xx - (1.f / 2)) * xx + 1;
+    }
+
+    template<> inline float arcSinF<float>(float x){
+        /*      Algorithm and coefficients from:
+                            "Software manual for the elementary functions"
+                            by W.J. Cody and W. Waite, Prentice-Hall, 1980
+            */
+        float y = abs(x);
+        int i;
+        float g;
+        if(y < 0.5f){
+            i = 0;
+            g = y * y;
+        }else{
+            i = 1;
+            if(y > 1.f) return FLT_MAX;
+            g = 0.5f - 0.5f * y;
+            y = -2.f * sqrt(g);
+        }
+
+        static float p[] = {
+                -0.27368494524164255994e+2,
+                0.57208227877891731407e+2,
+                -0.39688862997540877339e+2,
+                0.10152522233806463645e+2,
+                -0.69674573447350646411e+0
+        };
+
+        static float q[] = {
+                -0.16421096714498560795e+3,
+                0.41714430248260412556e+3,
+                -0.38186303361750149284e+3,
+                0.15095270841030604719e+3,
+                -0.23823859153670238830e+2,
+                1.0
+        };
+
+        static float a[] = {
+                0.0f,
+                0.78539816339744830961566084581987572f
+        };
+
+
+        float gpg = (((((((p[4] * g + p[3]) * g) + p[2]) * g) + p[1]) * g) + p[0]) * g;
+        float qg = ((((((((q[5] * g + q[4]) * g) + q[3]) * g) + q[2]) * g) + q[1]) * g) + q[0];
+        float rg = gpg / qg;
+        float r = y + y * rg;
+        r = a[i] + (r + a[i]);
+        if(x < 0.f) return -r;
+        return r;
+    }
+
+    template<> inline double arcSinF<double>(double x){
+        /*      Algorithm and coefficients from:
+                            "Software manual for the elementary functions"
+                            by W.J. Cody and W. Waite, Prentice-Hall, 1980
+            */
+        double y = abs(x);
+        int i;
+        double g;
+        if(y < 0.5){
+            i = 0;
+            g = y * y;
+        }else{
+            i = 1;
+            if(y > 1.f) return DBL_MAX;
+            g = 0.5 - 0.5 * y;
+            y = -2.0 * sqrt(g);
+        }
+
+        static double p[] = {
+                -0.27368494524164255994e+2,
+                0.57208227877891731407e+2,
+                -0.39688862997540877339e+2,
+                0.10152522233806463645e+2,
+                -0.69674573447350646411e+0
+        };
+
+        static double q[] = {
+                -0.16421096714498560795e+3,
+                0.41714430248260412556e+3,
+                -0.38186303361750149284e+3,
+                0.15095270841030604719e+3,
+                -0.23823859153670238830e+2,
+                1.0
+        };
+
+        static double a[] = {
+                0.0f,
+                0.78539816339744830961566084581987572f
+        };
+
+
+        double gpg = (((((((p[4] * g + p[3]) * g) + p[2]) * g) + p[1]) * g) + p[0]) * g;
+        double qg = ((((((((q[5] * g + q[4]) * g) + q[3]) * g) + q[2]) * g) + q[1]) * g) + q[0];
+        double rg = gpg / qg;
+        double r = y + y * rg;
+        r = a[i] + (r + a[i]);
+        if(x < 0.0) return -r;
+        return r;
+    }
+
+
+    template<> inline float arcCosF<float>(float x){
+        /*      Algorithm and coefficients from:
+                            "Software manual for the elementary functions"
+                            by W.J. Cody and W. Waite, Prentice-Hall, 1980
+            */
+        float y = abs(x);
+        int i;
+        float g;
+        if(y < 0.5f){
+            i = 1;
+            g = y * y;
+        }else{
+            i = 0;
+            if(y > 1.f) return FLT_MAX;
+            g = 0.5f - 0.5f * y;
+            y = -2.f * sqrt(g);
+        }
+
+        static float p[] = {
+                -0.27368494524164255994e+2,
+                0.57208227877891731407e+2,
+                -0.39688862997540877339e+2,
+                0.10152522233806463645e+2,
+                -0.69674573447350646411e+0
+        };
+
+        static float q[] = {
+                -0.16421096714498560795e+3,
+                0.41714430248260412556e+3,
+                -0.38186303361750149284e+3,
+                0.15095270841030604719e+3,
+                -0.23823859153670238830e+2,
+                1.0
+        };
+
+        static float a[] = {
+                0.0f,
+                0.78539816339744830961566084581987572f
+        };
+
+        static float b[] = {
+                1.57079632679489661923132169163975144,
+                a[1]
+        };
+
+
+        float gpg = (((((((p[4] * g + p[3]) * g) + p[2]) * g) + p[1]) * g) + p[0]) * g;
+        float qg = ((((((((q[5] * g + q[4]) * g) + q[3]) * g) + q[2]) * g) + q[1]) * g) + q[0];
+        float rg = gpg / qg;
+        float r = y + y * rg;
+        if(x < 0.0f)
+            return (b[i] + (b[i] + r));
+        else
+            return (a[i] + (a[i] - r));
+
+    }
+
+    template<> inline double arcCosF<double>(double x){
+        /*      Algorithm and coefficients from:
+                            "Software manual for the elementary functions"
+                            by W.J. Cody and W. Waite, Prentice-Hall, 1980
+            */
+        double y = abs(x);
+        int i;
+        double g;
+        if(y < 0.5){
+            i = 1;
+            g = y * y;
+        }else{
+            i = 0;
+            if(y > 1.0) return DBL_MAX;
+            g = 0.5 - 0.5 * y;
+            y = -2.0 * sqrt(g);
+        }
+
+        static double p[] = {
+                -0.27368494524164255994e+2,
+                0.57208227877891731407e+2,
+                -0.39688862997540877339e+2,
+                0.10152522233806463645e+2,
+                -0.69674573447350646411e+0
+        };
+
+        static double q[] = {
+                -0.16421096714498560795e+3,
+                0.41714430248260412556e+3,
+                -0.38186303361750149284e+3,
+                0.15095270841030604719e+3,
+                -0.23823859153670238830e+2,
+                1.0
+        };
+
+        static double a[] = {
+                0.0f,
+                0.78539816339744830961566084581987572f
+        };
+
+        static double b[] = {
+                1.57079632679489661923132169163975144,
+                a[1]
+        };
+
+
+        double gpg = (((((((p[4] * g + p[3]) * g) + p[2]) * g) + p[1]) * g) + p[0]) * g;
+        double qg = ((((((((q[5] * g + q[4]) * g) + q[3]) * g) + q[2]) * g) + q[1]) * g) + q[0];
+        double rg = gpg / qg;
+        double r = y + y * rg;
+        if(x < 0.0)
+            return (b[i] + (b[i] + r));
+        else
+            return (a[i] + (a[i] - r));
+    }
+
+    template<> inline float arcTanF(float x){
+        /*      Algorithm and coefficients from:
+                            "Software manual for the elementary functions"
+                            by W.J. Cody and W. Waite, Prentice-Hall, 1980
+            */
+        float f = abs(x);
+        int N = 0;
+        if(f > 1.0f){
+            f = 1.f / f;
+            N = 2;
+        }
+        static float c = 0.2679491924311228f;
+        static float sqrt3 = 1.7320508075688772f;
+        static float A = sqrt3 - 1.f;
+
+        if(f > c){
+            f = (((A * f - 0.5f) - 0.5f) + f) / (sqrt3 + f);
+            ++N;
+        }
+
+        float g = f * f;
+
+        static float p[] = {
+                -0.13688768894191926929e+2,
+                -0.20505855195861651981e+2,
+                -0.84946240351320683534e+1,
+                -0.83758299368150059274e+0
+        };
+        static float q[] = {
+                0.41066306682575781263e+2,
+                0.86157349597130242515e+2,
+                0.59578436142597344465e+2,
+                0.15024001160028576121e+2,
+                1.0
+        };
+
+        float gpg = (((((p[3] * g + p[2]) * g) + p[1]) * g) + p[0]) * g;
+        float qg = ((((((q[4] * g + q[3]) * g) + q[2]) * g) + q[1]) * g) + q[0];
+        float rg = gpg / qg;
+        float r = f + f * rg;
+        if(N > 1)
+            r = -r;
+
+        static float a[] = {
+                0.0,
+                0.52359877559829887307710723554658381,
+                1.57079632679489661923132169163975144,
+                1.04719755119659774615421446109316763
+        };
+
+        r = a[N] + r;
+
+        if(x < 0.f){
+            r = -r;
+        }
+        return r;
+    }
+
+    template<> inline double arcTanF(double x){
+        /*      Algorithm and coefficients from:
+                            "Software manual for the elementary functions"
+                            by W.J. Cody and W. Waite, Prentice-Hall, 1980
+            */
+        double f = abs(x);
+        int N = 0;
+        if(f > 1.0f){
+            f = 1.f / f;
+            N = 2;
+        }
+        static double c = 0.2679491924311228;
+        static double sqrt3 = 1.7320508075688772;
+        static double A = sqrt3 - 1.f;
+
+        if(f > c){
+            f = (((A * f - 0.5f) - 0.5f) + f) / (sqrt3 + f);
+            ++N;
+        }
+
+        double g = f * f;
+
+        static double p[] = {
+                -0.13688768894191926929e+2,
+                -0.20505855195861651981e+2,
+                -0.84946240351320683534e+1,
+                -0.83758299368150059274e+0
+        };
+        static double q[] = {
+                0.41066306682575781263e+2,
+                0.86157349597130242515e+2,
+                0.59578436142597344465e+2,
+                0.15024001160028576121e+2,
+                1.0
+        };
+
+        double gpg = (((((p[3] * g + p[2]) * g) + p[1]) * g) + p[0]) * g;
+        double qg = ((((((q[4] * g + q[3]) * g) + q[2]) * g) + q[1]) * g) + q[0];
+        double rg = gpg / qg;
+        double r = f + f * rg;
+        if(N > 1)
+            r = -r;
+
+        static double a[] = {
+                0.0,
+                0.52359877559829887307710723554658381,
+                1.57079632679489661923132169163975144,
+                1.04719755119659774615421446109316763
+        };
+
+        r = a[N] + r;
+
+        if(x < 0.0){
+            r = -r;
+        }
+        return r;
+    }
+
+    template<> inline float arcTan2F(float v, float u){
+        /*      Algorithm and coefficients from:
+                            "Software manual for the elementary functions"
+                            by W.J. Cody and W. Waite, Prentice-Hall, 1980
+            */
+        float r;
+        if(u == 0.f){
+            r = 1.57079632679489661923132169163975144f;
+            if(v < 0.f) return -r;
+            return r;
+        }
+        float x = v / u;
+        if(x >= FLT_MAX){
+            r = 1.57079632679489661923132169163975144f;
+            if(v < 0.f) return -r;
+            return r;
+        }
+
+        if(x == 0.f){
+            r = 0.f;
+            if(u < 0.f){
+                r = 3.14159265358979323846264338327950288f - r;
+            }
+            if(v < 0.f){
+                r = -r;
+            }
+            return r;
+        }
+
+        float f = abs(x);
+        int N = 0;
+        if(f > 1.0f){
+            f = 1.f / f;
+            N = 2;
+        }
+        static float c = 0.2679491924311228f;
+        static float sqrt3 = 1.7320508075688772f;
+        static float A = sqrt3 - 1.f;
+
+        if(f > c){
+            f = (((A * f - 0.5f) - 0.5f) + f) / (sqrt3 + f);
+            ++N;
+        }
+
+        float g = f * f;
+
+        static float p[] = {
+                -0.13688768894191926929e+2,
+                -0.20505855195861651981e+2,
+                -0.84946240351320683534e+1,
+                -0.83758299368150059274e+0
+        };
+        static float q[] = {
+                0.41066306682575781263e+2,
+                0.86157349597130242515e+2,
+                0.59578436142597344465e+2,
+                0.15024001160028576121e+2,
+                1.0
+        };
+
+        float gpg = (((((p[3] * g + p[2]) * g) + p[1]) * g) + p[0]) * g;
+        float qg = ((((((q[4] * g + q[3]) * g) + q[2]) * g) + q[1]) * g) + q[0];
+        float rg = gpg / qg;
+        r = f + f * rg;
+        if(N > 1)
+            r = -r;
+
+        static float a[] = {
+                0.0,
+                0.52359877559829887307710723554658381,
+                1.57079632679489661923132169163975144,
+                1.04719755119659774615421446109316763
+        };
+
+        r = a[N] + r;
+
+        if(x < 0.f){
+            r = -r;
+        }
+        return r;
+    }
+
+    template<> inline double arcTan2F(double v, double u){
+        /*      Algorithm and coefficients from:
+                            "Software manual for the elementary functions"
+                            by W.J. Cody and W. Waite, Prentice-Hall, 1980
+            */
+        double r;
+        if(u == 0.0){
+            r = 1.57079632679489661923132169163975144;
+            if(v < 0.f) return -r;
+            return r;
+        }
+        double x = v / u;
+        if(x >= DBL_MAX){
+            r = 1.57079632679489661923132169163975144;
+            if(v < 0.f) return -r;
+            return r;
+        }
+
+        if(x == 0.0){
+            r = 0.0;
+            if(u < 0.0){
+                r = 3.14159265358979323846264338327950288 - r;
+            }
+            if(v < 0.0){
+                r = -r;
+            }
+            return r;
+        }
+
+        double f = abs(x);
+        int N = 0;
+        if(f > 1.0){
+            f = 1.0 / f;
+            N = 2;
+        }
+        static double c = 0.2679491924311228;
+        static double sqrt3 = 1.7320508075688772;
+        static double A = sqrt3 - 1.0;
+
+        if(f > c){
+            f = (((A * f - 0.5) - 0.5) + f) / (sqrt3 + f);
+            ++N;
+        }
+
+        double g = f * f;
+
+        static double p[] = {
+                -0.13688768894191926929e+2,
+                -0.20505855195861651981e+2,
+                -0.84946240351320683534e+1,
+                -0.83758299368150059274e+0
+        };
+        static double q[] = {
+                0.41066306682575781263e+2,
+                0.86157349597130242515e+2,
+                0.59578436142597344465e+2,
+                0.15024001160028576121e+2,
+                1.0
+        };
+
+        double gpg = (((((p[3] * g + p[2]) * g) + p[1]) * g) + p[0]) * g;
+        double qg = ((((((q[4] * g + q[3]) * g) + q[2]) * g) + q[1]) * g) + q[0];
+        double rg = gpg / qg;
+        r = f + f * rg;
+        if(N > 1)
+            r = -r;
+
+        static double a[] = {
+                0.0,
+                0.52359877559829887307710723554658381,
+                1.57079632679489661923132169163975144,
+                1.04719755119659774615421446109316763
+        };
+
+        r = a[N] + r;
+
+        if(x < 0.0){
+            r = -r;
+        }
+        return r;
     }
 }

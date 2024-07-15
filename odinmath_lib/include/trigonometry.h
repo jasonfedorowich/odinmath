@@ -39,5 +39,31 @@ namespace OdinMath{
         return x;
     }
 
+    template<typename real>
+    inline real arcCosF(real x){
+        return x;
+    }
+
+    template<typename real>
+    inline real arcSinF(real x){
+        return x;
+    }
+
+    template<typename real>
+    inline real arcTanF(real x){
+        return x;
+    }
+
+    template<typename real>
+    inline real arcCotF(real x){
+        return x;
+    }
+
+    template<typename real>
+    inline real arcTan2F(real v, real u){
+        return v;
+    }
+
+
 }
 #include "trig.inl"

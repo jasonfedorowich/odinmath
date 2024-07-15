@@ -102,4 +102,96 @@ TEST(TrigTestSuit, TestCotF){
     ASSERT_GT(s8, 100.0);
 }
 
+TEST(TrigTestSuit, TestAsinF){
+    float s1 = arcSinF<float>(0);
+    double s2 = arcSinF<double>(0.5);
+    float s3 = arcSinF<float>(0.7071);
+    double s4 = arcSinF<double>(0.8660);
+    float s5 = arcSinF<float>(1.f);
+
+    float s6 = arcSinF<float>(-0.5);
+    double s7 = arcSinF<double>(-1);
+    double s8 = arcSinF<double>(-0.7071);
+
+    ASSERT_NEAR(s1, 0.0f, 0.01);
+    ASSERT_NEAR(s2, 0.5235987755983, 0.01);
+    ASSERT_NEAR(s3, 0.7853885733974476, 0.01);
+    ASSERT_NEAR(s4, 1.0471467458630677, 0.01);
+    ASSERT_NEAR(s5, 1.5707963267948966, 0.01);
+    ASSERT_NEAR(s6, -0.5235987755983, 0.1);
+    ASSERT_NEAR(s7, -1.5707963267948966, 0.1);
+    ASSERT_NEAR(s8, -0.7853885733974476, 0.1);
+
+}
+
+TEST(TrigTestSuit, TestAcosF){
+    float s1 = arcCosF<float>(0);
+    double s2 = arcCosF<double>(0.5);
+    float s3 = arcCosF<float>(0.7071);
+    double s4 = arcCosF<double>(0.8660);
+    float s5 = arcCosF<float>(1.f);
+
+    float s6 = arcCosF<float>(-0.5);
+    double s7 = arcCosF<double>(-1);
+    double s8 = arcCosF<double>(-0.7071);
+
+    ASSERT_NEAR(s1, 1.5707963267948966, 0.01);
+    ASSERT_NEAR(s2, 1.0471975511965979, 0.01);
+    ASSERT_NEAR(s3, 0.785407753397449, 0.01);
+    ASSERT_NEAR(s4, 0.5236495809318289, 0.01);
+    ASSERT_NEAR(s5, 0.0, 0.01);
+    ASSERT_NEAR(s6, 2.0943951023931957, 0.1);
+    ASSERT_NEAR(s7, 3.141592653589793, 0.1);
+    ASSERT_NEAR(s8, 2.356184900192344, 0.1);
+
+}
+
+TEST(TrigTestSuit, TestAtanF){
+    float s1 = arcTanF<float>(0);
+    double s2 = arcTanF<double>(0.5);
+    float s3 = arcTanF<float>(0.7071);
+    double s4 = arcTanF<double>(0.8660);
+    float s5 = arcTanF<float>(1.f);
+
+    float s6 = arcTanF<float>(-0.5);
+    double s7 = arcTanF<double>(-1);
+    double s8 = arcTanF<double>(-0.7071);
+    float s9 = arcTanF<float>(100000);
+
+    ASSERT_NEAR(s1, 0.0, 0.01);
+    ASSERT_NEAR(s2, 0.4636476090008061, 0.01);
+    ASSERT_NEAR(s3, 0.6154751878649, 0.01);
+    ASSERT_NEAR(s4, 0.7137098623140186, 0.01);
+    ASSERT_NEAR(s5, 0.7853981633974483, 0.01);
+    ASSERT_NEAR(s6, -0.4636476090008061, 0.1);
+    ASSERT_NEAR(s7, -0.7853981633974483, 0.1);
+    ASSERT_NEAR(s8, -0.6161415445725856, 0.1);
+    ASSERT_NEAR(s9, 1.57078632679489695, 0.1);
+}
+
+
+TEST(TrigTestSuit, TestAtan2F){
+    float s1 = arcTan2F<float>(0, 1);
+    double s2 = arcTan2F<double>(1.0, 2.0);
+    float s3 = arcTan2F<float>(1.0, sqrt(2));
+    double s4 = arcTan2F<double>(sqrt(3), 2.0);
+    float s5 = arcTan2F<float>(1.f, 1.f);
+
+    float s6 = arcTan2F<float>(-1.f, 2.f);
+    double s7 = arcTan2F<double>(-1, 1);
+    double s8 = arcTan2F<double>(-1.0, sqrt(2));
+    float s9 = arcTan2F<float>(1, 0);
+
+    ASSERT_NEAR(s1, 0.0, 0.01);
+    ASSERT_NEAR(s2, 0.4636476090008061, 0.01);
+    ASSERT_NEAR(s3, 0.6154751878649, 0.01);
+    ASSERT_NEAR(s4, 0.7137098623140186, 0.01);
+    ASSERT_NEAR(s5, 0.7853981633974483, 0.01);
+    ASSERT_NEAR(s6, -0.4636476090008061, 0.1);
+    ASSERT_NEAR(s7, -0.7853981633974483, 0.1);
+    ASSERT_NEAR(s8, -0.6161415445725856, 0.1);
+    ASSERT_NEAR(s9, 1.57078632679489695, 0.1);
+}
+
+
 
