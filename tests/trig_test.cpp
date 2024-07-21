@@ -8,19 +8,17 @@
 
 using namespace OdinMath;
 
-float piF = 3.142f;
-double piD = 3.142;
 
 TEST(TrigTestSuit, TestSinF){
     float s1 = sinF<float>(0);
-    double s2 = sinF<double>(piD / 6.0);
-    float s3 = sinF<float>(piF / 4.0);
-    double s4 = sinF<double>(piD / 3.0);
-    float s5 = sinF<float>(piF / 2.0);
+    double s2 = sinF<double>(M_PI / 6.0);
+    float s3 = sinF<float>(M_PI / 4.0);
+    double s4 = sinF<double>(M_PI / 3.0);
+    float s5 = sinF<float>(M_PI / 2.0);
 
-    float s6 = sinF<float>(-piF / 3.0);
-    double s7 = sinF<double>(2 * piD);
-    float s8 = sinF<float>(piF);
+    float s6 = sinF<float>(-M_PI / 3.0);
+    double s7 = sinF<double>(2 * M_PI);
+    float s8 = sinF<float>(M_PI);
 
     ASSERT_NEAR(s1, 0.f, 0.01);
     ASSERT_NEAR(s2, 0.5, 0.01);
@@ -35,14 +33,14 @@ TEST(TrigTestSuit, TestSinF){
 
 TEST(TrigTestSuit, TestCosF){
     float s1 = cosF<float>(0);
-    double s2 = cosF<double>(piD / 6.0);
-    float s3 = cosF<float>(piF / 4.0);
-    double s4 = cosF<double>(piD / 3.0);
-    float s5 = cosF<float>(piF / 2.0);
+    double s2 = cosF<double>(M_PI / 6.0);
+    float s3 = cosF<float>(M_PI / 4.0);
+    double s4 = cosF<double>(M_PI / 3.0);
+    float s5 = cosF<float>(M_PI / 2.0);
 
-    float s6 = cosF<float>(-piF / 3.0);
-    double s7 = cosF<double>(2 * piD);
-    double s8 = cosF<double>(piD);
+    float s6 = cosF<float>(-M_PI / 3.0);
+    double s7 = cosF<double>(2 * M_PI);
+    double s8 = cosF<double>(M_PI);
 
 
     ASSERT_NEAR(s1, 1.f, 0.01);
@@ -59,14 +57,14 @@ TEST(TrigTestSuit, TestCosF){
 
 TEST(TrigTestSuit, TestTanF){
     float s1 = tanF<float>(0);
-    double s2 = tanF<double>(piD / 6.0);
-    float s3 = tanF<float>(piF / 4.0);
-    double s4 = tanF<double>(piD / 3.0);
-    float s5 = abs(tanF<float>(piF / 2.0));
+    double s2 = tanF<double>(M_PI / 6.0);
+    float s3 = tanF<float>(M_PI / 4.0);
+    double s4 = tanF<double>(M_PI / 3.0);
+    float s5 = abs(tanF<float>(M_PI / 2.0));
 
-    float s6 = tanF<float>(-piF / 3.0);
-    double s7 = tanF<double>(2 * piD);
-    double s8 = tanF<double>(piD);
+    float s6 = tanF<float>(-M_PI / 3.0);
+    double s7 = tanF<double>(2 * M_PI);
+    double s8 = tanF<double>(M_PI);
 
 
     ASSERT_NEAR(s1, 0.f, 0.01);
@@ -82,14 +80,14 @@ TEST(TrigTestSuit, TestTanF){
 
 TEST(TrigTestSuit, TestCotF){
     float s1 = cotF<float>(0);
-    double s2 = cotF<double>(piD / 6.0);
-    float s3 = cotF<float>(piF / 4.0);
-    double s4 = cotF<double>(piD / 3.0);
-    float s5 = abs(cotF<float>(piF / 2.0));
+    double s2 = cotF<double>(M_PI / 6.0);
+    float s3 = cotF<float>(M_PI / 4.0);
+    double s4 = cotF<double>(M_PI / 3.0);
+    float s5 = abs(cotF<float>(M_PI / 2.0));
 
-    float s6 = cotF<float>(-piF / 3.0);
-    double s7 = abs(cotF<double>(2 * piD));
-    double s8 = abs(cotF<double>(piD));
+    float s6 = cotF<float>(-M_PI / 3.0);
+    double s7 = abs(cotF<double>(2 * M_PI));
+    double s8 = abs(cotF<double>(M_PI));
 
 
     ASSERT_GT(s1, 100.f);
@@ -192,6 +190,73 @@ TEST(TrigTestSuit, TestAtan2F){
     ASSERT_NEAR(s8, -0.6161415445725856, 0.1);
     ASSERT_NEAR(s9, 1.57078632679489695, 0.1);
 }
+
+
+TEST(TrigTestSuit, TestSinh){
+    float s1 = sinhF<float>(0);
+    double s2 = sinhF<double>(M_PI / 6.0);
+    float s3 = sinhF<float>(M_PI / 4.0);
+    double s4 = sinhF<double>(M_PI / 3.0);
+    float s5 = sinhF<float>(M_PI / 2.0);
+
+    float s6 = sinhF<float>(-M_PI / 3.0);
+    double s7 = sinhF<double>(2 * M_PI);
+    float s8 = sinhF<float>(M_PI);
+
+    ASSERT_NEAR(s1, 0.f, 0.01);
+    ASSERT_NEAR(s2, 0.5478534738880397, 0.001);
+    ASSERT_NEAR(s3, 0.8686709614860095, 0.001);
+    ASSERT_NEAR(s4, 1.249367050524, 0.001);
+    ASSERT_NEAR(s5, 2.3012989023072947, 0.001);
+    ASSERT_NEAR(s6, -1.249367050524, 0.001);
+    ASSERT_NEAR(s7, 267.74489404101644, 0.001);
+    ASSERT_NEAR(s8, 11.548739357257748, 0.001);
+}
+
+
+TEST(TrigTestSuit, TestCosh){
+    float s1 = coshF<float>(0);
+    double s2 = coshF<double>(M_PI / 6.0);
+    float s3 = coshF<float>(M_PI / 4.0);
+    double s4 = coshF<double>(M_PI / 3.0);
+    float s5 = coshF<float>(M_PI / 2.0);
+
+    float s6 = coshF<float>(-M_PI / 3.0);
+    double s7 = coshF<double>(2 * M_PI);
+    float s8 = coshF<float>(M_PI);
+
+    ASSERT_NEAR(s1, 1.f, 0.01);
+    ASSERT_NEAR(s2, 1.1402383210764286, 0.001);
+    ASSERT_NEAR(s3, 1.324609089252, 0.001);
+    ASSERT_NEAR(s4, 1.600286857702386, 0.001);
+    ASSERT_NEAR(s5, 2.5091784786580567, 0.001);
+    ASSERT_NEAR(s6, 1.600286857702386, 0.001);
+    ASSERT_NEAR(s7, 267.7467614837482, 0.001);
+    ASSERT_NEAR(s8, 11.591953275521519, 0.001);
+}
+
+TEST(TrigTestSuit, TestTanh){
+    float s1 = tanhF<float>(0);
+    double s2 = tanhF<double>(M_PI / 6.0);
+    float s3 = tanhF<float>(M_PI / 4.0);
+    double s4 = tanhF<double>(M_PI / 3.0);
+    float s5 = tanhF<float>(M_PI / 2.0);
+
+    float s6 = tanhF<float>(-M_PI / 3.0);
+    double s7 = tanhF<double>(2 * M_PI);
+    float s8 = tanhF<float>(M_PI);
+
+    ASSERT_NEAR(s1, 0.f, 0.01);
+    ASSERT_NEAR(s2, 0.4804727781564516, 0.001);
+    ASSERT_NEAR(s3, 0.6557942026326724, 0.001);
+    ASSERT_NEAR(s4, 0.7807144353592677, 0.001);
+    ASSERT_NEAR(s5, 0.9171523356672744, 0.001);
+    ASSERT_NEAR(s6, -0.7807144353592677, 0.001);
+    ASSERT_NEAR(s7, 0.9999930253396107, 0.001);
+    ASSERT_NEAR(s8, 0.99627207622075, 0.001);
+}
+
+
 
 
 

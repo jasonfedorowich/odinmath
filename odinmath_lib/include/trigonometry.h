@@ -64,6 +64,21 @@ namespace OdinMath{
         return v;
     }
 
+    template<typename real>
+    inline real sinhF(real x){
+        return x;
+    }
+
+    template<typename real>
+    inline real coshF(real x){
+        return x;
+    }
+
+    template<typename real>
+    inline real tanhF(real x){
+        return x;
+    }
+
 
 }
-#include "trig.inl"
+#include "inline/trig.inl"

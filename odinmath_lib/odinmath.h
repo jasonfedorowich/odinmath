@@ -26,6 +26,7 @@
 #endif
 
 
+#include "include/math.h"
 #include "include/trigonometry.h"
 #include "include/vector4.h"
 #include "include/vector3.h"
