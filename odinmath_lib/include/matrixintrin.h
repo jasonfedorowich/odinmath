@@ -76,10 +76,10 @@ namespace OdinMath {
         }
 
         bool operator==(const FloatMatrix128x4 &lhs) const {
-            uint32x4_t first = equal(this->vectors[0], lhs.vectors[0]);
-            uint32x4_t second = equal(this->vectors[1], lhs.vectors[1]);
-            uint32x4_t third = equal(this->vectors[2], lhs.vectors[2]);
-            uint32x4_t fourth = equal(this->vectors[3], lhs.vectors[3]);
+            uint32x4_t first = equalFloat(this->vectors[0], lhs.vectors[0]);
+            uint32x4_t second = equalFloat(this->vectors[1], lhs.vectors[1]);
+            uint32x4_t third = equalFloat(this->vectors[2], lhs.vectors[2]);
+            uint32x4_t fourth = equalFloat(this->vectors[3], lhs.vectors[3]);
 
             uint32x4_t tmp1 = _and(first, second);
             uint32x4_t tmp2 = _and(third, fourth);

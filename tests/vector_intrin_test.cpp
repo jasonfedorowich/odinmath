@@ -199,7 +199,7 @@ TEST(VectorIntrinTestSuite, Equal){
     auto v1 = load4(f);
     float f1[4] = {501, 600, 3, 100};
     auto v2 = load4(f1);
-    auto r = equal(v1, v2);
+    auto r = equalFloat(v1, v2);
     float res[4];
     store4(res, r);
     EXPECT_EQ(res[0], 0.f);

@@ -9,6 +9,8 @@
 
 namespace OdinMath {
 
+
+
 #if defined(INTRIN) && defined(__aarch64__)
     using FloatVector128 = float32x4_t;
 #elif defined(INTRIN) && defined(__x86_64__)
@@ -16,6 +18,23 @@ namespace OdinMath {
 #else
     using FloatVector128 = uint8_t;
 #endif
+
+    struct VectorFloat32{
+
+        union {
+            FloatVector128 v;
+            float f[4];
+
+        };
+    };
+
+    struct VectorInteger32{
+        union {
+            uint32x4_t v;
+            float f[4];
+
+        };
+    };
 
 
 #if defined(INTRIN) && defined(__x86_64__)
@@ -50,8 +69,6 @@ namespace OdinMath {
 
 #define GET_LANE_UINT_VECTOR(vector, lane) \
     vgetq_lane_s32(vector, lane)
-
-    //region load/store
 
     inline float32x4_t load4(const float *in) {
         return vld1q_f32(in);
@@ -90,7 +107,21 @@ namespace OdinMath {
         vst1_f32(out, lo);
     }
 
-    // endregion
+    inline float32x4_t dupX(float32x4_t v){
+        return vdupq_lane_f32(vget_low_f32(v), 0);
+    }
+
+    inline float32x4_t dupY(float32x4_t v){
+        return vdupq_lane_f32(vget_low_f32(v), 1);
+    }
+
+    inline float32x4_t dupZ(float32x4_t v){
+        return vdupq_lane_f32(vget_high_f32(v), 0);
+    }
+
+    inline float32x4_t dupW(float32x4_t v){
+        return vdupq_lane_f32(vget_high_f32(v), 1);
+    }
 
     inline float32x4_t add(const float32x4_t lhs, const float32x4_t rhs) {
         return vaddq_f32(lhs, rhs);
@@ -119,6 +150,16 @@ namespace OdinMath {
 
     inline float32x4_t sub(const float32x4_t lhs, const float32x4_t rhs) {
         return vsubq_f32(lhs, rhs);
+    }
+
+    /* a[i] + (b[i] * c[i]) */
+    inline float32x4_t mulAdd(const float32x4_t a, const float32x4_t b, const float32x4_t c){
+        return vmlaq_f32(a, b, c);
+    }
+
+    /* a[i] - (b[i] * c[i]) */
+    inline float32x4_t mulSub(const float32x4_t a, const float32x4_t b, const float32x4_t c){
+        return vmlsq_f32(a, b, c);
     }
 
     inline float32x4_t scalar(float scalar) {
@@ -187,12 +228,28 @@ namespace OdinMath {
         return duplicate(1.f);
     }
 
-    inline uint32x4_t equal(float32x4_t lhs, float32x4_t rhs) {
+    inline uint32x4_t lessThan(float32x4_t v, float32x4_t p){
+        return vcltq_f32(v, p);
+    }
+
+    inline uint32x4_t greaterThan(float32x4_t v, float32x4_t p){
+        return vcgtq_f32(v, p);
+    }
+
+    inline uint32x4_t equalFloat(float32x4_t lhs, float32x4_t rhs) {
         return vceqq_f32(lhs, rhs);
     }
 
+    inline float32x4_t condSelect(uint32x4_t cond, float32x4_t a, float32x4_t b){
+        return vbslq_f32(cond, a, b);
+    }
+
+    inline uint32x4_t equalInt(uint32x4_t lhs, uint32x4_t rhs){
+        return vceqq_s32(lhs, rhs);
+    }
+
     inline bool equals(float32x4_t lhs, float32x4_t rhs) {
-        uint32x4_t r = equal(lhs, rhs);
+        uint32x4_t r = equalFloat(lhs, rhs);
         return GET_LANE_UINT_VECTOR(r, 0) != 0 &&
                GET_LANE_UINT_VECTOR(r, 1) != 0 &&
                GET_LANE_UINT_VECTOR(r, 2) != 0 &&
@@ -207,6 +264,8 @@ namespace OdinMath {
 #endif
 
 }
+
+#include "inline/vectorintrintrig.inl"
 
 #endif
 

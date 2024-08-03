@@ -19,6 +19,9 @@ TEST(TrigTestSuit, TestSinF){
     float s6 = sinF<float>(-M_PI / 3.0);
     double s7 = sinF<double>(2 * M_PI);
     float s8 = sinF<float>(M_PI);
+    float s9 = sinF<float>(-2 * M_PI);
+    double s11 = sinF<double>(-3 * M_PI / 2);
+    float s12 = sinF<float>(3 * M_PI / 2);
 
     ASSERT_NEAR(s1, 0.f, 0.01);
     ASSERT_NEAR(s2, 0.5, 0.01);
@@ -28,6 +31,9 @@ TEST(TrigTestSuit, TestSinF){
     ASSERT_NEAR(s6, -0.8660, 0.01);
     ASSERT_NEAR(s7, 0.0, 0.01);
     ASSERT_NEAR(s8, 0.0, 0.01);
+    ASSERT_NEAR(s9, 0.f, 0.01);
+    ASSERT_NEAR(s11, 1.f, 0.01);
+    ASSERT_NEAR(s12, -1.f, 0.01);
 }
 
 
@@ -41,7 +47,8 @@ TEST(TrigTestSuit, TestCosF){
     float s6 = cosF<float>(-M_PI / 3.0);
     double s7 = cosF<double>(2 * M_PI);
     double s8 = cosF<double>(M_PI);
-
+    double s9 = cosF<double>(-2 * M_PI);
+    double s10 = cosF<double>(-M_PI);
 
     ASSERT_NEAR(s1, 1.f, 0.01);
     ASSERT_NEAR(s2, 0.8660, 0.01);
@@ -51,6 +58,8 @@ TEST(TrigTestSuit, TestCosF){
     ASSERT_NEAR(s6, 0.5, 0.1);
     ASSERT_NEAR(s7, 1.0, 0.01);
     ASSERT_NEAR(s8, -1.0, 0.01);
+    ASSERT_NEAR(s9, 1.0, 0.01);
+    ASSERT_NEAR(s10, -1.0, 0.01);
 }
 
 
@@ -63,7 +72,8 @@ TEST(TrigTestSuit, TestTanF){
     float s5 = abs(tanF<float>(M_PI / 2.0));
 
     float s6 = tanF<float>(-M_PI / 3.0);
-    double s7 = tanF<double>(2 * M_PI);
+
+    double s7 = tanF<double>(-2 * M_PI);
     double s8 = tanF<double>(M_PI);
 
 

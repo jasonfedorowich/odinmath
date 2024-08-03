@@ -81,4 +81,4 @@ namespace OdinMath{
 
 
 }
-#include "inline/trig.inl"
+#include "inline/trigonometry.inl"

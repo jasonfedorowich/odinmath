@@ -10,8 +10,8 @@ namespace OdinMath {
           */
 
         static float piOverTwo = 1.57079632679489661923132169163975f;
-
-        float y = abs(x) + piOverTwo;
+        float xx = abs(x);
+        float y = xx + piOverTwo;
         float sign = 1.f;
         static float oneOverPi = 3.183098861e-1f;
 
@@ -27,7 +27,7 @@ namespace OdinMath {
         static float c2 = -8.908910206761e-6f;
 
         // determine f
-        float f = (x - xn * c1) - xn * c2;
+        float f = (xx - xn * c1) - xn * c2;
         float g = f * f;
 
         static float r[] = {
@@ -55,8 +55,8 @@ namespace OdinMath {
           */
 
         static double piOverTwo = 1.57079632679489661923132169163975;
-
-        double y = abs(x) + piOverTwo;
+        double xx = abs(x);
+        double y = xx + piOverTwo;
         double sign = 1.f;
         static double oneOverPi = 3.183098861e-1f;
 
@@ -72,7 +72,7 @@ namespace OdinMath {
         static double c2 = -8.908910206761e-6f;
 
         // determine f
-        double f = (x - xn * c1) - xn * c2;
+        double f = (xx - xn * c1) - xn * c2;
         double g = f * f;
 
         static double r[] = {
