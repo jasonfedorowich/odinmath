@@ -103,3 +103,52 @@ TEST(VectorIntrinTestSuite, CotF) {
     EXPECT_GT(abs(store2[2]), 10.f);
     EXPECT_GT(abs(store2[3]), 10.f);
 }
+
+
+TEST(VectorIntrinTestSuite, ACosF) {
+    float f[4] = {0.f, 0.5, 0.7071, 0.8660};
+    float r[4] = {1.f, -0.5, -1.f, -0.7071};
+    auto v1 = load4(f);
+    auto v2 = load4(r);
+    auto res1 = arcCosF(v1);
+    auto res2 = arcCosF(v2);
+
+    float store1[4];
+    float store2[4];
+    store4(store1, res1);
+    store4(store2, res2);
+
+    EXPECT_NEAR(1.57, store1[0], 0.01);
+    EXPECT_NEAR(1.047, store1[1], 0.01);
+    EXPECT_NEAR(0.7854, store1[2], 0.01);
+    EXPECT_NEAR(0.5236, store1[3], 0.01);
+
+    EXPECT_NEAR(0, store2[0], 0.01);
+    EXPECT_NEAR(2.094, store2[1], 0.01);
+    EXPECT_NEAR(3.142, store2[2], 0.01);
+    EXPECT_NEAR(2.356, store2[3], 0.01);
+}
+
+TEST(VectorIntrinTestSuite, ASinF) {
+    float f[4] = {0.f, 0.5, 0.7071, 0.8660};
+    float r[4] = {1.f, -0.5, -1.f, -0.7071};
+    auto v1 = load4(f);
+    auto v2 = load4(r);
+    auto res1 = arcSinF(v1);
+    auto res2 = arcSinF(v2);
+
+    float store1[4];
+    float store2[4];
+    store4(store1, res1);
+    store4(store2, res2);
+
+    EXPECT_NEAR(0.f, store1[0], 0.01);
+    EXPECT_NEAR(0.5235987755983, store1[1], 0.01);
+    EXPECT_NEAR(0.7853885733974476, store1[2], 0.01);
+    EXPECT_NEAR(1.0471467458630677, store1[3], 0.01);
+
+    EXPECT_NEAR(1.5707963267948966, store2[0], 0.01);
+    EXPECT_NEAR(-0.5235987755983, store2[1], 0.01);
+    EXPECT_NEAR(-1.5707963267948966, store2[2], 0.01);
+    EXPECT_NEAR(-0.7853885733974476, store2[3], 0.01);
+}

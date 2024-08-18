@@ -12,6 +12,10 @@ namespace OdinMath{
     static VectorFloat32 tanCotConst2 = {{0.34248878235890589960e-2f, -0.17861707342254426711e-4f, 1.f, -0.46671683339755294240e+0f}};
     static VectorFloat32 tanCotConst3 = {{0.25663832289440112864e-1f, -0.31181531907010027307e-3f, 0.49819433993786512270e-6f, 0.0001}};
 
+    static VectorFloat32 arcCosSin1 = {{-0.27368494524164255994e+2, 0.57208227877891731407e+2, -0.39688862997540877339e+2, 0.10152522233806463645e+2 }};
+    static VectorFloat32 arcCosSin2 = {{-0.69674573447350646411e+0, -0.16421096714498560795e+3, 0.41714430248260412556e+3, -0.38186303361750149284e+3}};
+    static VectorFloat32 arcCosSin3 = {{0.15095270841030604719e+3, -0.23823859153670238830e+2, 0.78539816339744830961566084581987572f, 1.57079632679489661923132169163975144}};
+
 
     static VectorFloat32 zero = {{0.f, 0.f, 0.f, 0.f}};
     static VectorFloat32 one = {{1.f, 1.f, 1.f, 1.f}};
@@ -144,5 +148,75 @@ namespace OdinMath{
         float32x4_t r2 = condSelect(isNotEven, t2, t3);
 
         return condSelect(isSmall, r1, r2);
+    }
+
+    inline float32x4_t arcCosF(float32x4_t v){
+        float32x4_t y = vabsq_f32(v);
+        float32x4_t point5 = duplicate(0.5f);
+
+        int32x4_t lt = lessThan(y, point5);
+        
+        float32x4_t t1 = mul(y, y);
+        float32x4_t t2 = mulSub(point5, point5, y);
+        float32x4_t g = condSelect(lt, t1, t2);
+
+        y = condSelect(lt, y, negMul(duplicate(2.f), sqrtF(g)));
+
+        float32x4_t gpg = mulAdd(dupW(arcCosSin1.v), g, dupX(arcCosSin2.v));
+        gpg = mulAdd(dupZ(arcCosSin1.v), g, gpg);
+        gpg = mulAdd(dupY(arcCosSin1.v), g, gpg);
+        gpg = mulAdd(dupX(arcCosSin1.v), g, gpg);
+        gpg = mul(g, gpg);
+
+        float32x4_t qg = mulAdd(dupY(arcCosSin3.v), g, one.v);
+        qg = mulAdd(dupX(arcCosSin3.v), g, qg);
+        qg = mulAdd(dupW(arcCosSin2.v), g, qg);
+        qg = mulAdd(dupZ(arcCosSin2.v), g, qg);
+        qg = mulAdd(dupY(arcCosSin2.v), g, qg);
+
+        float32x4_t rg = div(gpg, qg);
+        float32x4_t r = mulAdd(y, y, rg);
+
+        float32x4_t a = condSelect(lt, dupZ(arcCosSin3.v), zero.v);
+        float32x4_t b = condSelect(lt, dupZ(arcCosSin3.v), dupW(arcCosSin3.v));
+
+        int32x4_t ltz = lessThan(v, zero.v);
+
+        return condSelect(ltz, addAdd(b, r), addAddNeg(a, r));
+    }
+
+    inline float32x4_t arcSinF(float32x4_t v){
+        float32x4_t y = vabsq_f32(v);
+        float32x4_t point5 = duplicate(0.5f);
+
+        int32x4_t lt = lessThan(y, point5);
+
+        float32x4_t t1 = mul(y, y);
+        float32x4_t t2 = mulSub(point5, point5, y);
+        float32x4_t g = condSelect(lt, t1, t2);
+
+        y = condSelect(lt, y, negMul(duplicate(2.f), sqrtF(g)));
+
+        float32x4_t gpg = mulAdd(dupW(arcCosSin1.v), g, dupX(arcCosSin2.v));
+        gpg = mulAdd(dupZ(arcCosSin1.v), g, gpg);
+        gpg = mulAdd(dupY(arcCosSin1.v), g, gpg);
+        gpg = mulAdd(dupX(arcCosSin1.v), g, gpg);
+        gpg = mul(g, gpg);
+
+
+        float32x4_t qg = mulAdd(dupY(arcCosSin3.v), g, one.v);
+        qg = mulAdd(dupX(arcCosSin3.v), g, qg);
+        qg = mulAdd(dupW(arcCosSin2.v), g, qg);
+        qg = mulAdd(dupZ(arcCosSin2.v), g, qg);
+        qg = mulAdd(dupY(arcCosSin2.v), g, qg);
+
+        float32x4_t rg = div(gpg, qg);
+        float32x4_t r = mulAdd(y, y, rg);
+
+        float32x4_t a = condSelect(lt, zero.v, dupZ(arcCosSin3.v));
+        r = addAdd(a, r);
+        int32x4_t ltz = lessThan(v, zero.v);
+
+        return condSelect(ltz, vnegq_f32(r), r);
     }
 }

@@ -260,6 +260,27 @@ namespace OdinMath {
         return vandq_u32(lhs, rhs);
     }
 
+    inline float32x4_t sqrtF(float32x4_t v){
+        return vsqrtq_f32(v);
+    }
+
+    inline float32x4_t neg(float32x4_t v){
+        return vnegq_f32(v);
+    }
+
+    /* Result = -x * y */
+    inline float32x4_t negMul(float32x4_t x, float32x4_t y){
+        return vmulq_f32(vnegq_f32(x), y);
+    }
+
+    inline float32x4_t addAdd(float32x4_t x, float32x4_t y){
+        return add(x, add(x, y));
+    }
+
+    inline float32x4_t addAddNeg(float32x4_t x, float32x4_t y){
+        return add(x, add(x, neg(y)));
+    }
+
 
 #endif
 
