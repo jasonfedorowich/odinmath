@@ -152,3 +152,59 @@ TEST(VectorIntrinTestSuite, ASinF) {
     EXPECT_NEAR(-1.5707963267948966, store2[2], 0.01);
     EXPECT_NEAR(-0.7853885733974476, store2[3], 0.01);
 }
+
+TEST(VectorIntrinTestSuite, ATanF) {
+    float f[4] = {0.f, 0.5, 0.7071, 0.8660};
+    float r[4] = {1.f, -0.5, -1.f, -0.7071};
+    auto v1 = load4(f);
+    auto v2 = load4(r);
+    auto res1 = arcTanF(v1);
+    auto res2 = arcTanF(v2);
+
+    float store1[4];
+    float store2[4];
+    store4(store1, res1);
+    store4(store2, res2);
+
+    EXPECT_NEAR(0.f, store1[0], 0.01);
+    EXPECT_NEAR(0.4636476090008061, store1[1], 0.01);
+    EXPECT_NEAR(0.6154751878649, store1[2], 0.01);
+    EXPECT_NEAR(0.7137098623140186, store1[3], 0.01);
+
+    EXPECT_NEAR(0.7853981633974483, store2[0], 0.01);
+    EXPECT_NEAR(-0.4636476090008061, store2[1], 0.01);
+    EXPECT_NEAR(-0.7853981633974483, store2[2], 0.01);
+    EXPECT_NEAR(-0.6161415445725856, store2[3], 0.01);
+}
+
+
+TEST(VectorIntrinTestSuite, ATan2F) {
+    float f[4] = {0.f, 1, 1, sqrt(3.f)};
+    float f2[4] = {1, 2, sqrt(2.f), 2.f};
+    float r[4] = {-1.f, -1, -1.f, 1};
+    float r2[4] = {2, 1, sqrt(2.f), 0};
+
+    auto v1 = load4(f);
+    auto v2 = load4(r);
+    auto u1 = load4(f2);
+    auto u2 = load4(r2);
+
+    auto res1 = arcTan2F(v1, u1);
+    auto res2 = arcTan2F(v2, u2);
+
+    float store1[4];
+    float store2[4];
+    store4(store1, res1);
+    store4(store2, res2);
+
+    EXPECT_NEAR(0.f, store1[0], 0.01);
+    EXPECT_NEAR(0.4636476090008061, store1[1], 0.01);
+    EXPECT_NEAR(0.6154751878649, store1[2], 0.01);
+    EXPECT_NEAR(0.7137098623140186, store1[3], 0.01);
+
+    EXPECT_NEAR(-0.4636476090008061, store2[0], 0.01);
+    EXPECT_NEAR(-0.7853981633974483, store2[1], 0.01);
+    EXPECT_NEAR(-0.6161415445725856, store2[2], 0.01);
+    EXPECT_NEAR(1.57078632679489695, store2[3], 0.01);
+
+}

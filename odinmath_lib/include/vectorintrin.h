@@ -281,6 +281,15 @@ namespace OdinMath {
         return add(x, add(x, neg(y)));
     }
 
+    inline float32x4_t invert(float32x4_t v){
+        return vrecpeq_f32(v);
+    }
+
+    inline int32x4_t greaterThanOrEqual(float32x4_t x, float32x4_t y) {
+        return vcgeq_f32(x, y);
+    }
+
+
 
 #endif
 
