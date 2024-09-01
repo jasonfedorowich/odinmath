@@ -24,10 +24,6 @@ namespace OdinMath{
     static VectorFloat32 arcTan3 = {{0.41066306682575781263e+2, 0.86157349597130242515e+2, 0.59578436142597344465e+2, 0.15024001160028576121e+2}};
     static VectorFloat32 arcTan4 = {{0.0, 0.52359877559829887307710723554658381, 1.57079632679489661923132169163975144, 1.04719755119659774615421446109316763}};
 
-    static VectorFloat32 zero = {{0.f, 0.f, 0.f, 0.f}};
-    static VectorFloat32 one = {{1.f, 1.f, 1.f, 1.f}};
-    static VectorFloat32 two = {{2.f, 2.f, 2.f, 2.f}};
-    static VectorInteger32 oneInt = {{1, 1, 1, 1}};
 
     inline float32x4_t cosF(float32x4_t v){
         float32x4_t xx = vabsq_f32(v);

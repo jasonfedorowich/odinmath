@@ -31,10 +31,15 @@ namespace OdinMath {
     struct VectorInteger32{
         union {
             uint32x4_t v;
-            float f[4];
+            int f[4];
 
         };
     };
+
+    static VectorFloat32 zero = {{0.f, 0.f, 0.f, 0.f}};
+    static VectorFloat32 one = {{1.f, 1.f, 1.f, 1.f}};
+    static VectorFloat32 two = {{2.f, 2.f, 2.f, 2.f}};
+    static VectorInteger32 oneInt = {{1, 1, 1, 1}};
 
 
 #if defined(INTRIN) && defined(__x86_64__)
@@ -287,6 +292,41 @@ namespace OdinMath {
 
     inline int32x4_t greaterThanOrEqual(float32x4_t x, float32x4_t y) {
         return vcgeq_f32(x, y);
+    }
+
+    inline float32x4_t pow2(int32x4_t n){
+        int32x4_t one = vdupq_n_s32(1);
+        int32x4_t temp = vshlq_s32(one, n);
+        return vcvtq_f32_s32(temp);
+    }
+
+    inline float32x4_t expF(float32x4_t v){
+        static VectorFloat32 v1 = {{1.4426950408889634074f, 0.693359375f, -2.1219444005469058277e-4f, 3.1622776601683793320f}};
+        static VectorFloat32 v2 = {{0.25000000000000000000e+0, 0.75753180159422776666e-2, 0.31555192765684646356e-4, 0.5f}};
+        static VectorFloat32 v3 = {{0.50000000000000000000e+0, 0.56817302698551221787e-1, 0.63121894374398503557e-3, 0.75104028399870046114e-6}};
+
+        float32x4_t xn = mul(v, dupX(v1.v));
+        int32x4_t n = vcvtq_u32_f32(xn);
+        xn = vcvtq_f32_s32(n);
+        float32x4_t g = mulSub(v, xn, dupY(v1.v));
+        g = mulSub(g, xn, dupZ(v1.v));
+        float32x4_t z = mul(g, g);
+
+        float32x4_t gpz = mulAdd(dupY(v2.v), dupZ(v2.v), z);
+        gpz = mulAdd(dupX(v2.v), gpz, z);
+        gpz = mul(gpz, g);
+
+        float32x4_t qz = mulAdd(dupZ(v3.v), dupW(v3.v), z);
+        qz = mulAdd(dupY(v3.v), qz, z);
+        qz = mulAdd(dupX(v3.v), qz, z);
+
+        float32x4_t rg = sub(qz, gpz);
+        rg = div(gpz, rg);
+        rg = add(dupW(v2.v), rg);
+        n = vaddq_s32(n, oneInt.v);
+        float32x4_t p2 = pow2(n);
+        return mul(rg, p2);
+
     }
 
 

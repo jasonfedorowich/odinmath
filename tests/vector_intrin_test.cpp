@@ -205,6 +205,51 @@ TEST(VectorIntrinTestSuite, Equal){
     EXPECT_EQ(res[0], 0.f);
 }
 
+TEST(VectorIntrinTestSuite, Pow2){
+    VectorInteger32 n = {1, 2, 5, 10};
+    auto r = pow2(n.v);
+    float res[4];
+    store4(res, r);
+
+    EXPECT_EQ(res[0], 2.f);
+    EXPECT_EQ(res[1], 4.f);
+    EXPECT_EQ(res[2], 32.f);
+    EXPECT_EQ(res[3], 1024.f);
+}
+
+
+TEST(VectorIntrinTestSuite, Exp){
+
+    VectorFloat32 n1 = {0, 2*M_PI, M_PI_4, M_PI / 3.0};
+    VectorFloat32 n2 = {M_PI_2, -M_PI / 3.0, -2* M_PI, -M_PI};
+    VectorFloat32 n3 = {M_PI, M_PI / 6, -M_PI_2, -M_PI_4};
+    auto r = expF(n1.v);
+    auto r1 = expF(n2.v);
+    auto r2 = expF(n3.v);
+    float res[4];
+    float res1[4];
+    float res2[4];
+
+    store4(res, r);
+    store4(res1, r1);
+    store4(res2, r2);
+
+    ASSERT_NEAR(res[0], 1.f, 0.01);
+    ASSERT_NEAR(res[1], 535.4916555247646, 0.01);
+    ASSERT_NEAR(res[2], 2.193280050738, 0.01);
+    ASSERT_NEAR(res[3], 2.849653908226361, 0.01);
+    ASSERT_NEAR(res1[0], 4.810477380965351, 0.01);
+    ASSERT_NEAR(res1[1], 0.350919807178411, 0.01);
+    ASSERT_NEAR(res1[2], 0.001867442731708, 0.01);
+    ASSERT_NEAR(res1[3], 0.04321391826377226, 0.01);
+    ASSERT_NEAR(res2[0], 23.140692632779267, 0.01);
+    ASSERT_NEAR(res2[1], 1.6880917949644685, 0.01);
+    ASSERT_NEAR(res2[2], 0.20787957635076193, 0.01);
+    ASSERT_NEAR(res2[3], 0.455938127766, 0.01);
+
+}
+
+
 
 TEST(Vector2FloatTestSuite, Constructor) {
     Vector2Float v;
