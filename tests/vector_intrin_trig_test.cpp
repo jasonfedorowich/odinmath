@@ -208,3 +208,52 @@ TEST(VectorIntrinTestSuite, ATan2F) {
     EXPECT_NEAR(1.57078632679489695, store2[3], 0.01);
 
 }
+
+TEST(VectorIntrinTestSuite, Sinh) {
+    float f[4] = {0.f, M_PI / 6.0, M_PI / 4.0, M_PI / 3.0};
+    float r[4] = {M_PI / 2.0, -M_PI / 3.0, -2 * M_PI, -M_PI};
+    auto v1 = load4(f);
+    auto v2 = load4(r);
+    auto res1 = sinhF(v1);
+    auto res2 = sinhF(v2);
+
+    float store1[4];
+    float store2[4];
+    store4(store1, res1);
+    store4(store2, res2);
+
+    EXPECT_NEAR(0.f, store1[0], 0.01);
+    EXPECT_NEAR(0.5478534738880397, store1[1], 0.01);
+    EXPECT_NEAR(0.8686709614860095, store1[2], 0.01);
+    EXPECT_NEAR(1.249367050524, store1[3], 0.01);
+
+    EXPECT_NEAR(2.3012989023072947, store2[0], 0.01);
+    EXPECT_NEAR(-1.249367050524, store2[1], 0.01);
+    EXPECT_NEAR(-267.74489404101644, store2[2], 0.01);
+    EXPECT_NEAR(-11.548739357257748, store2[3], 0.01);
+}
+
+
+TEST(VectorIntrinTestSuite, Cosh) {
+    float f[4] = {0.f, M_PI / 6.0, M_PI / 4.0, M_PI / 3.0};
+    float r[4] = {M_PI / 2.0, -M_PI / 3.0, -2 * M_PI, -M_PI};
+    auto v1 = load4(f);
+    auto v2 = load4(r);
+    auto res1 = coshF(v1);
+    auto res2 = coshF(v2);
+
+    float store1[4];
+    float store2[4];
+    store4(store1, res1);
+    store4(store2, res2);
+
+    EXPECT_NEAR(1.f, store1[0], 0.01);
+    EXPECT_NEAR(1.1402383210764286, store1[1], 0.01);
+    EXPECT_NEAR(1.324609089252, store1[2], 0.01);
+    EXPECT_NEAR(1.600286857702386, store1[3], 0.01);
+
+    EXPECT_NEAR(2.5091784786580567, store2[0], 0.01);
+    EXPECT_NEAR(1.600286857702386, store2[1], 0.01);
+    EXPECT_NEAR(267.7467614837482, store2[2], 0.01);
+    EXPECT_NEAR(11.591953275521519, store2[3], 0.01);
+}

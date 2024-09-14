@@ -24,6 +24,9 @@ namespace OdinMath{
     static VectorFloat32 arcTan3 = {{0.41066306682575781263e+2, 0.86157349597130242515e+2, 0.59578436142597344465e+2, 0.15024001160028576121e+2}};
     static VectorFloat32 arcTan4 = {{0.0, 0.52359877559829887307710723554658381, 1.57079632679489661923132169163975144, 1.04719755119659774615421446109316763}};
 
+    static VectorFloat32 sinhCosh1 = {{0.69316101074218750000e+0f, FLT_MAX_EXP * M_LN2, 0.52820835025874852469e-4f, M_LN2}};
+    static VectorFloat32 sinhCosh2 = {{-0.35181283430177117881e+6, -0.11563521196851768270e+5, -0.16375798202630751372e+3, -0.78966127417357099479e+0}};
+    static VectorFloat32 sinhCosh3 = {{-0.21108770058106271242e+7, 0.36162723109421836460e+5, -0.27773523119650701167e+3, 1.0}};
 
     inline float32x4_t cosF(float32x4_t v){
         float32x4_t xx = vabsq_f32(v);
@@ -332,5 +335,57 @@ namespace OdinMath{
 
     }
 
+    inline float32x4_t sinhF(float32x4_t v){
+        int32x4_t ltz = lessThan(v, zero.v);
+        float32x4_t y = vabsq_f32(v);
+        int32x4_t gto = greaterThan(y, one.v);
+        int32x4_t gtlnMax = greaterThan(y, dupY(sinhCosh1.v));
+
+        float32x4_t w = sub(y, dupX(sinhCosh1.v));
+
+        float32x4_t z1 = expF(w);
+        z1 = mulAdd(z1, dupZ(sinhCosh1.v), z1);
+        z1 = condSelect(ltz, neg(z1), z1);
+
+        float32x4_t z2 = expF(y);
+        z2 = mul(sub(z2, invert(z2)), duplicate(0.5f));
+        z2 = condSelect(ltz, neg(z2), z2);
+
+        int32x4_t wgt = greaterThan(w, addSub(dupY(sinhCosh1.v), dupW(sinhCosh1.v), dupX(sinhCosh1.v)));
+
+        float32x4_t f = mul(v, v);
+
+        float32x4_t pf = mulAdd(dupZ(sinhCosh2.v), f, dupW(sinhCosh2.v));
+        pf = mulAdd(dupY(sinhCosh2.v), f, pf);
+        pf = mulAdd(dupX(sinhCosh2.v), f, pf);
+
+        float32x4_t qf = mulAdd(dupZ(sinhCosh3.v), f, dupW(sinhCosh3.v));
+        qf = mulAdd(dupY(sinhCosh3.v), f, qf);
+        qf = mulAdd(dupX(sinhCosh3.v), f, qf);
+
+        float32x4_t rf = mul(f, div(pf, qf));
+        float32x4_t r = mulAdd(v, v, rf);
+
+        float32x4_t wBranch = condSelect(wgt, duplicate(FLT_MAX), z1);
+        float32x4_t yGtBranch = condSelect(gtlnMax, wBranch, z2);
+        return condSelect(gto, yGtBranch,r);
+
+    }
+
+    inline float32x4_t coshF(float32x4_t v){
+        float32x4_t y = vabsq_f32(v);
+        float32x4_t w = sub(y, dupX(sinhCosh1.v));
+        float32x4_t z1 = expF(w);
+        z1 = mulAdd(z1, z1, dupZ(sinhCosh1.v));
+        float32x4_t z2 = expF(y);
+        z2 = add(z2, invert(z2));
+        z2 = mul(z2, duplicate(0.5f));
+
+        int32x4_t gtlnMax = greaterThan(y, dupY(sinhCosh1.v));
+        int32x4_t wgt = greaterThan(w, addSub(dupY(sinhCosh1.v), dupW(sinhCosh1.v), dupX(sinhCosh1.v)));
+
+        return condSelect(gtlnMax, condSelect(wgt, duplicate(FLT_MAX), z1), z2);
+
+    }
 
 }

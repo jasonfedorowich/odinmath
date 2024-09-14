@@ -286,6 +286,10 @@ namespace OdinMath {
         return add(x, add(x, neg(y)));
     }
 
+    inline float32x4_t addSub(float32x4_t x, float32x4_t y, float32x4_t z){
+        return add(x, sub(y, z));
+    }
+
     inline float32x4_t invert(float32x4_t v){
         return vrecpeq_f32(v);
     }
@@ -295,8 +299,7 @@ namespace OdinMath {
     }
 
     inline float32x4_t pow2(int32x4_t n){
-        int32x4_t one = vdupq_n_s32(1);
-        int32x4_t temp = vshlq_s32(one, n);
+        int32x4_t temp = vshlq_s32(oneInt.v, n);
         return vcvtq_f32_s32(temp);
     }
 
