@@ -257,3 +257,27 @@ TEST(VectorIntrinTestSuite, Cosh) {
     EXPECT_NEAR(267.7467614837482, store2[2], 0.01);
     EXPECT_NEAR(11.591953275521519, store2[3], 0.01);
 }
+
+TEST(VectorIntrinTestSuite, Tanh) {
+    float f[4] = {0.f, M_PI / 6.0, M_PI / 4.0, M_PI / 3.0};
+    float r[4] = {M_PI / 2.0, -M_PI / 3.0, -2 * M_PI, -M_PI};
+    auto v1 = load4(f);
+    auto v2 = load4(r);
+    auto res1 = tanhF(v1);
+    auto res2 = tanhF(v2);
+
+    float store1[4];
+    float store2[4];
+    store4(store1, res1);
+    store4(store2, res2);
+
+    EXPECT_NEAR(0.f, store1[0], 0.01);
+    EXPECT_NEAR(0.4804727781564516, store1[1], 0.01);
+    EXPECT_NEAR(0.6557942026326724, store1[2], 0.01);
+    EXPECT_NEAR(0.7807144353592677, store1[3], 0.01);
+
+    EXPECT_NEAR(0.9171523356672744, store2[0], 0.01);
+    EXPECT_NEAR(-0.7807144353592677, store2[1], 0.01);
+    EXPECT_NEAR(-0.9999930253396107, store2[2], 0.01);
+    EXPECT_NEAR(-0.99627207622075, store2[3], 0.01);
+}
