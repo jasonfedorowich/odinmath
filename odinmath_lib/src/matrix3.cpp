@@ -94,9 +94,6 @@ namespace OdinMath {
         return true;
     }
 
-    Matrix3Float Matrix3Float::transpose() {
-        return Matrix3Float(OdinMath::transpose(this->floatMatrix128X4));
-    }
 
     Matrix3Float Matrix3Float::identity() {
         return {1.f, 0.f, 0.f,
@@ -116,6 +113,27 @@ namespace OdinMath {
 
     Vector3Float operator*(Vector3Float &&v, Matrix3Float &&m) {
         return Vector3Float(matrixVectorMul(v.getVector(), m.floatMatrix128X4));
+    }
+
+    void Matrix3Float::load(FloatMatrix128x4& m) {
+        this->floatMatrix128X4 = OdinMath::clear3(m);
+    }
+
+    void Matrix3Float::load(FloatMatrix128x4 &&m) {
+        this->floatMatrix128X4 = OdinMath::clear3(m);
+    }
+
+    Vector4Float Matrix3Float::trace() {
+        FloatVector128 t0 = dupX(this->floatMatrix128X4.vectors[0]);
+        FloatVector128 t1 = dupY(this->floatMatrix128X4.vectors[1]);
+        FloatVector128 t2 = dupZ(this->floatMatrix128X4.vectors[2]);
+        FloatVector128 t3 = zero.v;
+        return Vector4Float(add(t0, add(t1, add(t2, t3))));
+    }
+
+    Matrix3Float Matrix3Float::transpose() {
+        return Matrix3Float(OdinMath::transpose(this->floatMatrix128X4));
+
     }
 
 }

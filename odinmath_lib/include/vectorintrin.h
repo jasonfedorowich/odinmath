@@ -13,6 +13,7 @@ namespace OdinMath {
 
 #if defined(INTRIN) && defined(__aarch64__)
     using FloatVector128 = float32x4_t;
+    using IntegerVector128 = uint32x4_t;
 #elif defined(INTRIN) && defined(__x86_64__)
     using FloatVector128 = __m128;
 #else
@@ -22,7 +23,9 @@ namespace OdinMath {
     struct VectorFloat32{
 
         union {
+#if defined(INTRIN)
             FloatVector128 v;
+#endif
             float f[4];
 
         };
@@ -30,7 +33,9 @@ namespace OdinMath {
 
     struct VectorInteger32{
         union {
-            uint32x4_t v;
+#if defined(INTRIN)
+            IntegerVector128 v;
+#endif
             int f[4];
 
         };
@@ -75,6 +80,9 @@ namespace OdinMath {
 #define GET_LANE_UINT_VECTOR(vector, lane) \
     vgetq_lane_s32(vector, lane)
 
+#define COPY_LANE(to, toLane, from, fromLane) \
+    vcopyq_laneq_f32(to, toLane, from, fromLane)
+
     inline float32x4_t load4(const float *in) {
         return vld1q_f32(in);
     }
@@ -89,6 +97,10 @@ namespace OdinMath {
         float32x2_t second = vld1_f32(&(in[2]));
         second = vcopy_lane_f32(second, 1, zeros, 0);
         return vcombine_f32(first, second);
+    }
+
+    inline float32x4_t load3(float32x4_t v){
+        return COPY_LANE(v, 3, zero.v, 0);
     }
 
     inline void store3(float *out, float32x4_t in) {
@@ -107,10 +119,17 @@ namespace OdinMath {
         return vcombine_f32(first, zeros);
     }
 
+    inline float32x4_t load2(float32x4_t v){
+        float32x4_t z = zero.v;
+        v = COPY_LANE(v, 3, z, 0);
+        return COPY_LANE(v, 2, z, 0);
+    }
+
     inline void store2(float *out, float32x4_t in) {
         float32x2_t lo = vget_low_f32(in);
         vst1_f32(out, lo);
     }
+
 
     inline float32x4_t dupX(float32x4_t v){
         return vdupq_lane_f32(vget_low_f32(v), 0);
@@ -330,6 +349,11 @@ namespace OdinMath {
         float32x4_t p2 = pow2(n);
         return mul(rg, p2);
 
+    }
+
+    // reverses hi and lo parts of vector
+    inline float32x4_t reverse(float32x4_t v){
+        return vrev64q_f32(v);
     }
 
 

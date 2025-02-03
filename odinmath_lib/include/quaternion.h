@@ -100,11 +100,11 @@ namespace OdinMath{
 
         Quaternion<real> operator*();
 
-        Quaternion<real> operator+(const Quaternion<real>& lhs);
-        Quaternion<real> operator-(const Quaternion<real>& lhs);
-        Quaternion<real> operator*(const Quaternion<real>& lhs);
-        Quaternion<real> &operator=(const Quaternion<real>& lhs);
-        bool operator==(const Quaternion<real>& lhs) const;
+        Quaternion<real> operator+(const Quaternion<real>& rhs);
+        Quaternion<real> operator-(const Quaternion<real>& rhs);
+        Quaternion<real> operator*(const Quaternion<real>& rhs);
+        Quaternion<real> &operator=(const Quaternion<real>& rhs);
+        bool operator==(const Quaternion<real>& rhs) const;
 
         real length();
 
@@ -124,6 +124,18 @@ namespace OdinMath{
         FloatVector128 floatVector128{};
     public:
 
+        QuaternionFloat(FloatVector128& v){
+            this->floatVector128 = v;
+        }
+
+        QuaternionFloat(FloatVector128&& v){
+            this->floatVector128 = v;
+        }
+
+        QuaternionFloat(const QuaternionFloat& q){
+            *this = q;
+        }
+
         QuaternionFloat() = default;
 
         QuaternionFloat(float x, float y, float z, float w){
@@ -133,13 +145,369 @@ namespace OdinMath{
             tmp[2] = z;
             tmp[3] = w;
             this->floatVector128 = load4(tmp);
+            normalize();
         }
 
         QuaternionFloat(float roll, float pitch, float yaw){
+            float tmp[4];
+            tmp[0] = roll;
+            tmp[1] = pitch;
+            tmp[2] = yaw;
+            tmp[3] = 0.0f;
+            FloatVector128 v = load4(tmp);
+            v = div(v, two.v);
+            FloatVector128 c1 = cosF(v);
+            FloatVector128 s1 = sinF(v);
+
+            FloatVector128 t1 = dupX(c1);
+            t1 = COPY_LANE(t1, 0, s1, 0);
+            FloatVector128 t2 = dupY(c1);
+            t2 = COPY_LANE(t2, 1, s1, 1);
+            FloatVector128 t3 = dupZ(c1);
+            t3 = COPY_LANE(t3, 2, s1, 2);
+
+            t1 = mul(t1, mul(t2, t3));
+
+            FloatVector128 t4 = dupX(s1);
+            t4 = COPY_LANE(t4, 0, c1, 0);
+            t2 = dupY(s1);
+            t2 = COPY_LANE(t2, 1, c1, 1);
+            t3 = dupZ(s1);
+            t3 = COPY_LANE(t3, 2, c1, 1);
+            t3 = COPY_LANE(t3, 3, s1, 1);
+
+            t2 = mul(t4, mul(t2, t3));
+
+            VectorFloat32 m = {{1.f, -1.f, 1.f, -1.f}};
+
+            t2 = mul(m.v, t2);
+            this->floatVector128 = add(t1, t2);
+        }
+        QuaternionFloat(float angle, FloatVector128& axis){
+            FloatVector128 v = duplicate(angle / 2.f);
+            FloatVector128 s = sinF(v);
+            FloatVector128 c = cosF(v);
+            FloatVector128 t = mul(s, axis);
+            this->floatVector128 = COPY_LANE(t, 3, c, 0);
 
         }
+        QuaternionFloat(float angle, Vector4Float& axis){
+            FloatVector128 v = duplicate(angle / 2.f);
+            FloatVector128 s = sinF(v);
+            FloatVector128 c = cosF(v);
+            FloatVector128 t = mul(s, axis.getVector());
+            this->floatVector128 = COPY_LANE(t, 3, c, 0);
+
+        }
+
+        explicit QuaternionFloat(Matrix3Float& m){
+/*
+            real trace = m(0,0) + m(1,1) + m(2,2);
+            if (trace > (real)0.0f)
+            {
+                real k = (real) 2.0 * sqrt((real)1.0 + trace);
+                k = (real)1.0 / k;
+                this->data[0] = k * (m(2, 1) - m(1, 2));
+                this->data[1] = k * (m(0, 2) - m(2, 0));
+                this->data[2] = k * (m(1, 0) - m(0, 1));
+                this->data[3] = (real)0.25 / k;
+            }else{
+                if ((m(0,0) > m(1,1)) && (m(0,0) > m(2,2))){
+                    real k = (real)2.0 * sqrt(1.0f + m(0,0) - m(1,1) - m(2, 2));
+                    this->data[0] = (real)0.25 * k;
+                    k = (real)1.0 / k;
+                    this->data[1] = k * (m(0, 1) + m(1, 0));
+                    this->data[2] = k * (m(0, 2) + m(2, 0));
+                    this->data[3] = k * (m(2, 1) - m(1, 2));
+                }else if(m(1,1) > m(2,2)){
+                    real k = (real)2.0 * sqrt(1.0f + m(1,1) - m(0,0) - m(2,2));
+                    this->data[1] = (real)0.25 * k;
+                    k = (real)1.0 / k;
+                    this->data[0] = k * (m(0, 1) + m(1, 0));
+                    this->data[2] = k * (m(1, 2) + m(2, 1));
+                    this->data[3] = k * (m(0, 2) - m(2, 0));
+                }else{
+                    real k = (real)2.0 * sqrt(1.0f + m(2,2) - m(0,0) - m(1,1));
+                    this->data[2] = (real)0.25f * k;
+                    k = (real)1.0 / k;
+                    this->data[0] = k * (m(0, 2) + m(2, 0));
+                    this->data[1] = k * (m(1, 2) + m(2, 1));
+                    this->data[3] = k * (m(1, 0) - m(0, 1));
+                }
+            }
+*/
+            FloatVector128 t = m.trace().getVector();
+            IntegerVector128 c1 = greaterThan(t, zero.v);
+
+
+            FloatMatrix128x4 fm = Matrix4Float::to(m);
+            FloatVector128 _00 = dupX(fm.vectors[0]);
+            FloatVector128 _11 = dupY(fm.vectors[1]);
+            FloatVector128 _22 = dupZ(fm.vectors[2]);
+
+            FloatVector128 _01 = dupY(fm.vectors[0]);
+            FloatVector128 _02 = dupZ(fm.vectors[0]);
+
+            FloatVector128 _10 = dupX(fm.vectors[1]);
+            FloatVector128 _12 = dupZ(fm.vectors[1]);
+
+            FloatVector128 _20 = dupX(fm.vectors[2]);
+            FloatVector128 _21 = dupY(fm.vectors[2]);
+
+            VectorFloat32 m1 = {{1.f, 1.f, 1.f, -1.f}};
+            float32x4_t _25 = duplicate(0.25f);
+
+
+            IntegerVector128 c2 = _and(greaterThan(_00, _11), greaterThan(_00, _11));
+            IntegerVector128 c3 = greaterThan(_11, _22);
+
+            FloatVector128 k1 = mul(duplicate(2.f), sqrtF(add(one.v, t)));
+            k1 = invert(k1);
+
+            //todo in here
+            FloatVector128 v1 = _21;
+            v1 = COPY_LANE(v1, 1, _02, 2);
+            v1 = COPY_LANE(v1, 2, _10, 0);
+            v1 = COPY_LANE(v1, 3, div(_25, k1), 0);
+
+            FloatVector128 v2 = _12;
+            v2 = COPY_LANE(v2, 1, _20, 0);
+            v2 = COPY_LANE(v2, 2, _01, 1);
+            v2 = COPY_LANE(v2, 3, zero.v, 0);
+
+            v1 = sub(v1, v2);
+            k1 = COPY_LANE(k1, 3, one.v, 0);
+            v1 = mul(k1, v1);
+            //in here
+            FloatVector128 k2 = one.v;
+            k2 = add(k2, _00);
+            k2 = sub(k2, _11);
+            k2 = sub(k2, _22);
+            k2 = sqrtF(k2);
+            k2 = mul(two.v, k2);
+
+            FloatVector128 v3 = mul(_25, k2);
+            v3 = COPY_LANE(v3, 1, _01, 1);
+            v3 = COPY_LANE(v3, 2, _02, 2);
+            v3 = COPY_LANE(v3, 3, _21, 1);
+
+            FloatVector128 v4 = zero.v;
+            v4 = COPY_LANE(v4, 1, _10, 0);
+            v4 = COPY_LANE(v4, 2, _20, 0);
+            v4 = COPY_LANE(v4, 3, _12, 2);
+
+            v4 = mul(v4, m1.v);
+            v3 = add(v3, v4);
+
+            k2 = invert(k2);
+            k2 = COPY_LANE(k2, 0, one.v, 0);
+            v3 = mul(k2, v3);
+
+            FloatVector128 k3 = one.v;
+            k3 = add(k3, _11);
+            k3 = sub(k3, _00);
+            k3 = sub(k3, _22);
+            k3 = sqrtF(k3);
+            k3 = mul(two.v, k3);
+
+            FloatVector128 v5 = mul(_25, k3);
+            v5 = COPY_LANE(v5, 0, _01, 0);
+            v5 = COPY_LANE(v5, 2, _12, 0);
+            v5 = COPY_LANE(v5, 3, _02, 0);
+
+            FloatVector128 v6 = zero.v;
+            v6 = COPY_LANE(v6, 0, _10, 0);
+            v6 = COPY_LANE(v6, 2, _21, 0);
+            v6 = COPY_LANE(v6, 3, _20, 0);
+            v6 = mul(v6, m1.v);
+
+            v5 = add(v5, v6);
+            k3 = invert(k3);
+            k3 = COPY_LANE(k3, 1, one.v, 0);
+            v5 = mul(v5, k3);
+
+            FloatVector128 k4 = one.v;
+            k4 = add(k4, _22);
+            k4 = sub(k4, _00);
+            k4 = sub(k4, _11);
+            k4 = mul(two.v, sqrtF(k4));
+
+            FloatVector128 v7 = mul(k4, _25);
+            v7 = COPY_LANE(v7, 0, _02, 0);
+            v7 = COPY_LANE(v7, 1, _12, 0);
+            v7 = COPY_LANE(v7, 3, _10, 0);
+
+            FloatVector128 v8 = zero.v;
+            v8 = COPY_LANE(v8, 0, _20, 0);
+            v8 = COPY_LANE(v8, 1, _21, 0);
+            v8 = COPY_LANE(v8, 3, _01, 0);
+
+            v8 = mul(m1.v, v8);
+            v7 = add(v7, v8);
+
+            k4 = invert(k4);
+            k4 = COPY_LANE(k4, 2, one.v, 0);
+            v7 = mul(k4, v7);
+
+            this->floatVector128 = condSelect(c1, v1, condSelect(c2, v3, condSelect(c3, v5, v7)));
+
+        }
+
+        QuaternionFloat operator*();
+        QuaternionFloat operator+(const QuaternionFloat& rhs);
+        QuaternionFloat operator-(const QuaternionFloat& rhs);
+        QuaternionFloat operator*(const QuaternionFloat& rhs);
+        QuaternionFloat &operator=(const QuaternionFloat&  rhs);
+        bool operator==(const QuaternionFloat& rhs) const;
+
+        void normalize();
+
+        float length();
+
+        /* Same operation as operator*() */
+        QuaternionFloat conjugate();
+
+        bool isNormalized(float& length, float eps);
+
+        float getX(){
+            return GET_LANE_VECTOR(this->floatVector128, 0);
+        }
+
+        float getY(){
+            return GET_LANE_VECTOR(this->floatVector128, 1);
+        }
+
+        float getZ(){
+            return GET_LANE_VECTOR(this->floatVector128, 2);
+        }
+
+        float getW(){
+            return GET_LANE_VECTOR(this->floatVector128, 3);
+        }
+
+        void setX(float x);
+        void setY(float y);
+        void setZ(float z);
+        void setW(float w);
+
+        friend void toRotationMatrix(Matrix3Float& rotation, QuaternionFloat& q);
+
+        friend void toAngleAxis(float& angle, Vector3Float& axis, QuaternionFloat& q);
+
+        friend void toRollPitchYaw(float& roll, float& pitch, float& yaw, QuaternionFloat& q);
+
     };
+
+
+    inline void toRotationMatrix(Matrix3Float& rotation, QuaternionFloat& q){
+
+        FloatVector128 _00 = dupX(q.floatVector128);
+        FloatVector128 _11 = dupY(q.floatVector128);
+        FloatVector128 _22 = dupZ(q.floatVector128);
+
+        FloatVector128 t0 = mul(_00, q.floatVector128);
+        FloatVector128 t1 = mul(_11, q.floatVector128);
+        FloatVector128 t2 = mul(_22, q.floatVector128);
+
+        t0 = mul(t0, two.v);
+        t1 = mul(t1, two.v);
+        t2 = mul(t2, two.v);
+
+        VectorFloat32 m1 = {{-1.f, -1.f, 1.f, 1.f}};
+
+        FloatVector128 x1 = dupY(t1);
+        x1 = sub(one.v, x1);
+
+        x1 = COPY_LANE(x1, 1, t0, 1);
+        x1 = COPY_LANE(x1, 2, t0, 2);
+
+        FloatVector128 x2 = dupZ(t2);
+        x2 = COPY_LANE(x2, 1, t2, 3);
+        x2 = COPY_LANE(x2, 2, t1, 3);
+
+        x1 = add(x1, mul(m1.v, x2));
+
+        FloatVector128 x3 = dupX(t0);
+        x3 = sub(one.v, x3);
+        x3 = COPY_LANE(x3, 0, t0, 1);
+        x3 = COPY_LANE(x3, 2, t1, 2);
+
+        VectorFloat32 m2 = {{1.f, -1.f, -1.f, 1.f}};
+
+        FloatVector128 x4 = dupZ(t2);
+        x4 = COPY_LANE(x4, 0, t2, 3);
+        x4 = COPY_LANE(x4, 2, t0, 3);
+
+        x3 = add(x3, mul(m2.v, x4));
+
+        FloatVector128 x5 = dupX(t0);
+        x5 = sub(one.v, x5);
+        x5 = COPY_LANE(x5, 0, t0, 2);
+        x5 = COPY_LANE(x5, 1, t1, 2);
+
+        VectorFloat32 m3 = {{-1.f, 1.f, -1.f, 1.f}};
+
+        FloatVector128 x6 = dupY(t1);
+        x6 = COPY_LANE(x6, 0, t1, 3);
+        x6 = COPY_LANE(x6, 1, t0, 3);
+
+        x5 = add(x5, mul(m3.v, x6));
+
+        rotation.load(FloatMatrix128x4(x1, x3, x5, x1));
+    }
+
+    inline void toAngleAxis(float& angle, Vector3Float& axis, QuaternionFloat& q){
+        FloatVector128 ang = OdinMath::arcCosF(dupW(q.floatVector128));
+        ang = mul(two.v, ang);
+        FloatVector128 a = div(ang, two.v);
+        FloatVector128 invS = div(one.v, OdinMath::sinF(a));
+
+        axis = Vector3Float(mul(q.floatVector128, invS));
+        store2(&angle, ang);
+    }
+
+    inline void toRollPitchYaw(float& roll, float& pitch, float& yaw, QuaternionFloat& q){
+        FloatVector128 qq = mul(q.floatVector128, q.floatVector128);
+        FloatVector128 _w = dupW(q.floatVector128);
+        FloatVector128 _y = dupY(q.floatVector128);
+        FloatVector128 _x = dupX(q.floatVector128);
+
+        FloatVector128 _wq = mul(q.floatVector128, _w);
+        FloatVector128 _yq = mul(q.floatVector128, _y);
+        FloatVector128 _xq = mul(q.floatVector128, _x);
+
+        FloatVector128 tmp1 = COPY_LANE(_yq, 0, _yq, 2);
+        tmp1 = COPY_LANE(tmp1, 1, _xq, 2);
+        tmp1 = COPY_LANE(tmp1, 2, _xq, 1);
+
+        VectorFloat32 m1 = {{1.f, -1.f, 1.f, 1.f}};
+        tmp1 = mul(m1.v, tmp1);
+        tmp1 = add(_wq, tmp1);
+        tmp1 = mul(two.v, tmp1);
+
+        FloatVector128 ww = dupW(qq);
+        FloatVector128 xx = dupX(qq);
+        FloatVector128 yy = dupY(qq);
+        FloatVector128 zz = dupZ(qq);
+
+        VectorFloat32 m2 = {{-1.f, 1.f, 1.f, 1.f}};
+        VectorFloat32 m3 = {{-1.f, -1.f, 1.f, 1.f}};
+        FloatVector128 tmp2 = mul(m2.v, xx);
+        tmp2 = add(ww, tmp2);
+        tmp2 = add(mul(m3.v, yy), tmp2);
+        tmp2 = add(mul(m1.v, zz), tmp2);
+        tmp2 = COPY_LANE(tmp2, 2, tmp2, 1);
+
+        FloatVector128 angles = OdinMath::arcTan2F(tmp1, tmp2);
+        FloatVector128 _pitch = OdinMath::arcSinF(tmp1);
+
+        store2(&roll, dupX(angles));
+        store2(&pitch, dupY(_pitch));
+        store2(&yaw, dupZ(angles));
+    }
+
 #endif
+
     template<typename real>
     inline void toRotationMatrix(Matrix3<real>& rotation, Quaternion<real>& q){
         real one = (real)1.0;
@@ -196,50 +564,50 @@ namespace OdinMath{
     }
 
     template<typename real>
-    bool Quaternion<real>::operator==(const Quaternion<real> &lhs) const {
-        return (this->data[0] == lhs[0]
-        && this->data[1] == lhs[1]
-        && this->data[2] == lhs[2]
-        && this->data[3] == lhs[3]);
+    bool Quaternion<real>::operator==(const Quaternion<real> &rhs) const {
+        return (this->data[0] == rhs[0]
+        && this->data[1] == rhs[1]
+        && this->data[2] == rhs[2]
+        && this->data[3] == rhs[3]);
     }
 
 
     template<typename real>
-    Quaternion<real> Quaternion<real>::operator*(const Quaternion<real> &lhs) {
-        real r1 = this->data[3] * lhs[0] + this->data[0] * lhs[3] + this->data[1] * lhs[2] - this->data[2] * lhs[1];
-        real r2 = this->data[3] * lhs[1] - this->data[0] * lhs[2] + this->data[1] * lhs[3] + this->data[2] * lhs[0];
-        real r3 = this->data[3] * lhs[2] + this->data[0] * lhs[1] - this->data[1] * lhs[0] + this->data[2] * lhs[3];
-        real r4 = this->data[3] * lhs[3] - this->data[0] * lhs[0] - this->data[1] * lhs[1] - this->data[2] * lhs[2];
+    Quaternion<real> Quaternion<real>::operator*(const Quaternion<real> &rhs) {
+        real r1 = this->data[3] * rhs[0] + this->data[0] * rhs[3] + this->data[1] * rhs[2] - this->data[2] * rhs[1];
+        real r2 = this->data[3] * rhs[1] - this->data[0] * rhs[2] + this->data[1] * rhs[3] + this->data[2] * rhs[0];
+        real r3 = this->data[3] * rhs[2] + this->data[0] * rhs[1] - this->data[1] * rhs[0] + this->data[2] * rhs[3];
+        real r4 = this->data[3] * rhs[3] - this->data[0] * rhs[0] - this->data[1] * rhs[1] - this->data[2] * rhs[2];
         return Quaternion<real>(r1, r2, r3, r4);
     }
 
     template<typename real>
-    Quaternion<real> Quaternion<real>::operator-(const Quaternion<real> &lhs) {
+    Quaternion<real> Quaternion<real>::operator-(const Quaternion<real> &rhs) {
         return Quaternion<real>(
-                this->data[0] - lhs[0],
-                this->data[1] - lhs[1],
-                this->data[2] - lhs[2],
-                this->data[3] - lhs[3]
+                this->data[0] - rhs[0],
+                this->data[1] - rhs[1],
+                this->data[2] - rhs[2],
+                this->data[3] - rhs[3]
         );
     }
 
     template<typename real>
-    Quaternion<real> Quaternion<real>::operator+(const Quaternion<real> &lhs) {
+    Quaternion<real> Quaternion<real>::operator+(const Quaternion<real> &rhs) {
         return Quaternion<real>(
-                this->data[0] + lhs[0],
-                this->data[1] + lhs[1],
-                this->data[2] + lhs[2],
-                this->data[3] + lhs[3]
+                this->data[0] + rhs[0],
+                this->data[1] + rhs[1],
+                this->data[2] + rhs[2],
+                this->data[3] + rhs[3]
                 );
     }
 
     template<typename real>
-    Quaternion<real> &Quaternion<real>::operator=(const Quaternion<real> &lhs) {
-        if(this != &lhs){
-            this->data[0] = lhs[0];
-            this->data[1] = lhs[1];
-            this->data[2] = lhs[2];
-            this->data[3] = lhs[3];
+    Quaternion<real> &Quaternion<real>::operator=(const Quaternion<real> &rhs) {
+        if(this != &rhs){
+            this->data[0] = rhs[0];
+            this->data[1] = rhs[1];
+            this->data[2] = rhs[2];
+            this->data[3] = rhs[3];
         }
         return *this;
     }

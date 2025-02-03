@@ -321,7 +321,6 @@ TEST(Matrix3FloatTestSuite, TestArithmetic){
     Vector3Float resL = v * matrix3Float1;
     Vector3Float expL(38,   44,   57);
     EXPECT_EQ(expL, resL);
-
     Vector3Float resR = matrix3Float1 * v;
     Vector3Float expR(35, 38, 62);
     EXPECT_EQ(expR, resR);

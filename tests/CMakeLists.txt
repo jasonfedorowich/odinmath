@@ -22,7 +22,9 @@ add_executable(odinmath_tests_run
         quaternion_test.cpp
         trig_test.cpp
         math_test.cpp
-        vector_intrin_trig_test.cpp)
+        vector_intrin_trig_test.cpp
+        quaternion_intrin_test.cpp
+)
 
 target_link_libraries(odinmath_tests_run odinmath_lib)
 

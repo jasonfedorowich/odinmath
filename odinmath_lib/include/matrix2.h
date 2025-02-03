@@ -54,6 +54,8 @@ namespace OdinMath {
 
         real det();
 
+        real trace();
+
         /*Method returns true if Matrix is invertible argument `inv` holds in the inverse matrix if invertible
          * argument `eps` matrix is invertible determinant is greater than `eps` due to rounding errors
          * argument `det` holds the result of the determinant*/
@@ -66,9 +68,14 @@ namespace OdinMath {
         static Matrix2<real> zeros();
     };
 
+    template<typename real>
+    real Matrix2<real>::trace() {
+        return (this->mat[0][0] + this->mat[1][1]);
+    }
+
 #if defined(INTRIN) && (defined(__aarch64__) || defined(__x86_64__))
 
-    class Matrix2Float : Matrix4Float {
+    class Matrix2Float : public Matrix4Float {
     public:
         Matrix2Float(float _11, float _12,
                      float _21, float _22) {
@@ -124,10 +131,13 @@ namespace OdinMath {
 
         float det() override;
 
+        Vector4Float trace() override;
+
         /*Method returns true if Matrix is invertible argument `inv` holds in the inverse matrix if invertible
          * argument `eps` matrix is invertible determinant is greater than `eps` due to rounding errors
          * argument `det` holds the result of the determinant*/
         bool inverse(Matrix2Float &inv, float eps, float *det);
+
 
         Matrix2Float transpose();
 

@@ -88,6 +88,8 @@ namespace OdinMath {
         Iterator begin() { return Iterator(this); }
 
         Iterator end() { return Iterator(this, ROW_SIZE); }
+
+        //todo determinant, inverse
     };
 
     template<int ROW_SIZE, int COL_SIZE, typename real>

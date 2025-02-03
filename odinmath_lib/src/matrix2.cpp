@@ -107,4 +107,12 @@ namespace OdinMath {
         return Vector2Float(matrixVectorMul(v.getVector(), m.floatMatrix128X4));
     }
 
+    Vector4Float Matrix2Float::trace() {
+        FloatVector128 t0 = dupX(this->floatMatrix128X4.vectors[0]);
+        FloatVector128 t1 = dupY(this->floatMatrix128X4.vectors[1]);
+        FloatVector128 t2 = zero.v;
+        FloatVector128 t3 = zero.v;
+        return Vector4Float(add(t0, add(t1, add(t2, t3))));
+    }
+
 }

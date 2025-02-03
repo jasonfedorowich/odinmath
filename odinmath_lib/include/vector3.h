@@ -84,9 +84,9 @@ namespace OdinMath {
     public:
         Vector3Float(float x, float y, float z) : Vector4Float(x, y, z, 0.f) {}
 
-        explicit Vector3Float(FloatVector128 &v) : Vector4Float(v) {}
+        explicit Vector3Float(FloatVector128 &v) : Vector4Float(v) { this->floatVector128 = load3(v); }
 
-        explicit Vector3Float(FloatVector128 &&v) : Vector4Float(v) {};
+        explicit Vector3Float(FloatVector128 &&v) : Vector4Float(v) { this->floatVector128 = load3(v); };
 
         explicit Vector3Float(Vector3<float> &vector3) : Vector3Float(vector3[0], vector3[1], vector3[2]) {};
 

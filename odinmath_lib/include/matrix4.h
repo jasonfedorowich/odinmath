@@ -69,6 +69,8 @@ namespace OdinMath {
 
         real det();
 
+        real trace();
+
         /*Method returns true if Matrix is invertible argument `inv` holds in the inverse matrix if invertible
          * argument `eps` matrix is invertible determinant is greater than `eps` due to rounding errors
          * argument `det` holds the result of the determinant*/
@@ -80,6 +82,11 @@ namespace OdinMath {
 
         static Matrix4<real> zeros();
     };
+
+    template<typename real>
+    real Matrix4<real>::trace() {
+        return (this->mat[0][0] + this->mat[1][1] + this->mat[2][2] + this->mat[3][3]);
+    }
 
 #if defined(INTRIN) && (defined(__aarch64__) || defined(__x86_64__))
 
@@ -136,36 +143,41 @@ namespace OdinMath {
 
         Matrix4Float &operator=(const Matrix4Float &rhs);
 
-        Matrix4Float operator+(const Matrix4Float &rhs);
+        virtual Matrix4Float operator+(const Matrix4Float &rhs);
 
-        Matrix4Float operator+(const Matrix4Float &&rhs);
+        virtual Matrix4Float operator+(const Matrix4Float &&rhs);
 
-        Matrix4Float operator-(const Matrix4Float &rhs);
+        virtual Matrix4Float operator-(const Matrix4Float &rhs);
 
-        Matrix4Float operator-(const Matrix4Float &&rhs);
+        virtual Matrix4Float operator-(const Matrix4Float &&rhs);
 
-        Matrix4Float operator*(Matrix4Float &rhs);
+        virtual Matrix4Float operator*(Matrix4Float &rhs);
 
-        Matrix4Float operator*(Matrix4Float &&rhs);
+        virtual Matrix4Float operator*(Matrix4Float &&rhs);
 
-        Vector4Float operator*(Vector4Float &v);
+        virtual Vector4Float operator*(Vector4Float &v);
 
-        Vector4Float operator*(Vector4Float &&v);
+        virtual Vector4Float operator*(Vector4Float &&v);
 
         bool operator==(const Matrix4Float &rhs) const;
 
         virtual float det();
+
+        virtual Vector4Float trace();
 
         /*Method returns true if Matrix is invertible argument `inv` holds in the inverse matrix if invertible
          * argument `eps` matrix is invertible determinant is greater than `eps` due to rounding errors
          * argument `det` holds the result of the determinant*/
         bool inverse(Matrix4Float &inv, float eps, float *det);
 
+        //todo should make virtual?
         Matrix4Float transpose();
 
         static Matrix4Float identity();
 
         static Matrix4Float zeros();
+
+        static FloatMatrix128x4 to(Matrix4Float& m);
 
         friend Vector4Float operator*(Vector4Float &v, Matrix4Float &m);
 

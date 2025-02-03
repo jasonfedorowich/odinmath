@@ -3,6 +3,8 @@
 //
 
 #include "odinmath.h"
+#include "include/matrix4.h"
+
 
 namespace OdinMath {
 
@@ -117,6 +119,18 @@ namespace OdinMath {
             default:
                 throw InvalidArgument("Invalid column in set matrix4");
         }
+    }
+
+    Vector4Float Matrix4Float::trace() {
+        FloatVector128 t0 = dupX(this->floatMatrix128X4.vectors[0]);
+        FloatVector128 t1 = dupY(this->floatMatrix128X4.vectors[1]);
+        FloatVector128 t2 = dupZ(this->floatMatrix128X4.vectors[2]);
+        FloatVector128 t3 = dupW(this->floatMatrix128X4.vectors[3]);
+        return Vector4Float(add(t0, add(t1, add(t2, t3))));
+    }
+
+    FloatMatrix128x4 Matrix4Float::to(Matrix4Float &m) {
+        return m.floatMatrix128X4;
     }
 
 
