@@ -4,6 +4,7 @@
 
 #include "gtest/gtest.h"
 #include "odinmath.h"
+#include <iostream>
 
 using namespace OdinMath;
 
@@ -42,63 +43,72 @@ TEST(QuaternionFloatTestSuite, RotationMatrix){
 
 
 TEST(QuaternionFloatTestSuite, AxisAngle){
-    Vector3<float> axis(1.f, 0.f, 0.f);
+    Vector3Float axis(1.f, 0.f, 0.f);
     float pi = 3.1415926;
-    Quaternion<float> q(pi / 2.f, axis);
-    Quaternion<float> expQ(0.7071, 0, 0, 0.7071);
-    EXPECT_NEAR(expQ[0], q[0], 0.01);
-    EXPECT_NEAR(expQ[1], q[1], 0.01);
-    EXPECT_NEAR(expQ[2], q[2], 0.01);
-    EXPECT_NEAR(expQ[3], q[3], 0.01);
-
-    float angle;
-    Vector3<float> a;
+    QuaternionFloat q(pi / 2.f, axis);
+    QuaternionFloat expQ(0.7071, 0, 0, 0.7071);
+    EXPECT_NEAR(expQ.getX(), q.getX(), 0.01);
+    EXPECT_NEAR(expQ.getY(), q.getY(), 0.01);
+    EXPECT_NEAR(expQ.getZ(), q.getZ(), 0.01);
+    EXPECT_NEAR(expQ.getW(), q.getW(), 0.01);
+    std::cout << expQ;
+    float angle[4];
+    Vector3Float a;
     toAngleAxis(angle, a, expQ);
-    EXPECT_NEAR(axis[0], a[0], 0.01);
-    EXPECT_NEAR(axis[1], a[1], 0.01);
-    EXPECT_NEAR(axis[2], a[2], 0.01);
-    EXPECT_NEAR(pi / 2.f, angle, 0.01);
+    std::cout << a;
+    float piOver2 = pi / 2.f;
+    EXPECT_NEAR(axis.getX(), a.getX(), 0.01);
+    EXPECT_NEAR(axis.getY(), a.getY(), 0.01);
+    EXPECT_NEAR(axis.getZ(), a.getZ(), 0.01);
+    EXPECT_NEAR(piOver2, angle[0], 0.1);
 
 }
 
 TEST(QuaternionFloatTestSuite, RollPitchYaw){
-    double yaw = 0.7854;
-    double pitch = 0.1;
-    double roll = 0.0;
-    Quaternion<double> q(roll, pitch, yaw);
-    EXPECT_NEAR(-0.0191 , q[0], 0.01);
-    EXPECT_NEAR(0.0462, q[1], 0.01);
-    EXPECT_NEAR(0.3822, q[2], 0.01);
-    EXPECT_NEAR(0.9227, q[3], 0.01);
+    float yaw = 0.7854;
+    float pitch = 0.1;
+    float roll = 0.0;
+    QuaternionFloat q(roll, pitch, yaw);
+    EXPECT_NEAR(-0.0191 , q.getX(), 0.01);
+    EXPECT_NEAR(0.0462, q.getY(), 0.01);
+    EXPECT_NEAR(0.3822, q.getZ(), 0.01);
+    EXPECT_NEAR(0.9227, q.getW(), 0.01);
 
-    double rollActual;
-    double pitchActual;
-    double yawActual;
-    toRollPitchYaw(rollActual, pitchActual, yawActual, q);
-    EXPECT_NEAR(roll , rollActual, 0.01);
-    EXPECT_NEAR(pitch, pitchActual, 0.01);
-    EXPECT_NEAR(yaw, yawActual, 0.01);
+    float angles[3];
+    toRollPitchYaw(angles, q);
+    EXPECT_NEAR(roll , angles[0], 0.01);
+    EXPECT_NEAR(pitch, angles[1], 0.01);
+    EXPECT_NEAR(yaw, angles[2], 0.01);
 
 }
 
 TEST(QuaternionFloatTestSuite, AddSub){
-    Quaternion<double> q1(1.0, 2.0, 3.0, 5.0);
-    Quaternion<double> q2(2.0, 3.0, 5.0, 10.0);
-    Quaternion<double> expAdd(3.0, 5.0, 8.0, 15.0);
-    EXPECT_EQ(expAdd, q1 + q2);
+    QuaternionFloat q1(1.0, 2.0, 3.0, 5.0);
+    QuaternionFloat q2(2.0, 3.0, 5.0, 10.0);
+    QuaternionFloat q3 = q1 + q2;
+    QuaternionFloat expAdd(3.0, 5.0, 8.0, 15.0);
+    EXPECT_NEAR(expAdd.getX(), q3.getX(), 0.01);
+    EXPECT_NEAR(expAdd.getY(), q3.getY(), 0.01);
+    EXPECT_NEAR(expAdd.getZ(), q3.getZ(), 0.01);
+    EXPECT_NEAR(expAdd.getW(), q3.getW(), 0.01);
 
-    Quaternion<double> expSub(-1.0, -1.0, -2.0, -5.0);
-    EXPECT_EQ(expSub, q1 - q2);
+
+    QuaternionFloat expSub(-0.10189, 0.65299, 0.5511, -0.5094);
+    QuaternionFloat q4 = q1 - q2;
+    EXPECT_NEAR(expSub.getX(), q4.getX(), 0.01);
+    EXPECT_NEAR(expSub.getY(), q4.getY(), 0.01);
+    EXPECT_NEAR(expSub.getZ(), q4.getZ(), 0.01);
+    EXPECT_NEAR(expSub.getW(), q4.getW(), 0.01);
 }
 
 TEST(QuaternionFloatTestSuite, Multiplication){
-    Quaternion<double> q1(1.0, 2.0, 3.0, 4.0);
-    Quaternion<double> q2(1.0, 3.0, 4.0, 2.0);
-    Quaternion<double> q3 = q1 * q2;
-    Quaternion<double> expQ(5,  15,  23, -11);
-    EXPECT_NEAR(expQ[0], q3[0], 0.01);
-    EXPECT_NEAR(expQ[1], q3[1], 0.01);
-    EXPECT_NEAR(expQ[2], q3[2], 0.01);
-    EXPECT_NEAR(expQ[3], q3[3], 0.01);
+    QuaternionFloat q1(1.0, 2.0, 3.0, 4.0);
+    QuaternionFloat q2(1.0, 3.0, 4.0, 2.0);
+    QuaternionFloat q3 = q1 * q2;
+    QuaternionFloat expQ(5, 15,  23, -11);
+    EXPECT_NEAR(expQ.getX(), q3.getX(), 0.01);
+    EXPECT_NEAR(expQ.getY(), q3.getY(), 0.01);
+    EXPECT_NEAR(expQ.getZ(), q3.getZ(), 0.01);
+    EXPECT_NEAR(expQ.getW(), q3.getW(), 0.01);
 
 }

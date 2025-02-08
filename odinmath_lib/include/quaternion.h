@@ -5,6 +5,7 @@
 #ifndef ODINMATH_QUATERNION_H
 #define ODINMATH_QUATERNION_H
 
+#include <ostream>
 #include "odinmath.h"
 
 namespace OdinMath{
@@ -126,10 +127,11 @@ namespace OdinMath{
 
         QuaternionFloat(FloatVector128& v){
             this->floatVector128 = v;
+            normalize();
         }
 
-        QuaternionFloat(FloatVector128&& v){
-            this->floatVector128 = v;
+        QuaternionFloat(FloatVector128&& v) : QuaternionFloat(v){
+
         }
 
         QuaternionFloat(const QuaternionFloat& q){
@@ -178,7 +180,7 @@ namespace OdinMath{
 
             t2 = mul(t4, mul(t2, t3));
 
-            VectorFloat32 m = {{1.f, -1.f, 1.f, -1.f}};
+            VectorFloat32 m = {{-1.f, 1.f, -1.f, 1.f}};
 
             t2 = mul(m.v, t2);
             this->floatVector128 = add(t1, t2);
@@ -201,41 +203,6 @@ namespace OdinMath{
         }
 
         explicit QuaternionFloat(Matrix3Float& m){
-/*
-            real trace = m(0,0) + m(1,1) + m(2,2);
-            if (trace > (real)0.0f)
-            {
-                real k = (real) 2.0 * sqrt((real)1.0 + trace);
-                k = (real)1.0 / k;
-                this->data[0] = k * (m(2, 1) - m(1, 2));
-                this->data[1] = k * (m(0, 2) - m(2, 0));
-                this->data[2] = k * (m(1, 0) - m(0, 1));
-                this->data[3] = (real)0.25 / k;
-            }else{
-                if ((m(0,0) > m(1,1)) && (m(0,0) > m(2,2))){
-                    real k = (real)2.0 * sqrt(1.0f + m(0,0) - m(1,1) - m(2, 2));
-                    this->data[0] = (real)0.25 * k;
-                    k = (real)1.0 / k;
-                    this->data[1] = k * (m(0, 1) + m(1, 0));
-                    this->data[2] = k * (m(0, 2) + m(2, 0));
-                    this->data[3] = k * (m(2, 1) - m(1, 2));
-                }else if(m(1,1) > m(2,2)){
-                    real k = (real)2.0 * sqrt(1.0f + m(1,1) - m(0,0) - m(2,2));
-                    this->data[1] = (real)0.25 * k;
-                    k = (real)1.0 / k;
-                    this->data[0] = k * (m(0, 1) + m(1, 0));
-                    this->data[2] = k * (m(1, 2) + m(2, 1));
-                    this->data[3] = k * (m(0, 2) - m(2, 0));
-                }else{
-                    real k = (real)2.0 * sqrt(1.0f + m(2,2) - m(0,0) - m(1,1));
-                    this->data[2] = (real)0.25f * k;
-                    k = (real)1.0 / k;
-                    this->data[0] = k * (m(0, 2) + m(2, 0));
-                    this->data[1] = k * (m(1, 2) + m(2, 1));
-                    this->data[3] = k * (m(1, 0) - m(0, 1));
-                }
-            }
-*/
             FloatVector128 t = m.trace().getVector();
             IntegerVector128 c1 = greaterThan(t, zero.v);
 
@@ -353,6 +320,8 @@ namespace OdinMath{
 
         }
 
+        friend std::ostream &operator<<(std::ostream &os, const QuaternionFloat &aFloat);
+
         QuaternionFloat operator*();
         QuaternionFloat operator+(const QuaternionFloat& rhs);
         QuaternionFloat operator-(const QuaternionFloat& rhs);
@@ -392,9 +361,9 @@ namespace OdinMath{
 
         friend void toRotationMatrix(Matrix3Float& rotation, QuaternionFloat& q);
 
-        friend void toAngleAxis(float& angle, Vector3Float& axis, QuaternionFloat& q);
+        friend void toAngleAxis(float* angle, Vector3Float& axis, QuaternionFloat& q);
 
-        friend void toRollPitchYaw(float& roll, float& pitch, float& yaw, QuaternionFloat& q);
+        friend void toRollPitchYaw(float* angles, QuaternionFloat& q);
 
     };
 
@@ -456,17 +425,17 @@ namespace OdinMath{
         rotation.load(FloatMatrix128x4(x1, x3, x5, x1));
     }
 
-    inline void toAngleAxis(float& angle, Vector3Float& axis, QuaternionFloat& q){
+    inline void toAngleAxis(float* angle, Vector3Float& axis, QuaternionFloat& q){
         FloatVector128 ang = OdinMath::arcCosF(dupW(q.floatVector128));
         ang = mul(two.v, ang);
         FloatVector128 a = div(ang, two.v);
         FloatVector128 invS = div(one.v, OdinMath::sinF(a));
 
         axis = Vector3Float(mul(q.floatVector128, invS));
-        store2(&angle, ang);
+        store2(angle, ang);
     }
 
-    inline void toRollPitchYaw(float& roll, float& pitch, float& yaw, QuaternionFloat& q){
+    inline void toRollPitchYaw(float* angles, QuaternionFloat& q){
         FloatVector128 qq = mul(q.floatVector128, q.floatVector128);
         FloatVector128 _w = dupW(q.floatVector128);
         FloatVector128 _y = dupY(q.floatVector128);
@@ -492,18 +461,20 @@ namespace OdinMath{
 
         VectorFloat32 m2 = {{-1.f, 1.f, 1.f, 1.f}};
         VectorFloat32 m3 = {{-1.f, -1.f, 1.f, 1.f}};
+
         FloatVector128 tmp2 = mul(m2.v, xx);
         tmp2 = add(ww, tmp2);
         tmp2 = add(mul(m3.v, yy), tmp2);
         tmp2 = add(mul(m1.v, zz), tmp2);
         tmp2 = COPY_LANE(tmp2, 2, tmp2, 1);
 
-        FloatVector128 angles = OdinMath::arcTan2F(tmp1, tmp2);
+        FloatVector128 _angles = OdinMath::arcTan2F(tmp1, tmp2);
         FloatVector128 _pitch = OdinMath::arcSinF(tmp1);
 
-        store2(&roll, dupX(angles));
-        store2(&pitch, dupY(_pitch));
-        store2(&yaw, dupZ(angles));
+        FloatVector128 v = COPY_LANE(_angles, 1, _pitch, 1);
+        v = COPY_LANE(v, 2, _angles, 2);
+
+        store3(angles, v);
     }
 
 #endif
@@ -636,10 +607,10 @@ namespace OdinMath{
     void Quaternion<real>::normalize() {
         real length = this->length();
         real invLength = (real)1.0 / length;
-        this->data[0] * invLength;
-        this->data[1] * invLength;
-        this->data[2] * invLength;
-        this->data[3] * invLength;
+        this->data[0] *= invLength;
+        this->data[1] *= invLength;
+        this->data[2] *= invLength;
+        this->data[3] *= invLength;
     }
 
     template<typename real>

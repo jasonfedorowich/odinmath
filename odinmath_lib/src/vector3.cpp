@@ -66,6 +66,13 @@ namespace OdinMath {
         return equals(this->floatVector128, v.floatVector128);
     }
 
+    std::ostream &operator<<(std::ostream &os, const Vector3Float &v) {
+        os << '\n' <<"Vector3Float "
+           << " X: "<< GET_LANE_VECTOR(v.floatVector128, 0) << " Y: " <<  GET_LANE_VECTOR(v.floatVector128, 1)
+           << " Z: " << GET_LANE_VECTOR(v.floatVector128, 2);
+        return os;
+    }
+
 
 #endif
 

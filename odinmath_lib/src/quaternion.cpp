@@ -99,6 +99,13 @@ namespace OdinMath{
     void QuaternionFloat::setW(float w) {
         this->floatVector128 = SET_LANE_VECTOR(w, this->floatVector128, 3);
     }
+
+    std::ostream &operator<<(std::ostream &os, const QuaternionFloat &q) {
+        os << '\n' << "QuaternionFloat "
+        << " X: "<< GET_LANE_VECTOR(q.floatVector128, 0) << " Y: " <<  GET_LANE_VECTOR(q.floatVector128, 1)
+        << " Z: " << GET_LANE_VECTOR(q.floatVector128, 2) << " W: " << GET_LANE_VECTOR(q.floatVector128, 3);
+        return os;
+    }
 }
 
 

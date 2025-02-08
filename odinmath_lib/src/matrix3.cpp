@@ -128,6 +128,7 @@ namespace OdinMath {
         FloatVector128 t1 = dupY(this->floatMatrix128X4.vectors[1]);
         FloatVector128 t2 = dupZ(this->floatMatrix128X4.vectors[2]);
         FloatVector128 t3 = zero.v;
+        //todo check this
         return Vector4Float(add(t0, add(t1, add(t2, t3))));
     }
 

@@ -5,6 +5,7 @@
 #ifndef ODINMATH_VECTOR3_H
 #define ODINMATH_VECTOR3_H
 
+#include <ostream>
 #include "odinmath.h"
 
 namespace OdinMath {
@@ -132,6 +133,7 @@ namespace OdinMath {
 
         void getData(float *data) override;
 
+        friend std::ostream &operator<<(std::ostream &os, const Vector3Float &aFloat);
     };
 
 #endif

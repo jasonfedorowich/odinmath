@@ -37,6 +37,9 @@
 #include "include/quaternion.h"
 
 //todo create constant thats called by a template
+//todo pow
+//todo eigem
+//todo add rest of stream operators
 //inline const float eps<float>
 
 

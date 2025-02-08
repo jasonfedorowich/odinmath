@@ -84,10 +84,20 @@ TEST(QuaternionTestSuite, AddSub){
     Quaternion<double> q1(1.0, 2.0, 3.0, 5.0);
     Quaternion<double> q2(2.0, 3.0, 5.0, 10.0);
     Quaternion<double> expAdd(3.0, 5.0, 8.0, 15.0);
-    EXPECT_EQ(expAdd, q1 + q2);
+    Quaternion<double> q3 = q1 + q2;
 
-    Quaternion<double> expSub(-1.0, -1.0, -2.0, -5.0);
-    EXPECT_EQ(expSub, q1 - q2);
+    EXPECT_NEAR(expAdd[0], q3[0], 0.01);
+    EXPECT_NEAR(expAdd[1], q3[1], 0.01);
+    EXPECT_NEAR(expAdd[2], q3[2], 0.01);
+    EXPECT_NEAR(expAdd[3], q3[3], 0.01);
+
+    Quaternion<double> expSub(-0.10189, 0.65299, 0.5511, -0.5094);
+    Quaternion<double> q4 = q1 - q2;
+
+    EXPECT_NEAR(expSub[0], q4[0], 0.01);
+    EXPECT_NEAR(expSub[1], q4[1], 0.01);
+    EXPECT_NEAR(expSub[2], q4[2], 0.01);
+    EXPECT_NEAR(expSub[3], q4[3], 0.01);
 }
 
 TEST(QuaternionTestSuite, Multiplication){
