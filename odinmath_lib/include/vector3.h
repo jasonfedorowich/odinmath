@@ -72,11 +72,14 @@ namespace OdinMath {
 
         bool operator==(const Vector3<real> &rhs) const;
 
-        real dot(const Vector3<real> &rhs);
+        real dot(const Vector3<real> &rhs) const;
 
         Vector3<real> cross(const Vector3<real> &rhs);
 
+        Vector3<real> project(const Vector3<real>& b);
+
     };
+
 
 
 #if defined(INTRIN) && (defined(__aarch64__) || defined(__x86_64__))
@@ -133,10 +136,19 @@ namespace OdinMath {
 
         void getData(float *data) override;
 
+        Vector3Float project(const Vector3Float& b);
+
         friend std::ostream &operator<<(std::ostream &os, const Vector3Float &aFloat);
     };
 
 #endif
+
+    template<typename real>
+    Vector3<real> Vector3<real>::project(const Vector3<real>& b) {
+        real ab = dot(b);
+        real bb = b.dot(b);
+        return (ab / bb) * b;
+    }
 
     template<typename real>
     bool Vector3<real>::operator==(const Vector3<real> &rhs) const {
@@ -153,7 +165,7 @@ namespace OdinMath {
     }
 
     template<typename real>
-    real Vector3<real>::dot(const Vector3<real> &rhs) {
+    real Vector3<real>::dot(const Vector3<real> &rhs) const {
         return rhs.data[0] * this->data[0] + rhs.data[1] * this->data[1] + rhs.data[2] * this->data[2];
     }
 
@@ -177,7 +189,7 @@ namespace OdinMath {
     }
 
     template<typename real>
-    inline Vector3<real> operator*(real c, Vector3<real> &rhs) {
+    inline Vector3<real> operator*(real c, const Vector3<real> &rhs) {
         real x = c * rhs[0];
         real y = c * rhs[1];
         real z = c * rhs[2];
@@ -185,7 +197,7 @@ namespace OdinMath {
     }
 
     template<typename real>
-    inline Vector3<real> operator*(real c, Vector3<real> &&rhs) {
+    inline Vector3<real> operator*(real c, const Vector3<real> &&rhs) {
         real x = c * rhs[0];
         real y = c * rhs[1];
         real z = c * rhs[2];

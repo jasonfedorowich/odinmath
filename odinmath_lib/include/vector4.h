@@ -81,10 +81,12 @@ namespace OdinMath {
 
         bool operator==(const Vector4<real> &v) const;
 
-        real dot(const Vector4<real> &rhs);
+        real dot(const Vector4<real> &rhs) const;
 
+        Vector4<real> project(const Vector4<real>& b);
 
     };
+
 
 
 #if defined(INTRIN) && (defined(__aarch64__) || defined(__x86_64__))
@@ -169,12 +171,13 @@ namespace OdinMath {
         bool operator==(const Vector4Float &v) const;
 
         //todo make getData(Vector4* out)
-        virtual
-        void getData(float *data);
+        virtual void getData(float *data);
 
         float dot(const Vector4Float &rhs);
 
         Vector4Float cross(const Vector4Float &rhs);
+
+        Vector4Float project(const Vector4Float& b);
 
 
     };
@@ -183,7 +186,14 @@ namespace OdinMath {
 #endif
 
     template<typename real>
-    inline Vector4<real> operator*(real c, Vector4<real> &rhs) {
+    Vector4<real> Vector4<real>::project(const Vector4<real>& b) {
+        real ab = dot(b);
+        real bb = b.dot(b);
+        return (ab / bb) * b;
+    }
+
+    template<typename real>
+    inline Vector4<real> operator*(real c, const Vector4<real> &rhs) {
         real x = c * rhs[0];
         real y = c * rhs[1];
         real z = c * rhs[2];
@@ -192,7 +202,7 @@ namespace OdinMath {
     }
 
     template<typename real>
-    inline Vector4<real> operator*(real c, Vector4<real> &&rhs) {
+    inline Vector4<real> operator*(real c, const Vector4<real> &&rhs) {
         real x = c * rhs[0];
         real y = c * rhs[1];
         real z = c * rhs[2];
@@ -210,7 +220,7 @@ namespace OdinMath {
 
 
     template<typename real>
-    real Vector4<real>::dot(const Vector4<real> &rhs) {
+    real Vector4<real>::dot(const Vector4<real> &rhs) const {
         return (*this)[0] * rhs[0] + (*this)[1] * rhs[1] + (*this)[2] * rhs[2] + (*this)[3] * rhs[3];
     }
 

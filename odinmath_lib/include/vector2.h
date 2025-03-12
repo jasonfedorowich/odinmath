@@ -60,9 +60,13 @@ namespace OdinMath {
 
         bool operator==(const Vector2<real> &rhs) const;
 
-        real dot(const Vector2<real> &rhs);
+        real dot(const Vector2<real> &rhs) const;
+
+        Vector2<real> project(const Vector2<real>& b);
+
 
     };
+
 
 
 #if defined(INTRIN) && (defined(__aarch64__) || defined(__x86_64__))
@@ -121,21 +125,30 @@ namespace OdinMath {
 
         void getData(float *data) override;
 
+        Vector2Float project(const Vector2Float& b);
+
     };
 
 
 #endif
 
+    template<typename real>
+    Vector2<real> Vector2<real>::project(const Vector2<real> &b) {
+        real ab = dot(b);
+        real bb = b.dot(b);
+        return (ab / bb) * b;
+    }
+
 
     template<typename real>
-    inline Vector2<real> operator*(real c, Vector2<real> &rhs) {
+    inline Vector2<real> operator*(real c, const Vector2<real> &rhs) {
         real x = c * rhs[0];
         real y = c * rhs[1];
         return {x, y};
     }
 
     template<typename real>
-    inline Vector2<real> operator*(real c, Vector2<real> &&rhs) {
+    inline Vector2<real> operator*(real c, const Vector2<real> &&rhs) {
         real x = c * rhs[0];
         real y = c * rhs[1];
         return {x, y};
@@ -153,7 +166,7 @@ namespace OdinMath {
     }
 
     template<typename real>
-    real Vector2<real>::dot(const Vector2<real> &rhs) {
+    real Vector2<real>::dot(const Vector2<real> &rhs) const {
         return (*this)[0] * rhs[0] + (*this)[1] * rhs[1];
     }
 

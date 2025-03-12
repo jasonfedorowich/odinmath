@@ -429,4 +429,18 @@ TEST(Vector4FloatTestSuite, TestDotAndCross) {
     EXPECT_EQ(0.f, v5.getW());
 }
 
+TEST(Vector4FloatTestSuite, Projection) {
+    Vector4Float v1 = Vector4Float(1.f, 2.f, 3.f, 5.f);
+    Vector4Float v2 = Vector4Float(5.f, 6.f, 7.f, 5.f);
+
+    Vector4Float v3 = v1.project(v2);
+    Vector4Float v4 = Vector4Float(2.333, 2.8, 3.26027, 2.3333);
+
+    EXPECT_NEAR(v3.getX(), v4.getX(), 0.01);
+    EXPECT_NEAR(v3.getY(), v4.getY(), 0.01);
+    EXPECT_NEAR(v3.getZ(), v4.getZ(), 0.01);
+    EXPECT_NEAR(v3.getW(), v4.getW(), 0.01);
+}
+
+
 #endif

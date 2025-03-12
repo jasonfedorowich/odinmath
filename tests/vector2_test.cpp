@@ -73,3 +73,14 @@ TEST(Vector2TestSuit, TestDot) {
     double d = v1.dot(v2);
     EXPECT_EQ(17.0, d);
 }
+
+
+TEST(Vector2TestSuit, TestProjection){
+    Vector2<double> v1 = Vector2<double>(1.f, 2.f);
+    Vector2<double> v2 = Vector2<double>(5.f, 6.f);
+    Vector2<double> v3 = v1.project(v2);
+
+    Vector2<double> v4 = {1.39344, 1.67213};
+    EXPECT_NEAR(v3[0], v4[0], 0.01);
+    EXPECT_NEAR(v3[1], v4[1], 0.01);
+}

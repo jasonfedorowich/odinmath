@@ -40,6 +40,9 @@
 //todo pow
 //todo eigem
 //todo add rest of stream operators
+//todo projections
+//todo qr
+//todo lu
 //inline const float eps<float>
 
 

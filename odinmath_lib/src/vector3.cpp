@@ -73,6 +73,14 @@ namespace OdinMath {
         return os;
     }
 
+    Vector3Float Vector3Float::project(const Vector3Float &b) {
+        FloatVector128 ab = OdinMath::dot(this->floatVector128, b.floatVector128);
+        FloatVector128 bb = OdinMath::dot(b.floatVector128, b.floatVector128);
+        bb = SET_LANE_VECTOR(3, bb, 0.f);
+        FloatVector128 t = div(ab, bb);
+        return Vector3Float(mul(t, b.floatVector128));
+    }
+
 
 #endif
 

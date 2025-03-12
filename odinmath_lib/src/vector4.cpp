@@ -3,6 +3,8 @@
 //
 
 #include "odinmath.h"
+#include "include/vector4.h"
+
 
 namespace OdinMath {
 
@@ -78,6 +80,13 @@ namespace OdinMath {
 
     bool Vector4Float::operator==(const Vector4Float &v) const {
         return equals(this->floatVector128, v.floatVector128);
+    }
+
+    Vector4Float Vector4Float::project(const Vector4Float &b) {
+        FloatVector128 ab = OdinMath::dot(this->floatVector128, b.floatVector128);
+        FloatVector128 bb = OdinMath::dot(b.floatVector128, b.floatVector128);
+        FloatVector128 t = div(ab, bb);
+        return Vector4Float(mul(t, b.floatVector128));
     }
 
 

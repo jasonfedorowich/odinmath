@@ -85,3 +85,16 @@ TEST(Vector4TestSuit, TestDotCross) {
 
 }
 
+TEST(Vector4TestSuit, TestProjection){
+    Vector4<double> v1 = Vector4<double>(1.f, 2.f, 3.f, 5.f);
+    Vector4<double> v2 = Vector4<double>(5.f, 6.f, 7.f, 6.f);
+    Vector4<double> v3 = v1.project(v2);
+
+    Vector4<double> v4 = {170.0/73.0, 204.0/73.0, 238.0/73.0, 204.0/73.0};
+    EXPECT_NEAR(v3[0], v4[0], 0.01);
+    EXPECT_NEAR(v3[1], v4[1], 0.01);
+    EXPECT_NEAR(v3[2], v4[2], 0.01);
+    EXPECT_NEAR(v3[3], v4[3], 0.01);
+
+}
+
