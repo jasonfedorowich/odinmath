@@ -52,6 +52,14 @@ namespace OdinMath {
 
         bool operator==(const Matrix2<real> &rhs) const;
 
+        Vector2<real> col(int c);
+
+        void col(int c, Vector2<real>& v);
+
+        Vector2<real> row(int r);
+
+        void row(int r, Vector2<real>& v);
+
         real det();
 
         real trace();
@@ -63,15 +71,13 @@ namespace OdinMath {
 
         Matrix2<real> transpose();
 
+        bool isUpperTriangular(real eps);
+
         static Matrix2<real> identity();
 
         static Matrix2<real> zeros();
     };
 
-    template<typename real>
-    real Matrix2<real>::trace() {
-        return (this->mat[0][0] + this->mat[1][1]);
-    }
 
 #if defined(INTRIN) && (defined(__aarch64__) || defined(__x86_64__))
 
@@ -153,6 +159,39 @@ namespace OdinMath {
     };
 
 #endif
+
+    template<typename real>
+    bool Matrix2<real>::isUpperTriangular(real eps) {
+        return (this->mat[1][0] <= eps);
+    }
+
+
+    template<typename real>
+    void Matrix2<real>::row(int r, Vector2<real> &v) {
+        this->mat[r][0] = v[0];
+        this->mat[r][1] = v[1];
+    }
+
+    template<typename real>
+    Vector2<real> Matrix2<real>::row(int r) {
+        return Vector2<real>(this->mat[r][0], this->mat[r][1]);
+    }
+
+    template<typename real>
+    void Matrix2<real>::col(int c, Vector2<real> &v) {
+        this->mat[0][c] = v[0];
+        this->mat[1][c] = v[1];
+    }
+
+    template<typename real>
+    Vector2<real> Matrix2<real>::col(int c) {
+        return Vector2<real>(this->mat[0][c], this->mat[1][c]);
+    }
+
+    template<typename real>
+    real Matrix2<real>::trace() {
+        return (this->mat[0][0] + this->mat[1][1]);
+    }
 
     template<typename real>
     inline Matrix2<real> operator*(real c, Matrix2<real> &m) {

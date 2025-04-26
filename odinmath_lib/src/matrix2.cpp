@@ -1,7 +1,7 @@
 //
 // Created by Jason Fedorowich on 2024-04-20.
 //
-
+#include "odinmath.h"
 #include "include/matrix2.h"
 
 namespace OdinMath {

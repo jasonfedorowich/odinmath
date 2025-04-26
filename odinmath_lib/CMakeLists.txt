@@ -20,6 +20,7 @@ set(HEADER_FILES
         include/quaternion.h
         include/trigonometry.h
         include/math.h
+        include/qr.h
 )
 
 set(SOURCE_FILES

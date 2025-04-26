@@ -42,6 +42,10 @@ namespace OdinMath {
             this->data[1] = y;
         }
 
+        Vector2<real> operator-(const Vector2<real> &rhs);
+
+        Vector2<real> operator-(Vector2<real> &&rhs);
+
         Vector2<real> operator+(const Vector2<real> &rhs);
 
         Vector2<real> operator+(Vector2<real> &&rhs);
@@ -131,6 +135,18 @@ namespace OdinMath {
 
 
 #endif
+
+    template<typename real>
+    Vector2<real> Vector2<real>::operator-(Vector2<real> &&rhs) {
+        return Vector2<real>(this->data[0] - rhs[0],
+                             this->data[1] - rhs[1]);
+    }
+
+    template<typename real>
+    Vector2<real> Vector2<real>::operator-(const Vector2<real> &rhs) {
+        return Vector2<real>(this->data[0] - rhs[0],
+                             this->data[1] - rhs[1]);
+    }
 
     template<typename real>
     Vector2<real> Vector2<real>::project(const Vector2<real> &b) {

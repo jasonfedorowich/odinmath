@@ -6,6 +6,7 @@
 #define ODINMATH_MATRIX3_H
 
 #include "odinmath.h"
+#include <ostream>
 
 namespace OdinMath {
     template<typename real>
@@ -58,6 +59,14 @@ namespace OdinMath {
 
         bool operator==(const Matrix3<real> &rhs) const;
 
+        Vector3<real> col(int c);
+
+        void col(int c, Vector3<real>& v);
+
+        Vector3<real> row(int r);
+
+        void row(int r, Vector3<real>& v);
+
         real det();
 
         real trace();
@@ -67,17 +76,17 @@ namespace OdinMath {
          * argument `det` holds the result of the determinant*/
         bool inverse(Matrix3<real> &inv, real eps, real *det);
 
+        bool isUpperTriangular(real eps);
+
         Matrix3<real> transpose();
 
         static Matrix3<real> identity();
 
         static Matrix3<real> zeros();
+
     };
 
-    template<typename real>
-    real Matrix3<real>::trace() {
-        return (this->mat[0][0] + this->mat[1][1] + this->mat[2][2]);
-    }
+
 
 #if defined(INTRIN) && (defined(__aarch64__) || defined(__x86_64__))
 
@@ -170,6 +179,41 @@ namespace OdinMath {
 
 
 #endif
+
+    template<typename real>
+    bool Matrix3<real>::isUpperTriangular(real eps) {
+        return (this->mat[2][1] <= eps && this->mat[2][0] <= eps
+                && this->mat[1][0] <= eps);
+    }
+
+    template<typename real>
+    void Matrix3<real>::row(int r, Vector3<real> &v) {
+        this->mat[r][0] = v[0];
+        this->mat[r][1] = v[1];
+        this->mat[r][2] = v[2];
+    }
+
+    template<typename real>
+    Vector3<real> Matrix3<real>::row(int r) {
+        return Vector3<real>(this->mat[r][0], this->mat[r][1], this->mat[r][2]);
+    }
+
+    template<typename real>
+    void Matrix3<real>::col(int c, Vector3<real> &v) {
+        this->mat[0][c] = v[0];
+        this->mat[1][c] = v[1];
+        this->mat[2][c] = v[2];
+    }
+
+    template<typename real>
+    Vector3<real> Matrix3<real>::col(int c) {
+        return Vector3<real>(this->mat[0][c], this->mat[1][c], this->mat[2][c]);
+    }
+
+    template<typename real>
+    real Matrix3<real>::trace() {
+        return (this->mat[0][0] + this->mat[1][1] + this->mat[2][2]);
+    }
 
     template<typename real>
     Matrix3<real> Matrix3<real>::zeros() {

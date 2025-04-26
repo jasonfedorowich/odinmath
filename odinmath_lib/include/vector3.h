@@ -58,6 +58,10 @@ namespace OdinMath {
 
         Vector3<real> operator+(Vector3<real> &&rhs);
 
+        Vector3<real> operator-(const Vector3<real> &rhs);
+
+        Vector3<real> operator-(Vector3<real> &&rhs);
+
         Vector3<real> &operator=(const Vector3<real> &v);
 
         void operator+=(const Vector3<real> &rhs);
@@ -77,6 +81,10 @@ namespace OdinMath {
         Vector3<real> cross(const Vector3<real> &rhs);
 
         Vector3<real> project(const Vector3<real>& b);
+
+        void normalize();
+
+        real length();
 
     };
 
@@ -142,6 +150,38 @@ namespace OdinMath {
     };
 
 #endif
+
+    template<typename real>
+    Vector3<real> Vector3<real>::operator-(Vector3<real> &&rhs) {
+        return Vector3<float>(this->data[0] - rhs[0],
+                              this->data[1] - rhs[1],
+                              this->data[2] - rhs[2]);
+    }
+
+    template<typename real>
+    Vector3<real> Vector3<real>::operator-(const Vector3<real> &rhs) {
+        return Vector3<float>(this->data[0] - rhs[0],
+                              this->data[1] - rhs[1],
+                              this->data[2] - rhs[2]);
+    }
+
+    template<typename real>
+    void Vector3<real>::normalize() {
+        real le = this->length();
+        real invLe = (real)1.f / le;
+
+        this->data[0] *= invLe;
+        this->data[1] *= invLe;
+        this->data[2] *= invLe;
+
+    }
+
+    template<typename real>
+    real Vector3<real>::length() {
+        return sqrt(this->data[0] * this->data[0]
+                    + this->data[1] * this->data[1]
+                    + this->data[2] * this->data[2]);
+    }
 
     template<typename real>
     Vector3<real> Vector3<real>::project(const Vector3<real>& b) {

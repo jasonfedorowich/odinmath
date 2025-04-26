@@ -35,6 +35,7 @@
 #include "include/matrix3.h"
 #include "include/matrix2.h"
 #include "include/quaternion.h"
+#include "include/qr.h"
 
 //todo create constant thats called by a template
 //todo pow
@@ -43,6 +44,7 @@
 //todo projections
 //todo qr
 //todo lu
+//todo create ostream functions
 //inline const float eps<float>
 
 

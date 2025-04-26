@@ -20,6 +20,13 @@ namespace OdinMath {
             this->data[3] = w;
         }
 
+        Vector4(real* data) {
+            this->data[0] = data[0];
+            this->data[1] = data[1];
+            this->data[2] = data[2];
+            this->data[3] = data[3];
+        }
+
         virtual ~Vector4() = default;
 
         Vector4() {
@@ -67,6 +74,10 @@ namespace OdinMath {
 
         Vector4<real> operator+(Vector4<real> &&rhs);
 
+        Vector4<real> operator-(const Vector4<real> &rhs);
+
+        Vector4<real> operator-(Vector4<real> &&rhs);
+
         Vector4<real> &operator=(const Vector4<real> &v);
 
         void operator+=(const Vector4<real> &rhs);
@@ -85,8 +96,11 @@ namespace OdinMath {
 
         Vector4<real> project(const Vector4<real>& b);
 
-    };
+        void normalize();
 
+        real length();
+
+    };
 
 
 #if defined(INTRIN) && (defined(__aarch64__) || defined(__x86_64__))
@@ -184,6 +198,42 @@ namespace OdinMath {
 
 
 #endif
+
+    template<typename real>
+    void Vector4<real>::normalize() {
+        real le = this->length();
+        real invLe = (real)1.f / le;
+
+        this->data[0] *= invLe;
+        this->data[1] *= invLe;
+        this->data[2] *= invLe;
+        this->data[3] *= invLe;
+
+    }
+
+    template<typename real>
+    real Vector4<real>::length() {
+        return sqrt(this->data[0] * this->data[0]
+                    + this->data[1] * this->data[1]
+                    + this->data[2] * this->data[2]
+                    + this->data[3] * this->data[3]);
+    }
+
+    template<typename real>
+    Vector4<real> Vector4<real>::operator-(const Vector4<real> &rhs) {
+        return Vector4<float>(this->data[0] - rhs[0],
+                              this->data[1] - rhs[1],
+                              this->data[2] - rhs[2],
+                              this->data[3] - rhs[3]);
+    }
+
+    template<typename real>
+    Vector4<real> Vector4<real>::operator-(Vector4<real> &&rhs) {
+        return Vector4<float>(this->data[0] - rhs[0],
+                              this->data[1] - rhs[1],
+                              this->data[2] - rhs[2],
+                              this->data[3] - rhs[3]);
+    }
 
     template<typename real>
     Vector4<real> Vector4<real>::project(const Vector4<real>& b) {

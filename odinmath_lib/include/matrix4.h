@@ -67,6 +67,14 @@ namespace OdinMath {
 
         bool operator==(const Matrix4<real> &rhs) const;
 
+        Vector4<real> col(int c);
+
+        void col(int c, Vector4<real>& v);
+
+        Vector4<real> row(int r);
+
+        void row(int r, Vector4<real>& v);
+
         real det();
 
         real trace();
@@ -76,17 +84,18 @@ namespace OdinMath {
          * argument `det` holds the result of the determinant*/
         bool inverse(Matrix4<real> &inv, real eps, real *det);
 
+        bool isUpperTriangular(real eps);
+
         Matrix4<real> transpose();
 
         static Matrix4<real> identity();
 
         static Matrix4<real> zeros();
+
+
     };
 
-    template<typename real>
-    real Matrix4<real>::trace() {
-        return (this->mat[0][0] + this->mat[1][1] + this->mat[2][2] + this->mat[3][3]);
-    }
+
 
 #if defined(INTRIN) && (defined(__aarch64__) || defined(__x86_64__))
 
@@ -188,6 +197,45 @@ namespace OdinMath {
 
 
 #endif
+
+    template<typename real>
+    bool Matrix4<real>::isUpperTriangular(real eps) {
+        return (this->mat[3][2] <= eps && this->mat[3][1] <= eps && this->mat[3][0] <= eps
+                && this->mat[2][1] <= eps && this->mat[2][0] <= eps
+                && this->mat[1][0] <= eps);
+    }
+
+
+    template<typename real>
+    inline void Matrix4<real>::row(int r, Vector4<real> &v) {
+        this->mat[r][0] = v[0];
+        this->mat[r][1] = v[1];
+        this->mat[r][2] = v[2];
+        this->mat[r][3] = v[3];
+    }
+
+    template<typename real>
+    inline void Matrix4<real>::col(int c, Vector4<real> &v) {
+        this->mat[0][c] = v[0];
+        this->mat[1][c] = v[1];
+        this->mat[2][c] = v[2];
+        this->mat[3][c] = v[3];
+    }
+
+    template<typename real>
+    inline Vector4<real> Matrix4<real>::row(int r) {
+        return Vector4<real>(this->mat[r][0], this->mat[r][1], this->mat[r][2], this->mat[r][3]);
+    }
+
+    template<typename real>
+    inline Vector4<real> Matrix4<real>::col(int c) {
+        return Vector4<real>(this->mat[0][c], this->mat[1][c], this->mat[2][c], this->mat[3][c]);
+    }
+
+    template<typename real>
+    inline real Matrix4<real>::trace() {
+        return (this->mat[0][0] + this->mat[1][1] + this->mat[2][2] + this->mat[3][3]);
+    }
 
 
     template<typename real>
@@ -532,25 +580,25 @@ namespace OdinMath {
     template<typename real>
     Matrix4<real> &Matrix4<real>::operator=(const Matrix4<real> &rhs) {
         if (this != &rhs) {
-            this->mat[0][0] = rhs[0][0];
-            this->mat[0][1] = rhs[0][1];
-            this->mat[0][2] = rhs[0][2];
-            this->mat[0][3] = rhs[0][3];
+            this->mat[0][0] = rhs(0, 0);
+            this->mat[0][1] = rhs(0, 1);
+            this->mat[0][2] = rhs(0, 2);
+            this->mat[0][3] = rhs(0, 3);
 
-            this->mat[1][0] = rhs[1][0];
-            this->mat[1][1] = rhs[1][1];
-            this->mat[1][2] = rhs[1][2];
-            this->mat[1][3] = rhs[1][3];
+            this->mat[1][0] = rhs(1, 0);
+            this->mat[1][1] = rhs(1, 1);
+            this->mat[1][2] = rhs(1, 2);
+            this->mat[1][3] = rhs(1, 3);
 
-            this->mat[2][0] = rhs[2][0];
-            this->mat[2][1] = rhs[2][1];
-            this->mat[2][3] = rhs[2][3];
-            this->mat[2][4] = rhs[2][4];
+            this->mat[2][0] = rhs(2, 0);
+            this->mat[2][1] = rhs(2, 1);
+            this->mat[2][3] = rhs(2, 2);
+            this->mat[2][4] = rhs(2, 3);
 
-            this->mat[3][0] = rhs[3][0];
-            this->mat[3][1] = rhs[3][1];
-            this->mat[3][2] = rhs[3][2];
-            this->mat[3][3] = rhs[3][3];
+            this->mat[3][0] = rhs(3, 0);
+            this->mat[3][1] = rhs(3, 1);
+            this->mat[3][2] = rhs(3, 2);
+            this->mat[3][3] = rhs(3, 3);
         }
         return *this;
     }
