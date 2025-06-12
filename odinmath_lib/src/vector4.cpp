@@ -82,11 +82,21 @@ namespace OdinMath {
         return equals(this->floatVector128, v.floatVector128);
     }
 
-    Vector4Float Vector4Float::project(const Vector4Float &b) {
+    Vector4Float Vector4Float::project(const Vector4Float &b) const {
         FloatVector128 ab = OdinMath::dot(this->floatVector128, b.floatVector128);
         FloatVector128 bb = OdinMath::dot(b.floatVector128, b.floatVector128);
         FloatVector128 t = div(ab, bb);
         return Vector4Float(mul(t, b.floatVector128));
+    }
+
+    float Vector4Float::length() {
+        FloatVector128 v = sqrtF(OdinMath::dot(this->floatVector128, this->floatVector128));
+        return GET_LANE_VECTOR(v, 0);
+    }
+
+    void Vector4Float::normalize() {
+        FloatVector128 v = sqrtF(OdinMath::dot(this->floatVector128, this->floatVector128));
+        this->floatVector128 = div(this->floatVector128, v);
     }
 
 

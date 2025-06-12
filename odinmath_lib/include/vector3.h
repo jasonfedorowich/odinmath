@@ -144,7 +144,7 @@ namespace OdinMath {
 
         void getData(float *data) override;
 
-        Vector3Float project(const Vector3Float& b);
+        Vector3Float project(const Vector3Float& b) const;
 
         friend std::ostream &operator<<(std::ostream &os, const Vector3Float &aFloat);
     };

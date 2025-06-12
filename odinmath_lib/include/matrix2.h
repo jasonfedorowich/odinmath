@@ -109,6 +109,11 @@ namespace OdinMath {
             this->floatMatrix128X4 = OdinMath::clear2(floatMatrix128X4);
         }
 
+        Matrix2Float(Vector2Float &r1, Vector2Float &r2){
+            this->floatMatrix128X4.vectors[0] = r1.getVector();
+            this->floatMatrix128X4.vectors[1] = r2.getVector();
+        }
+
         ~Matrix2Float() override = default;
 
         float get(int r, int c) const override;
@@ -144,6 +149,7 @@ namespace OdinMath {
          * argument `det` holds the result of the determinant*/
         bool inverse(Matrix2Float &inv, float eps, float *det);
 
+        Vector2Float row(int r);
 
         Matrix2Float transpose();
 

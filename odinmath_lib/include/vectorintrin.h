@@ -14,6 +14,7 @@ namespace OdinMath {
 #if defined(INTRIN) && defined(__aarch64__)
     using FloatVector128 = float32x4_t;
     using IntegerVector128 = uint32x4_t;
+    using FloatVector64 = float32x2_t;
 #elif defined(INTRIN) && defined(__x86_64__)
     using FloatVector128 = __m128;
 #else
@@ -256,6 +257,10 @@ namespace OdinMath {
         return vcltq_f32(v, p);
     }
 
+    inline uint32x4_t lessThanOrEqual(float32x4_t v, float32x4_t p){
+        return vcleq_f32(v, p);
+    }
+
     inline uint32x4_t greaterThan(float32x4_t v, float32x4_t p){
         return vcgtq_f32(v, p);
     }
@@ -282,6 +287,10 @@ namespace OdinMath {
 
     inline uint32x4_t _and(uint32x4_t lhs, uint32x4_t rhs) {
         return vandq_u32(lhs, rhs);
+    }
+
+    inline uint32x4_t _or(uint32x4_t lhs, uint32x4_t rhs){
+        return vorrq_u32(lhs, rhs);
     }
 
     inline float32x4_t sqrtF(float32x4_t v){
@@ -354,6 +363,18 @@ namespace OdinMath {
     // reverses hi and lo parts of vector
     inline float32x4_t reverse(float32x4_t v){
         return vrev64q_f32(v);
+    }
+
+    inline float32x2_t low(float32x4_t v){
+        return vget_low_f32(v);
+    }
+
+    inline float32x2_t hi(float32x4_t v){
+        return vget_high_f32(v);
+    }
+
+    inline float32x4_t combine(float32x2_t lo, float32x2_t hi){
+        return vcombine_f32(lo, hi);
     }
 
 

@@ -2,6 +2,7 @@
 // Created by Jason Fedorowich on 2024-06-07.
 //
 
+//todo may need the include here as well
 #include "include/quaternion.h"
 
 namespace OdinMath{

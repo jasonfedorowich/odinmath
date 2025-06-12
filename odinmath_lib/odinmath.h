@@ -42,7 +42,7 @@
 //todo eigem
 //todo add rest of stream operators
 //todo projections
-//todo qr
+//todo qr - householder
 //todo lu
 //todo create ostream functions
 //inline const float eps<float>

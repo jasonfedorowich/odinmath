@@ -60,10 +60,9 @@ namespace OdinMath {
 
 
 
-//
-//    void gs(Matrix4Float& m, Matrix4Float& Q, Matrix4Float& R);
-//
-//    void gs(Matrix3Float& m, Matrix3Float& Q, Matrix3Float& R);
-//
-//    void gs(Matrix2Float& m, Matrix2Float& Q, Matrix2Float& R);
+    void gsF(Matrix4Float& m, Matrix4Float& Q, Matrix4Float& R);
+
+    void gsF(Matrix3Float& m, Matrix3Float& Q, Matrix3Float& R);
+
+    void gsF(Matrix2Float& m, Matrix2Float& Q, Matrix2Float& R);
 }

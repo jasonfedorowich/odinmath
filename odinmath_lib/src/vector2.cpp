@@ -61,7 +61,7 @@ namespace OdinMath {
         return equals(this->floatVector128, v.floatVector128);
     }
 
-    Vector2Float Vector2Float::project(const Vector2Float &b) {
+    Vector2Float Vector2Float::project(const Vector2Float &b) const{
         FloatVector128 ab = OdinMath::dot(this->floatVector128, b.floatVector128);
         FloatVector128 bb = OdinMath::dot(b.floatVector128, b.floatVector128);
         bb = SET_LANE_VECTOR(3, bb, 0.f);

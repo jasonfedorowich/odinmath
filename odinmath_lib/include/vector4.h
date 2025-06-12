@@ -122,12 +122,14 @@ namespace OdinMath {
             this->floatVector128 = load4(vector);
         }
 
-        explicit Vector4Float(FloatVector128 &v) {
+        explicit Vector4Float(FloatVector128 &v, bool normalize = false) {
             this->floatVector128 = v;
+            if(normalize) this->normalize();
         };
 
-        explicit Vector4Float(FloatVector128 &&v) {
+        explicit Vector4Float(FloatVector128 &&v, bool normalize = false) {
             this->floatVector128 = v;
+            if(normalize) this->normalize();
         };
 
         explicit Vector4Float(Vector4<float> &vector3) : Vector4Float(vector3[0], vector3[1], vector3[2],
@@ -140,7 +142,7 @@ namespace OdinMath {
 
         virtual ~Vector4Float() = default;
 
-        FloatVector128 getVector() { return this->floatVector128; }
+        [[nodiscard]] FloatVector128 getVector() const { return this->floatVector128; }
 
         float getX() {
             return GET_LANE_VECTOR(this->floatVector128, 0);
@@ -191,8 +193,11 @@ namespace OdinMath {
 
         Vector4Float cross(const Vector4Float &rhs);
 
-        Vector4Float project(const Vector4Float& b);
+        [[nodiscard]] Vector4Float project(const Vector4Float& b) const;
 
+        void normalize();
+
+        float length();
 
     };
 

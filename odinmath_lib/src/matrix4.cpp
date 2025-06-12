@@ -133,5 +133,35 @@ namespace OdinMath {
         return m.floatMatrix128X4;
     }
 
+    Vector4Float Matrix4Float::row(int r) {
+        if (r >= 4 || r < 0) throw InvalidArgument("Invalid row in matrix4");
+        return Vector4Float(this->floatMatrix128X4.vectors[r]);
+    }
+
+    bool Matrix4Float::isUpperTriangular(float eps) {
+        FloatVector128 epsV = duplicate(eps);
+        FloatVector128 cmp1 = this->floatMatrix128X4.vectors[3];
+        cmp1 = COPY_LANE(cmp1, 3, this->floatMatrix128X4.vectors[1], 0);
+
+        FloatVector128 cmp2 = this->floatMatrix128X4.vectors[2];
+        FloatVector64  l = low(cmp2);
+        cmp2 = combine(l, l);
+
+        FloatVector128 cmp3 = dupX(this->floatMatrix128X4.vectors[1]);
+
+        IntegerVector128 c1 = lessThanOrEqual(cmp1, epsV);
+        IntegerVector128 c2 = lessThanOrEqual(cmp2, epsV);
+        IntegerVector128 c3 = lessThanOrEqual(cmp3, epsV);
+
+        c1 = _or(c1, c2);
+        c1 = _or(c1, c3);
+
+        return GET_LANE_UINT_VECTOR(c1, 0) != 0 &&
+               GET_LANE_UINT_VECTOR(c1, 1) != 0 &&
+               GET_LANE_UINT_VECTOR(c1, 2) != 0;
+
+
+    }
+
 
 }

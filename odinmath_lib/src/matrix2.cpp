@@ -116,4 +116,10 @@ namespace OdinMath {
         return Vector4Float(add(t0, add(t1, add(t2, t3))));
     }
 
+    Vector2Float Matrix2Float::row(int r) {
+        if (r >= 2 || r < 0) throw InvalidArgument("Invalid row in matrix2");
+        return Vector2Float(this->floatMatrix128X4.vectors[r]);
+    }
+
+
 }

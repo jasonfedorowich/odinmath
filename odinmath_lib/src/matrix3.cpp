@@ -137,4 +137,10 @@ namespace OdinMath {
 
     }
 
+    Vector3Float Matrix3Float::row(int r) {
+        if (r >= 3 || r < 0) throw InvalidArgument("Invalid row in matrix3");
+        return Vector3Float(this->floatMatrix128X4.vectors[r]);
+    }
+
+
 }

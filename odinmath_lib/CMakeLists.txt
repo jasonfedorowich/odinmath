@@ -32,6 +32,7 @@ set(SOURCE_FILES
         src/matrix3.cpp
         src/matrix2.cpp
         src/quaternion.cpp
+        src/qr.cpp
 )
 
 add_library(odinmath_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})

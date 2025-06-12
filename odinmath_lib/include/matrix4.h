@@ -134,6 +134,16 @@ namespace OdinMath {
             *this = mat;
         }
 
+        Matrix4Float(Vector4Float& first,
+                     Vector4Float& second,
+                     Vector4Float& third,
+                     Vector4Float& fourth){
+            this->floatMatrix128X4.vectors[0] = first.getVector();
+            this->floatMatrix128X4.vectors[1] = second.getVector();
+            this->floatMatrix128X4.vectors[2] = third.getVector();
+            this->floatMatrix128X4.vectors[3] = fourth.getVector();
+        }
+
         Matrix4Float() {}
 
         explicit Matrix4Float(FloatMatrix128x4 &floatMatrix128X4) {
@@ -147,6 +157,8 @@ namespace OdinMath {
         virtual ~Matrix4Float() = default;
 
         virtual float get(int r, int c) const;
+
+        Vector4Float row(int r);
 
         virtual void set(int r, int c, float v);
 
@@ -182,6 +194,8 @@ namespace OdinMath {
         //todo should make virtual?
         Matrix4Float transpose();
 
+        bool isUpperTriangular(float eps);
+
         static Matrix4Float identity();
 
         static Matrix4Float zeros();
@@ -191,7 +205,6 @@ namespace OdinMath {
         friend Vector4Float operator*(Vector4Float &v, Matrix4Float &m);
 
         friend Vector4Float operator*(Vector4Float &&v, Matrix4Float &&m);
-
 
     };
 

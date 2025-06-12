@@ -125,6 +125,12 @@ namespace OdinMath {
             this->floatMatrix128X4 = OdinMath::clear3(floatMatrix128X4);
         }
 
+        Matrix3Float(Vector3Float& r1, Vector3Float& r2, Vector3Float& r3){
+            this->floatMatrix128X4.vectors[0] = r1.getVector();
+            this->floatMatrix128X4.vectors[1] = r2.getVector();
+            this->floatMatrix128X4.vectors[2] = r3.getVector();
+        }
+
         ~Matrix3Float() override = default;
 
         float get(int r, int c) const override;
@@ -161,6 +167,8 @@ namespace OdinMath {
         bool inverse(Matrix3Float &inv, float eps, float *det);
 
         Matrix3Float transpose();
+
+        Vector3Float row(int r);
 
         static Matrix3Float identity();
 

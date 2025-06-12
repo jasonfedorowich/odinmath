@@ -129,7 +129,7 @@ namespace OdinMath {
 
         void getData(float *data) override;
 
-        Vector2Float project(const Vector2Float& b);
+        Vector2Float project(const Vector2Float& b) const;
 
     };
 
