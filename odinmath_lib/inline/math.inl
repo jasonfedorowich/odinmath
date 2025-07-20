@@ -1,6 +1,6 @@
 #include <cfloat>
 
-namespace OdinMath{
+namespace OdinMath {
 
     template<> inline float expF<float>(float x){
 //        /*      Algorithm and coefficients from:
@@ -74,5 +74,133 @@ namespace OdinMath{
         ++n;
         return ldexp(rg, n);
     }
+
+    template<> inline float logF<float>(float x){
+//        /*      Algorithm and coefficients from:
+//                          "Software manual for the elementary functions"
+//                          by W.J. Cody and W. Waite, Prentice-Hall, 1980
+//          */
+//
+        if(x <= 0.f) FLT_MIN;
+
+        static float c0 = 0.70710678118654752440f;
+
+        static float a[] = {-0.64124943423745581147e+2f,
+                    0.16383943563021534222e+2f,
+                    -0.78956112887491257267e+0f};
+
+        static float b[] = {-0.76949932108494879777e+3f,
+                     0.31203222091924532844e+3f,
+                     -0.35667977739034646171e+2f,
+                     0.10000000000000000000e+1f};
+
+
+
+        int n = -1;
+        float f = frexp(x, &n);
+        float znum;
+        float zden;
+
+        if(f > c0){
+            znum = (f - 0.5f) - 0.5f;
+            zden = f * 0.5f + 0.5f;
+        }else{
+            znum = f - 0.5f;
+            zden = znum * 0.5f + 0.5f;
+            n--;
+        }
+
+        float z = znum / zden;
+        float w = z * z;
+
+        float aw = (a[2] * w + a[1]) * w + a[0];
+        float bw = ((b[3] * w + b[2]) * w + b[1]) * w + b[0];
+
+        float rz2 = w * aw / bw;
+        float rz = z + z * rz2;
+
+        float xn = n;
+        float c2 = -2.121944400546905827679e-4f;
+        float c1 = 0.693359375f;
+
+        return (xn * c2 + rz) + xn * c1;
+
+    }
+
+    template<> inline double logF<double>(double x){
+//        /*      Algorithm and coefficients from:
+//                          "Software manual for the elementary functions"
+//                          by W.J. Cody and W. Waite, Prentice-Hall, 1980
+//          */
+//
+        if(x <= 0.0) DBL_MIN;
+
+        static double c0 = 0.70710678118654752440;
+
+        static double a[] = {-0.64124943423745581147e+2,
+                            0.16383943563021534222e+2,
+                            -0.78956112887491257267e+0};
+
+        static double b[] = {-0.76949932108494879777e+3,
+                            0.31203222091924532844e+3,
+                            -0.35667977739034646171e+2,
+                            0.10000000000000000000e+1};
+
+
+
+        int n = -1;
+        double f = frexp(x, &n);
+        double znum;
+        double zden;
+
+        if(f > c0){
+            znum = (f - 0.5f) - 0.5f;
+            zden = f * 0.5f + 0.5f;
+        }else{
+            znum = f - 0.5f;
+            zden = znum * 0.5f + 0.5f;
+            n--;
+        }
+
+        double z = znum / zden;
+        double w = z * z;
+
+        double aw = (a[2] * w + a[1]) * w + a[0];
+        double bw = ((b[3] * w + b[2]) * w + b[1]) * w + b[0];
+
+        double rz2 = w * aw / bw;
+        double rz = z + z * rz2;
+
+        double xn = n;
+        double c2 = -2.121944400546905827679e-4;
+        double c1 = 0.693359375;
+
+        return (xn * c2 + rz) + xn * c1;
+
+    }
+
+    template<> inline float log10F<float>(float x){
+//        /*      Algorithm and coefficients from:
+//                          "Software manual for the elementary functions"
+//                          by W.J. Cody and W. Waite, Prentice-Hall, 1980
+//          */
+//
+        float c3 = 0.43429448190325182765f;
+        float l = logF<float>(x);
+        return c3 * l;
+    }
+
+    template<> inline double log10F<double>(double x){
+        //        /*      Algorithm and coefficients from:
+//                          "Software manual for the elementary functions"
+//                          by W.J. Cody and W. Waite, Prentice-Hall, 1980
+//          */
+//
+        double c3 = 0.43429448190325182765;
+        double l = logF<double>(x);
+        return c3 * l;
+
+    }
+
 
 }

@@ -33,3 +33,14 @@ TEST(MathTest, TestExp){
     ASSERT_NEAR(s9, 1.6880917949644685, 0.01);
     ASSERT_NEAR(s10, 0.20787957635076193, 0.01);
 }
+
+TEST(MathTest, TestLog){
+    double s1 = logF<double>(2);
+    float s3 = logF<float>(4.0);
+    double s2 = logF<double>(3.0);
+
+
+    ASSERT_NEAR(s1, 0.6931471805599453, 0.01);
+    ASSERT_NEAR(s2, 1.0986122886681098, 0.01);
+    ASSERT_NEAR(s3, 1.3862943611198906, 0.01);
+}

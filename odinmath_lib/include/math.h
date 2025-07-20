@@ -14,6 +14,22 @@ namespace OdinMath{
         return x;
     }
 
+    template<typename real>
+    inline real pow(real x){
+        return x;
+    }
+
+
+    template<typename real>
+    inline real log10F(real x){
+        return x;
+    }
+
+    template<typename real>
+    inline real logF(real x){
+        return x;
+    }
+
 
 }
 
